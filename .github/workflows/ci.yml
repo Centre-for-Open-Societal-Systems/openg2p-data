@@ -1,0 +1,92 @@
+name: CI
+
+# Registry and Master Data db-seed images clone this repo at build time, so
+# whatever lands on a branch here is what a seeded install contains. This
+# workflow is the gate in front of that.
+
+on:
+  push:
+    branches: [develop, "1.*", "2.*", "intermediate-stable/**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHON_VERSION: "3.12"
+
+jobs:
+  lint:
+    name: Lint scripts and data files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      # Errors only (syntax, undefined names), not style: the scripts have
+      # never been style-linted, and a style gate would fail on day one.
+      - name: Ruff (errors only)
+        run: pipx run ruff check scripts --select E9,F63,F7,F82 --output-format github
+
+      - name: JSON, GeoJSON and CSV are well-formed
+        run: python scripts/ci/check_data_files.py
+
+  validate-packs:
+    name: Validate country packs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      # validate_pack.py checks attribute schemas with jsonschema when it is
+      # installed and falls back to a subset when it is not; CI uses the full one.
+      - name: Install jsonschema
+        run: pip install jsonschema
+
+      - name: validate_pack.py
+        working-directory: scripts/packs
+        run: |
+          packs=$(ls -d ../../packs/*/ | while read d; do [ -f "$d/manifest.json" ] && echo "${d%/}"; done)
+          echo "Validating: $packs"
+          python validate_pack.py $packs
+
+  synthetic-pack-reproducible:
+    name: Kamuntu pack is reproducible
+    runs-on: ubuntu-latest
+    # Report-only until it has been seen green on Linux: regenerating on Windows
+    # differs from the committed geometry in the last float digit. Remove this
+    # line to make it a blocking gate once it passes here.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      # Only the generated geography is compared; codelists/ and domains/ are
+      # maintained by hand and the generator does not write them.
+      - name: Regenerate and compare
+        working-directory: scripts/packs
+        run: |
+          version=$(python -c "import json; print(json.load(open('../../packs/XKM/manifest.json'))['version'])")
+          python generate_synthetic_pack.py --preset kamuntu --out "$RUNNER_TEMP/XKM" --version "$version"
+          status=0
+          for f in levels.json values.json manifest.json boundaries/*.geojson; do
+            if ! cmp -s "$RUNNER_TEMP/XKM/$f" "../../packs/XKM/$f"; then
+              echo "::error file=packs/XKM/$f::differs from a fresh regeneration"
+              status=1
+            fi
+          done
+          exit $status
