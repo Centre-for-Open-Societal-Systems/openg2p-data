@@ -32,6 +32,10 @@ Changes made to the rendered Job:
   - with --data-ref: an emptyDir over the image's openg2p-data directory,
     filled by the fetch-openg2p-data init container (same image, so no new pull)
   - ttlSecondsAfterFinished, so finished CI Jobs clean themselves up
+  - restartPolicy Never and backoffLimit 0: one attempt, and a failed pod is
+    kept (until the TTL) so its logs can be read. With the chart's OnFailure the
+    container restarts in place, and the Job controller deletes that pod, logs
+    and all, once the backoff limit is hit
 
 The digest is the sha256 of `sha256sum` over every file under packs/, sorted
 by path; see packs_digest.sh, which computes the same thing in CI.
@@ -112,6 +116,9 @@ def main():
     spec = job["spec"]
     spec["ttlSecondsAfterFinished"] = args.ttl
     pod = spec["template"]["spec"]
+    # Rerunning the build is the retry.
+    spec["backoffLimit"] = 0
+    pod["restartPolicy"] = "Never"
     seed = next((c for c in pod["containers"] if c["name"] == args.container), None)
     if seed is None:
         sys.exit(f"no container named {args.container} in the Job")
