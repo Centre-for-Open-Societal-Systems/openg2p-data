@@ -1,0 +1,12 @@
+.git
+.gitignore
+.vscode
+.ruff_cache
+**/__pycache__
+**/*.pyc
+.tools
+.build
+dist
+Jenkinsfile
+Dockerfile
+.dockerignore
