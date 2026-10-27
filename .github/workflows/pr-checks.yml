@@ -1,0 +1,122 @@
+# Checks every pull request (and every push to develop) before review, so a
+# data change that would break a seeded install shows on the PR, not after merge.
+#
+#   lint        the gates Jenkins runs first: ruff on scripts/, and every JSON /
+#               GeoJSON / CSV readable (scripts/ci/check_data_files.py)
+#   packs       validate_pack.py on every pack, and list quality
+#               (scripts/ci/check_pack_lists.py): truncated or empty display
+#               names, values that read the same in one dropdown, Ethiopic text
+#               outside display_i18n, and packs/ETH-OAN out of step with
+#               scripts/packs/eth_oan_additions
+#
+# The packs job compares against the base branch: a pack in GATED_PACKS (the
+# ones deployments select) must pass outright; any other pack fails only on
+# validate_pack errors the change introduces, and list findings already on the
+# base branch are listed but do not fail. Upstream's ETH and XKM, and the
+# SEED_VARIETY names merged in #6, are reported that way until they are fixed.
+#
+# Jenkins (Jenkinsfile) stays the CI that builds and deploys the db-seed image;
+# this workflow only gates changes before they reach it.
+name: pr-checks
+
+on:
+  pull_request:
+  push:
+    branches: [develop]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-checks-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHONUTF8: "1"
+  # Packs a deployment selects (geoSeed.countryPack): these must pass outright.
+  GATED_PACKS: ETH-OAN
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install --quiet ruff==0.13.0
+
+      - name: Ruff (syntax and undefined names, as Jenkins)
+        run: ruff check scripts --select E9,F63,F7,F82
+
+      - name: Data files parse
+        run: python scripts/ci/check_data_files.py
+
+  packs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # The commit this change is compared with: the PR's base, or the previous
+      # tip of develop on a push. Not tracked by the checkout above, so no check
+      # reads it by accident.
+      - name: Check out the baseline
+        if: github.event.pull_request.base.sha || github.event.before != '0000000000000000000000000000000000000000'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha || github.event.before }}
+          path: .baseline
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # jsonschema: validate_pack.py checks attribute schemas fully when it is
+      # installed, and only a subset when it is not. Jenkins installs it too.
+      - run: pip install --quiet jsonschema==4.25.1
+
+      - name: Validate packs
+        shell: bash
+        run: |
+          set -uo pipefail
+          status=0
+          logs=$(mktemp -d)
+          for dir in packs/*/; do
+            pack=$(basename "$dir")
+            [ -f "$dir/manifest.json" ] || continue
+            echo "::group::$pack"
+            (cd scripts/packs && python validate_pack.py "../../packs/$pack") > "$logs/$pack.head" 2>&1
+            head_rc=$?
+            cat "$logs/$pack.head"
+            echo "::endgroup::"
+            [ $head_rc -eq 0 ] && { echo "ok   $pack"; continue; }
+
+            if [[ " $GATED_PACKS " == *" $pack "* ]] || [ ! -f ".baseline/packs/$pack/manifest.json" ]; then
+              echo "::error title=validate_pack $pack::$pack must pass: it is deployed (or new in this change)"
+              status=1
+              continue
+            fi
+            # Not deployed and already in the base branch: fail only on new errors.
+            (cd .baseline/scripts/packs && python validate_pack.py "../../packs/$pack") > "$logs/$pack.base" 2>&1
+            grep ' ERROR ' "$logs/$pack.head" | sort > "$logs/$pack.head.err" || true
+            grep ' ERROR ' "$logs/$pack.base" | sort > "$logs/$pack.base.err" || true
+            new=$(comm -13 "$logs/$pack.base.err" "$logs/$pack.head.err")
+            if [ -n "$new" ]; then
+              echo "::error title=validate_pack $pack::this change adds errors to $pack"
+              echo "$new"
+              status=1
+            else
+              echo "::warning title=validate_pack $pack::$pack fails on the base branch too; not caused by this change"
+            fi
+          done
+          exit $status
+
+      - name: Pack lists
+        run: |
+          if [ -d .baseline ]; then
+            python scripts/ci/check_pack_lists.py --baseline .baseline
+          else
+            python scripts/ci/check_pack_lists.py
+          fi
