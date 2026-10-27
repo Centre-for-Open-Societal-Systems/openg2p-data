@@ -118,6 +118,12 @@ pipeline {
         DEV_KUBECONFIG_CRED_ID = 'commons-dev-kubeconfig'
         // Namespace-local ECR pull Secret (oan-helm docs/ecr-pull-access.md).
         DEV_PULL_SECRET        = 'ecr-pull-secret'
+        // Private address of the kubeconfig's API host (Rancher). Its public
+        // address answers the agent with an nginx 403, so cluster calls run in
+        // a container that maps the hostname here, keeping it for TLS and
+        // nginx's server_name. Empty = resolve the hostname normally.
+        DEV_API_IP             = '10.0.1.58'
+        KUBE_TOOLS_IMAGE       = 'alpine:3.20.3'
     }
 
     stages {
@@ -432,9 +438,31 @@ EOF
                         digest=$(cat "$TOOLS/image.digest")
                         mkdir -p "$TOOLS/deploy"
 
+                        # Calls that reach the cluster go through `cluster`. With
+                        # DEV_API_IP set they run in a container whose /etc/hosts maps
+                        # the API host to it; helm and kubectl are static binaries,
+                        # mounted in from the agent.
+                        server=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}')
+                        api_host=$(sed -E 's#^[a-z]+://([^/:]+).*#\\1#' <<< "$server")
+                        if [ -n "${DEV_API_IP:-}" ]; then
+                            code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 10 \
+                                --resolve "$api_host:443:$DEV_API_IP" "https://$api_host/healthz" || true)
+                            echo "cluster API: $api_host via $DEV_API_IP, /healthz HTTP ${code:-none}"
+                            [ "$code" = "200" ] || { echo "FAIL the agent cannot reach $api_host at $DEV_API_IP"; exit 1; }
+                            kubectl_bin=$(readlink -f "$(command -v kubectl)")
+                            cluster() {
+                                docker run --rm -i --network host --add-host "$api_host:$DEV_API_IP" \
+                                    -v "$KUBECONFIG:/kubeconfig:ro" -e KUBECONFIG=/kubeconfig \
+                                    -v "$helm:/usr/local/bin/helm:ro" -v "$kubectl_bin:/usr/local/bin/kubectl:ro" \
+                                    "$KUBE_TOOLS_IMAGE" "$@"
+                            }
+                        else
+                            cluster() { local tool=$1; shift; [ "$tool" = helm ] && tool=$helm; "$tool" "$@"; }
+                        fi
+
                         # Render from what is INSTALLED — its chart version and its
                         # values — so the only difference is the image.
-                        meta=$("$helm" get metadata "$rel" -n "$ns" -o json)
+                        meta=$(cluster helm get metadata "$rel" -n "$ns" -o json)
                         read -r chart_name chart_version revision <<< "$("$TOOLS/venv/bin/python" -c \
                             'import json,sys; m=json.load(sys.stdin); print(m["chart"], m["version"], m["revision"])' <<< "$meta")"
                         echo "installed: $rel in $ns = $chart_name $chart_version (revision $revision)" | tee "$report"
@@ -443,7 +471,7 @@ EOF
 
                         # Values stay in .tools (removed in cleanup) and are never
                         # archived: they can hold credentials.
-                        "$helm" get values "$rel" -n "$ns" -a -o yaml > "$TOOLS/deploy/values.yaml"
+                        cluster helm get values "$rel" -n "$ns" -a -o yaml > "$TOOLS/deploy/values.yaml"
 
                         # tag@digest renders as repo:tag@sha256:..., which pins the
                         # exact image while keeping the readable tag.
@@ -471,22 +499,22 @@ EOF
                         echo "job: $job  pack: ${pack##*/}  image: $ECR_IMAGE:$IMAGE_TAG@$digest" | tee -a "$report"
                         [ -f "packs/${pack##*/}/manifest.json" ] || { echo "FAIL dev seeds '${pack##*/}', not a pack in this repo" | tee -a "$report"; exit 1; }
 
-                        kubectl -n "$ns" apply -f "$DIST/reports/geo-seed-job.yaml"
+                        cluster kubectl -n "$ns" apply -f - < "$DIST/reports/geo-seed-job.yaml"
 
                         # Wait for Complete or Failed, whichever comes first.
                         state=""
                         for _ in $(seq 1 90); do
-                            state=$(kubectl -n "$ns" get job "$job" \
-                                -o jsonpath='{range .status.conditions[?(@.status=="True")]}{.type}{" "}{end}')
+                            state=$(cluster kubectl -n "$ns" get job "$job" \
+                                -o jsonpath='{range .status.conditions[?(@.status=="True")]}{.type}{" "}{end}' < /dev/null)
                             case "$state" in *Complete*|*Failed*) break ;; esac
                             sleep 10
                         done
-                        kubectl -n "$ns" logs "job/$job" --all-containers --prefix > "$DIST/reports/geo-seed.log" 2>&1 || true
+                        cluster kubectl -n "$ns" logs "job/$job" --all-containers --prefix < /dev/null > "$DIST/reports/geo-seed.log" 2>&1 || true
                         tail -40 "$DIST/reports/geo-seed.log"
                         echo "job state: ${state:-timed out}" | tee -a "$report"
                         case "$state" in
                             *Complete*) echo "ok   dev reseeded from $ECR_IMAGE@$digest" | tee -a "$report" ;;
-                            *) kubectl -n "$ns" describe job "$job" | tail -30; exit 1 ;;
+                            *) cluster kubectl -n "$ns" describe job "$job" < /dev/null | tail -30; exit 1 ;;
                         esac
                     '''
                 }
