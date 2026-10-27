@@ -40,9 +40,9 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
@@ -57,19 +57,19 @@ jobs:
   packs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # The commit this change is compared with: the PR's base, or the previous
       # tip of develop on a push. Not tracked by the checkout above, so no check
       # reads it by accident.
       - name: Check out the baseline
         if: github.event.pull_request.base.sha || github.event.before != '0000000000000000000000000000000000000000'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: ${{ github.event.pull_request.base.sha || github.event.before }}
           path: .baseline
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
