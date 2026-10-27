@@ -345,11 +345,13 @@ EOF
                         -t "$LOCAL_IMAGE" .build/master-data-service
 
                     # Prove it: the packs inside the image are byte-identical to the
-                    # ones validate_pack.py just passed.
-                    git ls-files -z packs | xargs -0 sha256sum | sort -k2 > "$DIST/reports/packs-workspace.sha256"
+                    # ones validate_pack.py just passed. Both lists are sorted here, in
+                    # the C locale: the agent's locale and the image's order
+                    # packs/ETH/ and packs/ETH-OAN/ differently.
+                    git ls-files -z packs | xargs -0 sha256sum | LC_ALL=C sort -k2 > "$DIST/reports/packs-workspace.sha256"
                     docker run --rm --entrypoint sh "$LOCAL_IMAGE" -c \
-                        'cd /openg2p-data && find packs -type f -exec sha256sum {} + | sort -k2' \
-                        > "$DIST/reports/packs-image.sha256"
+                        'cd /openg2p-data && find packs -type f -exec sha256sum {} +' \
+                        | LC_ALL=C sort -k2 > "$DIST/reports/packs-image.sha256"
                     if ! diff -u "$DIST/reports/packs-workspace.sha256" "$DIST/reports/packs-image.sha256" \
                             > "$DIST/reports/packs-image.diff"; then
                         echo "FAIL packs inside the image differ from the validated workspace:"
