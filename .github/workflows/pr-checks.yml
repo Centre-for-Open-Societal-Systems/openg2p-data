@@ -87,8 +87,9 @@ jobs:
             pack=$(basename "$dir")
             [ -f "$dir/manifest.json" ] || continue
             echo "::group::$pack"
-            (cd scripts/packs && python validate_pack.py "../../packs/$pack") > "$logs/$pack.head" 2>&1
-            head_rc=$?
+            # Actions runs this under bash -e: capture a failing pack, don't stop at it.
+            head_rc=0
+            (cd scripts/packs && python validate_pack.py "../../packs/$pack") > "$logs/$pack.head" 2>&1 || head_rc=$?
             cat "$logs/$pack.head"
             echo "::endgroup::"
             [ $head_rc -eq 0 ] && { echo "ok   $pack"; continue; }
@@ -99,7 +100,7 @@ jobs:
               continue
             fi
             # Not deployed and already in the base branch: fail only on new errors.
-            (cd .baseline/scripts/packs && python validate_pack.py "../../packs/$pack") > "$logs/$pack.base" 2>&1
+            (cd .baseline/scripts/packs && python validate_pack.py "../../packs/$pack") > "$logs/$pack.base" 2>&1 || true
             grep ' ERROR ' "$logs/$pack.head" | sort > "$logs/$pack.head.err" || true
             grep ' ERROR ' "$logs/$pack.base" | sort > "$logs/$pack.base.err" || true
             new=$(comm -13 "$logs/$pack.base.err" "$logs/$pack.head.err")
