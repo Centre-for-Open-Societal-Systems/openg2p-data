@@ -207,7 +207,8 @@ pipeline {
                     set -euo pipefail
                     helm="$TOOLS/bin/helm"
                     "$helm" repo add oan "$HELM_REPO_URL" --force-update
-                    version="$CHART_VERSION"
+                    # Jenkins does not export a parameter whose value is empty: default it.
+                    version="${CHART_VERSION:-}"
                     if [ -z "$version" ]; then
                         # --devel: every published package is a -dev prerelease so far.
                         version=$("$helm" search repo "oan/$CHART_NAME" --devel -o json \
