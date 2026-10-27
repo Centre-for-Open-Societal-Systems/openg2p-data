@@ -1527,12 +1527,12 @@
     {
       "value_id": "CROP_BRACHIARIA",
       "value_code": "CROP_BRACHIARIA",
-      "value_display": "Brachiaria brizantha",
+      "value_display": "Brachiaria",
       "sort_order": 125,
       "display_i18n": {},
       "attributes": {
         "category": "CROPCAT_OTHER",
-        "scientific_name": "Brachiaria brizantha (Hochst. ex A. Rich.) Stapf"
+        "scientific_name": "Brachiaria brizantha"
       }
     }
   ]
