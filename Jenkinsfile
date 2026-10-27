@@ -50,6 +50,12 @@ def PARAM_DEFAULTS = [
     // unreconciled data retires values that live records still use.
     RESEED_DEV      : false,
     AUTO_PUBLISH_DEV: true,
+    // Dev's geography was loaded from the OpenAgriNet source catalog (levels
+    // level-region..., units woreda-ET010101...), not from ETH-OAN (l0..l4,
+    // P-codes). Loading the pack's geography over it fails on the duplicate
+    // level mnemonic, so the dev reseed loads code lists only until dev's
+    // registries are migrated with packs/ETH-OAN/migration/id_map.csv.
+    SEED_GEO_DEV    : false,
 ]
 
 pipeline {
@@ -82,6 +88,8 @@ pipeline {
                      description: 'Allow the dev reseed at all. Off until dev data is reconciled with ETH-OAN')
         booleanParam(name: 'AUTO_PUBLISH_DEV', defaultValue: PARAM_DEFAULTS.AUTO_PUBLISH_DEV,
                      description: 'Dev reseed publishes changed lists and geography at once instead of leaving drafts')
+        booleanParam(name: 'SEED_GEO_DEV', defaultValue: PARAM_DEFAULTS.SEED_GEO_DEV,
+                     description: 'Dev reseed also loads the pack\'s geography. Off until dev\'s geo ids are migrated to ETH-OAN\'s')
     }
 
     environment {
@@ -479,9 +487,11 @@ EOF
                         # publishInitial/autoPublish=false; only this one-off Job
                         # turns them on, so dev shows a change as soon as it lands
                         # (AUTO_PUBLISH_DEV=false leaves drafts to approve instead).
+                        # SEED_GEO_DEV=false loads code lists and domains only.
                         "$helm" template "$rel" "$TOOLS/deploy/$chart_name-$chart_version.tgz" -n "$ns" \
                             -f "$TOOLS/deploy/values.yaml" \
                             --set "master-data.geoSeed.enabled=true" \
+                            --set "master-data.geoSeed.load.geo=$SEED_GEO_DEV" \
                             --set "master-data.geoSeed.publishInitial=true" \
                             --set "master-data.geoSeed.autoPublish=$AUTO_PUBLISH_DEV" \
                             --set "master-data.geoSeed.image.repository=$ECR_IMAGE" \
