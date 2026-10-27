@@ -1,7 +1,0 @@
-version: 2
-updates:
-  # Keeps actions/checkout, actions/setup-python etc. current.
-  - package-ecosystem: github-actions
-    directory: /
-    schedule:
-      interval: monthly
