@@ -20,6 +20,9 @@
 //      commons-services release with only the image changed, and run as a
 //      one-off Job. The Helm release itself is not upgraded — see
 //      scripts/ci/seed_job_from_release.py for why.  (develop, RESEED_DEV)
+//      FRESH_GEO_DEV (one-off, confirmed by CONFIRM_FRESH_GEO) empties dev's
+//      geography first so the pack is published as a first load; see
+//      scripts/ci/reset_dev_geography.py.
 //
 // Agent: vpn-agent2 (as the registry pipelines), which has docker, aws and
 // kubectl, plus python3 with venv. Helm is downloaded at a pinned version and
@@ -54,8 +57,18 @@ def PARAM_DEFAULTS = [
     // level-region..., units woreda-ET010101...), not from ETH-OAN (l0..l4,
     // P-codes). Loading the pack's geography over it fails on the duplicate
     // level mnemonic, so the dev reseed loads code lists only until dev's
-    // registries are migrated with packs/ETH-OAN/migration/id_map.csv.
+    // geography is replaced (FRESH_GEO_DEV) and its registries re-keyed with
+    // packs/ETH-OAN/migration/id_map.csv or re-seeded.
     SEED_GEO_DEV    : false,
+    // The pack's sample people (samples/), which registry seeds read from
+    // Master Data (g2p_sample_individuals) instead of their own demo files.
+    SEED_SAMPLES_DEV: true,
+    // One-off: empty dev's geography (every version and the legacy geo tables;
+    // code lists stay) so the pack is published as a first load with its
+    // boundaries. Needs SEED_GEO_DEV and CONFIRM_FRESH_GEO=fresh-geo-dev.
+    // scripts/ci/reset_dev_geography.py says exactly what it removes.
+    FRESH_GEO_DEV   : false,
+    CONFIRM_FRESH_GEO: '',
 ]
 
 pipeline {
@@ -89,7 +102,13 @@ pipeline {
         booleanParam(name: 'AUTO_PUBLISH_DEV', defaultValue: PARAM_DEFAULTS.AUTO_PUBLISH_DEV,
                      description: 'Dev reseed publishes changed lists and geography at once instead of leaving drafts')
         booleanParam(name: 'SEED_GEO_DEV', defaultValue: PARAM_DEFAULTS.SEED_GEO_DEV,
-                     description: 'Dev reseed also loads the pack\'s geography. Off until dev\'s geo ids are migrated to ETH-OAN\'s')
+                     description: 'Dev reseed also loads the pack\'s geography. Off until dev\'s geography is replaced (FRESH_GEO_DEV) and its registries re-keyed')
+        booleanParam(name: 'SEED_SAMPLES_DEV', defaultValue: PARAM_DEFAULTS.SEED_SAMPLES_DEV,
+                     description: 'Dev reseed also loads the pack\'s sample people into Master Data (registry seeds read them from there)')
+        booleanParam(name: 'FRESH_GEO_DEV', defaultValue: PARAM_DEFAULTS.FRESH_GEO_DEV,
+                     description: 'DEVELOPMENT ONLY, one-off: empty dev\'s geography (all versions + legacy geo tables; code lists stay) before the load, so the pack is published as a first load. Needs SEED_GEO_DEV and CONFIRM_FRESH_GEO. Registry records keep their old geo ids: re-key or re-seed them afterwards')
+        string(name: 'CONFIRM_FRESH_GEO', defaultValue: PARAM_DEFAULTS.CONFIRM_FRESH_GEO,
+               description: 'Type fresh-geo-dev to allow FRESH_GEO_DEV')
     }
 
     environment {
@@ -488,17 +507,28 @@ EOF
                         # turns them on, so dev shows a change as soon as it lands
                         # (AUTO_PUBLISH_DEV=false leaves drafts to approve instead).
                         # SEED_GEO_DEV=false loads code lists and domains only.
+                        # FRESH_GEO_DEV empties the geography first (init container
+                        # from scripts/ci/reset_dev_geography.py): a one-off that
+                        # takes SEED_GEO_DEV and the typed confirmation.
+                        fresh=()
+                        if [ "$FRESH_GEO_DEV" = "true" ]; then
+                            [ "$SEED_GEO_DEV" = "true" ] || { echo "FAIL FRESH_GEO_DEV needs SEED_GEO_DEV=true (nothing would replace the removed geography)" | tee -a "$report"; exit 1; }
+                            [ "$CONFIRM_FRESH_GEO" = "fresh-geo-dev" ] || { echo "FAIL FRESH_GEO_DEV needs CONFIRM_FRESH_GEO=fresh-geo-dev" | tee -a "$report"; exit 1; }
+                            fresh=(--fresh-geo)
+                            echo "FRESH GEOGRAPHY: dev's geography versions and legacy geo tables are removed before the load" | tee -a "$report"
+                        fi
                         "$helm" template "$rel" "$TOOLS/deploy/$chart_name-$chart_version.tgz" -n "$ns" \
                             -f "$TOOLS/deploy/values.yaml" \
                             --set "master-data.geoSeed.enabled=true" \
                             --set "master-data.geoSeed.load.geo=$SEED_GEO_DEV" \
+                            --set "master-data.geoSeed.load.samples=$SEED_SAMPLES_DEV" \
                             --set "master-data.geoSeed.publishInitial=true" \
                             --set "master-data.geoSeed.autoPublish=$AUTO_PUBLISH_DEV" \
                             --set "master-data.geoSeed.image.repository=$ECR_IMAGE" \
                             --set "master-data.geoSeed.image.tag=$IMAGE_TAG@$digest" \
                             --show-only charts/master-data/templates/geo-seed-job.yaml \
                           | "$TOOLS/venv/bin/python" scripts/ci/seed_job_from_release.py \
-                                --suffix "ci-$BUILD_NUMBER" --pull-secret "$DEV_PULL_SECRET" \
+                                --suffix "ci-$BUILD_NUMBER" --pull-secret "$DEV_PULL_SECRET" "${fresh[@]}" \
                                 --label "openg2p-data/commit=${DATA_SHA:0:12}" --label "openg2p-data/build=$BUILD_NUMBER" \
                           > "$DIST/reports/geo-seed-job.yaml"
 
