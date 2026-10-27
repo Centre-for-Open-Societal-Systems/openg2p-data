@@ -1,6 +1,16 @@
-# Audit Log: Seed Variety Shortenings and Deduplications
+# Audit Log: Seed Variety Quality Transformations & Deduplication
 
-## 1. Shortened Varieties (from ellipsis truncation in archived source)
+## 1. Verified Official Citations for Resolved Pairs
+
+- **Deka (ETBW 6583)**: Released in 2018 by Kulumsa Agricultural Research Center (KARC / EIAR). Source: Ministry of Agriculture (MoA) Ethiopia, *Plant Variety Release, Protection and Seed Quality Control Directorate - Crop Variety Register*, Issue No. 21 (June 2018), Bread Wheat (*Triticum aestivum L.*).
+- **Awash-1**: 1990 release by Melkassa Agricultural Research Center (MARC / EIAR), officially registered white pea bean (*Phaseolus vulgaris L.*) in MoA Crop Variety Register.
+- **Awash Mitra**: 2017 release by Melkassa ARC / EIAR, canning/navy bean variety officially registered in MoA Crop Variety Register Issue No. 20 (June 2017).
+
+## 2. Decision on Maize Breeding Parent Lines
+
+In accordance with the OpenG2P MDS / Agri-Stack data standards, `SEED_VARIETY` represents farmer-plantable cultivars. Parental inbred and single-cross lines (e.g., `142-1-e`, `A7033/F-7215`, `CML395`, `BKL001-BKL004`, `SC22`, `124-b(109)`) are used exclusively by certified seed producers for hybrid multiplication. These 14 entries (rows 776, 793..804, 897) have been omitted from `SEED_VARIETY` and reserved for producer catalogs.
+
+## 3. Shortened Varieties (from ellipsis truncation in archived source)
 
 | Row ID | Source Name | Resulting Code | Resulting Display |
 |---|---|---|---|
@@ -12,13 +22,13 @@
 | 28 | `Field pea - Hasset (ሀሴት) …` | `VAR_FIELD_PEA_HASSET` | Field pea – Hasset |
 | 29 | `Field pea - Mieso (ሜኤሶ) …` | `VAR_FIELD_PEA_MIESO` | Field pea – Mieso |
 | 30 | `Fiel pea - Etetu (እቴቱ) …` | `VAR_FIELD_PEA_ETETU` | Field pea – Etetu |
-| 31 | `Chickpea - (Girar) ግራር ICCMABCA …` | `VAR_CHICKPEA_ICCMABCA` | Chickpea – (Girar) ICCMABCA |
+| 31 | `Chickpea - (Girar) ግራር ICCMABCA …` | `VAR_CHICKPEA_GIRAR` | Chickpea – Girar (ICCMABCA) |
 | 49 | `Sesame - Hachalu (EW006 x …` | `VAR_SESAME_HACHALU` | Sesame – Hachalu |
 | 60 | `Sweet/Hot Pepper - Oda Gibe …` | `VAR_PEPPER_ODA_GIBE` | Sweet/Hot Pepper – Oda Gibe |
 | 81 | `Bread wheat - Adola 1 …` | `VAR_BREAD_WHEAT_ADOLA_1` | Bread Wheat – Adola 1 |
 | 83 | `Bread Wheat - Netsanet (ነፃነት) …` | `VAR_BREAD_WHEAT_NETSANET` | Bread Wheat – Netsanet |
 | 86 | `Bread Wheat - Adet-1 (BAJ …` | `VAR_BREAD_WHEAT_ADET_1` | Bread Wheat – Adet-1 |
-| 87 | `Brachiaria brizantha cv.Xaraes - Xaraes …` | `VAR_BRACHIARIA_XARAES` | Brachiaria brizantha cv. Xaraes – Xaraes |
+| 87 | `Brachiaria brizantha cv.Xaraes - Xaraes …` | `VAR_BRACHIARIA_XARAES` | Brachiaria – Xaraes |
 | 93 | `Tef - Washera (353*Key muri) …` | `VAR_TEFF_WASHERA` | Tef – Washera (353*Key muri) |
 | 95 | `Tef - Mena (DZ-01-354 X …` | `VAR_TEFF_MENA` | Tef – Mena |
 | 96 | `Tef - Ebba (Kay muri …` | `VAR_TEFF_EBBA` | Tef – Ebba |
@@ -30,9 +40,9 @@
 | 103 | `Triticale - Kombolcha (Acc. 2012 …` | `VAR_TRITICALE_KOMBOLCHA` | Triticale – Kombolcha |
 | 108 | `Maize - CP.201 (IQT5024 X …` | `VAR_MAIZE_CP_201` | Maize – CP.201 |
 | 109 | `Maize - CP.838 (SKQPP422 X …` | `VAR_MAIZE_CP_838` | Maize – CP.838 |
-| 110 | `Sorghum - ጥላሁን (Tilahun) 14MWLSDT7114 …` | `VAR_SORGHUM_14MWLSDT7114` | Sorghum – (Tilahun) 14MWLSDT7114 |
+| 110 | `Sorghum - ጥላሁን (Tilahun) 14MWLSDT7114 …` | `VAR_SORGHUM_TILAHUN` | Sorghum – Tilahun (14MWLSDT7114) |
 | 116 | `Sorghum - Fadis 01 (M-36121 …` | `VAR_SORGHUM_FADIS_01` | Sorghum – Fadis 01 |
-| 117 | `Finger Millet - : Kumsa …` | `VAR_FINGER_MILLET_KUMSA` | Finger Millet – : Kumsa |
+| 117 | `Finger Millet - : Kumsa …` | `VAR_FINGER_MILLET_KUMSA` | Finger Millet – Kumsa |
 | 118 | `Finger Millet - Jabi (ጃቢ) …` | `VAR_FINGER_MILLET_JABI` | Finger Millet – Jabi |
 | 120 | `Malt Barley - Henrike (Pedigree: …` | `VAR_MALT_BARLEY_HENRIKE` | Malt Barley – Henrike |
 | 121 | `Malt Barley - Waro (LIBRA …` | `VAR_MALT_BARLEY_WARO` | Malt Barley – Waro |
@@ -60,6 +70,7 @@
 | 196 | `Maize - Afran Qalloo (HrU …` | `VAR_MAIZE_AFRAN_QALLOO` | Maize – Afran Qalloo |
 | 200 | `Bread Wheat - Hibist (ETBW …` | `VAR_BREAD_WHEAT_HIBIST` | Bread Wheat – Hibist |
 | 203 | `Bread Wheat- Sinja (Dure/Madda Walabu …` | `VAR_BREAD_WHEAT_SINJA` | Bread Wheat – Sinja |
+| 206 | `Sorghum - አርጊቲ (2005M15064) (WSV387 …` | `VAR_SORGHUM_ARGITI` | Sorghum – Argiti (2005M15064) |
 | 207 | `Sorghum - Alene (WSV-387 x …` | `VAR_SORGHUM_ALENE` | Sorghum – Alene |
 | 209 | `Food Barley - DEBARK-1 (Acc …` | `VAR_BARLEY_DEBARK_1` | Food Barley – DEBARK-1 |
 | 215 | `Faba Bean - Alloshe (አሎሼ) …` | `VAR_FABA_BEAN_ALLOSHE` | Faba bean – Alloshe |
@@ -87,8 +98,8 @@
 | 290 | `Bread Wheat - WANE (ETBW …` | `VAR_BREAD_WHEAT_WANE` | Bread Wheat – WANE |
 | 293 | `Bread Wheat - LEMU (ETBW …` | `VAR_BREAD_WHEAT_LEMU` | Bread Wheat – LEMU |
 | 301 | `Low land rice - Fogera2 …` | `VAR_RICE_FOGERA2` | Rice – Fogera2 |
-| 328 | `Finger millet - መባ (GBK- …` | `VAR_FINGER_MILLET_GBK` | Finger Millet – GBK |
-| 331 | `Finger Millet - አክሱም (ACC …` | `VAR_FINGER_MILLET_ACC` | Finger Millet – ACC |
+| 328 | `Finger millet - መባ (GBK- …` | `VAR_FINGER_MILLET_MEBA` | Finger Millet – Meba |
+| 331 | `Finger Millet - አክሱም (ACC …` | `VAR_FINGER_MILLET_AXUM` | Finger Millet – Axum |
 | 332 | `Finger Millet - Diga-1 (ACC. …` | `VAR_FINGER_MILLET_DIGA_1` | Finger Millet – Diga-1 |
 | 333 | `Finger Millet - Urji (Acc. …` | `VAR_FINGER_MILLET_URJI` | Finger Millet – Urji |
 | 340 | `Faba Bean - Mosisaa (: …` | `VAR_FABA_BEAN_MOSISAA` | Faba bean – Mosisaa |
@@ -97,8 +108,8 @@
 | 359 | `Linseed - Furtu (CI-1525 X …` | `VAR_LINSEED_FURTU` | Linseed – Furtu |
 | 362 | `Faba bean - Numan (ኑማን) …` | `VAR_FABA_BEAN_NUMAN` | Faba bean – Numan |
 | 364 | `Chickpea - Dimtu ( DZ-2012 …` | `VAR_CHICKPEA_DIMTU` | Chickpea – Dimtu |
-| 367 | `Chickpea - (Hora) DZ-2012 CK-001/FLIP …` | `VAR_CHICKPEA_DZ_2012_CK_001_FLIP` | Chickpea – (Hora) DZ-2012 CK-001/FLIP |
-| 370 | `Chickpea - (Dhera) DZ-2012 CK-009/FLIP …` | `VAR_CHICKPEA_DZ_2012_CK_009_FLIP` | Chickpea – (Dhera) DZ-2012 CK-009/FLIP |
+| 367 | `Chickpea - (Hora) DZ-2012 CK-001/FLIP …` | `VAR_CHICKPEA_HORA` | Chickpea – Hora (DZ-2012 CK-001/FLIP) |
+| 370 | `Chickpea - (Dhera) DZ-2012 CK-009/FLIP …` | `VAR_CHICKPEA_DHERA` | Chickpea – Dhera (DZ-2012 CK-009/FLIP) |
 | 371 | `Faba bean - Walki (EH96049-2) …` | `VAR_FABA_BEAN_WALKI` | Faba bean – Walki (EH96049-2) |
 | 380 | `Linseed - Kuma/ ኩማ (R734D …` | `VAR_LINSEED_KUMA` | Linseed – Kuma |
 | 394 | `Bread Wheat - Sanate (14F/HAR …` | `VAR_BREAD_WHEAT_SANATE` | Bread Wheat – Sanate |
@@ -125,14 +136,14 @@
 | 512 | `Durem Wheat - Bakalcha (980SN …` | `VAR_DURUM_WHEAT_BAKALCHA` | Durum Wheat – Bakalcha |
 | 513 | `Durem Wheat - EJERSA LABUD/NIGERIS …` | `VAR_DURUM_WHEAT_EJERSA_LABUD_NIGERIS` | Durum Wheat – EJERSA LABUD/NIGERIS |
 | 514 | `Durem Wheat - OBSA (ALTAR …` | `VAR_DURUM_WHEAT_OBSA` | Durum Wheat – OBSA |
-| 529 | `Bread Wheat - Mekelle- 03 …` | `VAR_BREAD_WHEAT_MEKELLE_03` | Bread Wheat – Mekelle- 03 |
+| 529 | `Bread Wheat - Mekelle- 03 …` | `VAR_BREAD_WHEAT_MEKELLE_03` | Bread Wheat – Mekelle-03 |
 | 530 | `Durum Wheat - Mukiye (STJ3/BCR …` | `VAR_DURUM_WHEAT_MUKIYE` | Durum Wheat – Mukiye |
 | 531 | `Durum Wheat - Mangudo (ICAJIHAN …` | `VAR_DURUM_WHEAT_MANGUDO` | Durum Wheat – Mangudo |
 | 546 | `Maize - BH-541 (NSCM-41-188/32/ X …` | `VAR_MAIZE_BH_541` | Maize – BH-541 |
 | 548 | `Maize - BH-QP-542 (CML-144XCML-159 X …` | `VAR_MAIZE_BH_QP_542` | Maize – BH-QP-542 |
 | 553 | `Maize - Beles SC 713 …` | `VAR_MAIZE_BELES_SC_713` | Maize – Beles SC 713 |
 | 554 | `Maize - Bereda SC 715 …` | `VAR_MAIZE_BEREDA_SC_715` | Maize – Bereda SC 715 |
-| 556 | `Maize - BH -543 (SC-22 …` | `VAR_MAIZE_BH_543` | Maize – BH -543 |
+| 556 | `Maize - BH -543 (SC-22 …` | `VAR_MAIZE_BH_543` | Maize – BH-543 |
 | 558 | `Maize - Hora (Ambo 2 …` | `VAR_MAIZE_HORA` | Maize – Hora |
 | 564 | `Food barley - Fetina (SXH, …` | `VAR_BARLEY_FETINA` | Food Barley – Fetina |
 | 568 | `Maize - Bako-1 SC-22XFH-625-263 XCML …` | `VAR_MAIZE_BAKO_1_SC_22XFH_625_263_XCML` | Maize – Bako-1 SC-22XFH-625-263 XCML |
@@ -157,34 +168,28 @@
 | 680 | `Linseed - Berene (PGRC/E 01 …` | `VAR_LINSEED_BERENE` | Linseed – Berene |
 | 701 | `Common bean - Hora (ሆራ) …` | `VAR_COMMON_BEAN_HORA` | Common/Haricot/ bean – Hora |
 | 702 | `Common bean/Haricot bean - DAB-413 …` | `VAR_COMMON_BEAN_DAB_413` | Common/Haricot/ bean – DAB-413 |
-| 704 | `Common bean/Haricot bean- (Hundaf) (ሁንዳፍ) …` | `VAR_COMMON_BEAN_HARICOT_BEAN` | Common/Haricot/ bean – Haricot bean- (Hundaf) |
+| 704 | `Common bean/Haricot bean- (Hundaf) (ሁንዳፍ) …` | `VAR_COMMON_BEAN_HUNDAF` | Common/Haricot/ bean – Hundaf |
 | 711 | `Bread Wheat - Mitike (HAR …` | `VAR_BREAD_WHEAT_MITIKE` | Bread Wheat – Mitike |
 | 743 | `Common bean - Hirna (ECAB …` | `VAR_COMMON_BEAN_HIRNA` | Common/Haricot/ bean – Hirna |
 | 750 | `Emmer wheat/Aja - Sinana-01 (Acc. …` | `VAR_EMMER_WHEAT_SINANA_01` | Emmer wheat (Aja) – Sinana-01 |
+| 758 | `Common bean/Haricot bean - (Keyyo) …` | `VAR_COMMON_BEAN_KEYYO` | Common/Haricot/ bean – Keyyo |
 | 760 | `Common bean/Haricot bean -- Hundane …` | `VAR_COMMON_BEAN_HUNDANE` | Common/Haricot/ bean – Hundane |
 | 763 | `Common bean/Haricot bean - Awash …` | `VAR_COMMON_BEAN_AWASH_1` | Common/Haricot/ bean – Awash-1 |
 | 764 | `Common bean - Melka Awash-98 …` | `VAR_COMMON_BEAN_MELKA_AWASH_98` | Common/Haricot/ bean – Melka Awash-98 |
 | 765 | `Common bean - Nazareth-2 (TA04JI) …` | `VAR_COMMON_BEAN_NAZARETH_2` | Common/Haricot/ bean – Nazareth-2 (TA04JI) |
 | 767 | `Common bean - Red Wolaita- …` | `VAR_COMMON_BEAN_RED_WOLAITA` | Common/Haricot/ bean – Red Wolaita |
 | 768 | `Common bean - Atndaba /A-262/- …` | `VAR_COMMON_BEAN_ATNDABA_A_262` | Common/Haricot/ bean – Atndaba /A-262 |
-| 769 | `Common bean - Gofta- Food …` | `VAR_COMMON_BEAN_GOFTA_FOOD` | Common/Haricot/ bean – Gofta- Food |
-| 770 | `Common bean - Ayenew- Food …` | `VAR_COMMON_BEAN_AYENEW_FOOD` | Common/Haricot/ bean – Ayenew- Food |
+| 769 | `Common bean - Gofta- Food …` | `VAR_COMMON_BEAN_GOFTA` | Common/Haricot/ bean – Gofta |
+| 770 | `Common bean - Ayenew- Food …` | `VAR_COMMON_BEAN_AYENEW` | Common/Haricot/ bean – Ayenew |
 | 771 | `Common bean - Melke/Areka 97 …` | `VAR_COMMON_BEAN_MELKE_AREKA_97` | Common/Haricot/ bean – Melke/Areka 97 |
 | 772 | `Common bean - Beshbesh/Melk 97 …` | `VAR_COMMON_BEAN_BESHBESH_MELK_97` | Common/Haricot/ bean – Beshbesh/Melk 97 |
-| 773 | `Common bean - Gobe Rasha-1(ICA-15541) …` | `VAR_COMMON_BEAN_GOBE_RASHA_1` | Common/Haricot/ bean – Gobe Rasha-1(ICA-15541) |
+| 773 | `Common bean - Gobe Rasha-1(ICA-15541) …` | `VAR_COMMON_BEAN_GOBE_RASHA_1` | Common/Haricot/ bean – Gobe Rasha-1 (ICA-15541) |
 | 777 | `CML 395 X CML 202 …` | `VAR_MAIZE_CML_395_X_CML_202` | Maize – CML 395 X CML 202 |
-| 793 | `A7033/ F-7215 (Female for BH …` | `VAR_MAIZE_A7033_F_7215` | Maize – A7033/ F-7215 |
-| 795 | `A7033/ F7215 (Female parent for …` | `VAR_MAIZE_A7033_F7215` | Maize – A7033/ F7215 |
-| 798 | `CML395 (Female parent for Basic …` | `VAR_MAIZE_CML395` | Maize – CML395 |
-| 799 | `CML202 (Male parent for BH543 …` | `VAR_MAIZE_CML202` | Maize – CML202 |
-| 802 | `SC22 (Female parent for BH540 …` | `VAR_MAIZE_SC22` | Maize – SC22 |
-| 803 | `124-b(109) (Male parent for Basic …` | `VAR_MAIZE_124_B` | Maize – 124-b(109) (Male parent for Basic) |
-| 804 | `BKL002 (Female parent for BH547 …` | `VAR_MAIZE_BKL002` | Maize – BKL002 |
-| 880 | `faba bean - dagm (Grarjarso …` | `VAR_FABA_BEAN_DAGM` | Faba bean – dagm |
-| 915 | `Sweet potato (Ipomoea batatas)-NASPOT-12 (Orange …` | `VAR_SWEET_POTATO_SWEET_POTATO_NASPOT_12` | Sweet potato – Sweet potato (Ipomoea batatas)-NASPOT-12 (Orange) |
+| 880 | `faba bean - dagm (Grarjarso …` | `VAR_FABA_BEAN_DAGM` | Faba bean – Dagm |
+| 915 | `Sweet potato (Ipomoea batatas)-NASPOT-12 (Orange …` | `VAR_SWEET_POTATO_NASPOT_12` | Sweet potato – NASPOT-12 |
 | 918 | `Tomato -Jorgie-1 (Wonhong No.3) Cherry …` | `VAR_TOMATO_JORGIE_1_CHERRY` | Tomato – Jorgie-1 (Wonhong No.3) Cherry |
 
-## 2. Merged Duplicate Rows
+## 4. Merged Duplicate Rows
 
 | Row ID | Source Name | Merged Into Code |
 |---|---|---|
@@ -193,7 +198,9 @@
 | 249 | `Bread Wheat - Fentale (MOONTIJ-3 …` | `VAR_BREAD_WHEAT_FENTALE` |
 | 325 | `Maize - CPS.6` | `VAR_MAIZE_CPS_6` |
 | 326 | `Maize - CPS.10` | `VAR_MAIZE_CPS_10` |
+| 402 | `Maize -Melkasa-1Q` | `VAR_MAIZE_MELKASA_1Q` |
 | 403 | `Maize - Mh140 (Melkasa Hybrid …` | `VAR_MAIZE_MH140` |
+| 405 | `Sorghum - PAC 537` | `VAR_SORGHUM_PAC_537` |
 | 527 | `Bread Wheat - Ogolcho (ETBW5520)` | `VAR_BREAD_WHEAT_OGOLCHO` |
 | 726 | `Bread Wheat-Guna (HAR-2029)` | `VAR_BREAD_WHEAT_GUNA` |
 | 727 | `Bread Wheat-Dure (HAR-1008)` | `VAR_BREAD_WHEAT_DURE` |
@@ -208,18 +215,22 @@
 | 738 | `Bread Wheat-Warkaye (HAR-3820)` | `VAR_BREAD_WHEAT_WARKAYE` |
 | 739 | `Bread Wheat-Jiru (HAR-2896)` | `VAR_BREAD_WHEAT_JIRU` |
 | 742 | `Common bean/Haricot bean - Fedis …` | `VAR_COMMON_BEAN_FEDIS` |
-| 794 | `142-1-e (Male parent for BH …` | `VAR_MAIZE_142_1_E` |
+| 826 | `mungbean- Arkebe` | `VAR_MUNG_BEAN_ARKEBE` |
 | 831 | `Gishama (PR-143-(26))` | `VAR_SOYBEAN_GISHAMA` |
 | 832 | `Malt barley- HB1963` | `VAR_MALT_BARLEY_HB1963` |
 | 833 | `Malt barley- HB1964` | `VAR_MALT_BARLEY_HB1964` |
+| 852 | `Haro (FMC-33) Landrace` | `VAR_FINGER_MILLET_HARO` |
 | 876 | `Tef- koye (DZ-01-1285)` | `VAR_TEFF_KOYE` |
 | 877 | `Tef- gerado (DZ- 01-1281)` | `VAR_TEFF_GERADO` |
+| 888 | `soyabean- ETHIO- YUGOSLAVIA` | `VAR_SOYBEAN_ETHIO_YUGOSLAVIA` |
 | 890 | `haricot bean- melka awash -98` | `VAR_COMMON_BEAN_MELKA_AWASH_98` |
 | 896 | `lentil- Ada` | `VAR_LENTIL_ADA` |
-| 903 | `food barley-GNT1808 (Fetenech)` | `VAR_BARLEY_GNT1808` |
 | 908 | `sesame-Sifan (Accession HSc-016#13)` | `VAR_SESAME_SIFAN` |
 
-## 3. Omitted Nameless & Mid-Cut Rows
+## 5. Omitted Rows Summary
 
-- Nameless rows (38): [35, 36, 37, 38, 39, 132, 133, 134, 136, 137, 138, 139, 159, 222, 223, 224, 225, 226, 228, 229, 281, 282, 291, 292, 353, 354, 355, 418, 425, 426, 665, 666, 667, 668, 681, 682, 683, 761]
-- Mid-cut rows (12): [46, 48, 70, 84, 119, 423, 480, 511, 561, 762, 766, 897]
+- **Nameless rows (38)**: `[35, 36, 37, 38, 39, 132, 133, 134, 136, 137, 138, 139, 159, 222, 223, 224, 225, 226, 228, 229, 281, 282, 291, 292, 353, 354, 355, 418, 425, 426, 665, 666, 667, 668, 681, 682, 683, 761]`
+- **Mid-cut unresolvable rows (11)**: `[46, 48, 70, 84, 119, 423, 480, 511, 561, 762, 766]`
+- **Crop-only rows (8)**: `[92, 775, 779, 805, 807, 808, 868, 902]` (Sorghum, Onion, Tomato, Faba bean, Pigeon pea, Food barley, Cacao, Groundnut)
+- **Maize parental lines (14)**: `[776, 793, 794, 795, 796, 797, 798, 799, 800, 801, 802, 803, 804, 897]`
+- **Base pack duplicates (7)**: `[321, 478, 479, 524, 580, 780, 781]` (including `Danda'a` and `Kakaba`)

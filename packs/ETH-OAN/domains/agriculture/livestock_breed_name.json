@@ -200,8 +200,8 @@
       }
     },
     {
-      "value_id": "BREED_CATTLE_JEM_JEM_ZEBU",
-      "value_code": "BREED_CATTLE_JEM_JEM_ZEBU",
+      "value_id": "BREED_CATTLE_JEM_ZEBU",
+      "value_code": "BREED_CATTLE_JEM_ZEBU",
       "value_display": "Jem-Jem Zebu",
       "sort_order": 17,
       "display_i18n": {},
