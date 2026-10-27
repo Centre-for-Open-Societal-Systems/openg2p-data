@@ -30,6 +30,19 @@
 //   commons-dev-kubeconfig    secret file   kubeconfig for the dev `commons`
 //                                           namespace — ASSUMPTION, see DEV_* below
 
+// Parameter defaults. On a job's first build Jenkins has not registered the
+// parameters yet, so params.* are null and none of them is in the environment;
+// 'Checkout' exports each one from here instead. Stages read env.*, not params.*.
+def PARAM_DEFAULTS = [
+    CHART_NAME   : 'openg2p-commons-services',
+    CHART_VERSION: '',
+    HELM_REPO_URL: 'https://raw.githubusercontent.com/Centre-for-Open-Societal-Systems/oan-helm/main/repository',
+    MDS_REF      : 'develop',
+    STRICT       : false,
+    PUSH_IMAGE   : false,
+    DEPLOY_DEV   : true,
+]
+
 pipeline {
     agent { label 'vpn-agent2' }
 
@@ -42,20 +55,19 @@ pipeline {
     }
 
     parameters {
-        string(name: 'CHART_NAME', defaultValue: 'openg2p-commons-services',
+        string(name: 'CHART_NAME', defaultValue: PARAM_DEFAULTS.CHART_NAME,
                description: 'oan-helm chart that carries master-data.geoSeed')
-        string(name: 'CHART_VERSION', defaultValue: '',
+        string(name: 'CHART_VERSION', defaultValue: PARAM_DEFAULTS.CHART_VERSION,
                description: 'Chart version to check against; empty = latest published (including -dev prereleases)')
-        string(name: 'HELM_REPO_URL',
-               defaultValue: 'https://raw.githubusercontent.com/Centre-for-Open-Societal-Systems/oan-helm/main/repository',
+        string(name: 'HELM_REPO_URL', defaultValue: PARAM_DEFAULTS.HELM_REPO_URL,
                description: 'oan-helm chart repository')
-        string(name: 'MDS_REF', defaultValue: 'develop',
+        string(name: 'MDS_REF', defaultValue: PARAM_DEFAULTS.MDS_REF,
                description: 'Branch or tag of OpenG2P/master-data-service whose docker/db-seed is built')
-        booleanParam(name: 'STRICT', defaultValue: false,
+        booleanParam(name: 'STRICT', defaultValue: PARAM_DEFAULTS.STRICT,
                      description: 'Treat validate_pack.py warnings as failures')
-        booleanParam(name: 'PUSH_IMAGE', defaultValue: false,
+        booleanParam(name: 'PUSH_IMAGE', defaultValue: PARAM_DEFAULTS.PUSH_IMAGE,
                      description: 'Build and push the image from a branch other than develop (it never deploys)')
-        booleanParam(name: 'DEPLOY_DEV', defaultValue: true,
+        booleanParam(name: 'DEPLOY_DEV', defaultValue: PARAM_DEFAULTS.DEPLOY_DEV,
                      description: 'On develop: reseed dev from the pushed image')
     }
 
@@ -95,6 +107,10 @@ pipeline {
             steps {
                 checkout scm
                 script {
+                    for (name in PARAM_DEFAULTS.keySet()) {
+                        def value = params[name] != null ? params[name] : PARAM_DEFAULTS[name]
+                        env."${name}" = "${value}"
+                    }
                     env.DATA_SHA = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
                     def ref = env.TAG_NAME ?: "${env.BRANCH_NAME ?: 'build'}-${env.BUILD_NUMBER}-${env.DATA_SHA.take(8)}"
                     env.DATA_VERSION = ref.replaceAll('[^A-Za-z0-9._-]', '-')
@@ -256,15 +272,15 @@ EOF
 
         stage('Build db-seed image') {
             when {
-                anyOf { branch 'develop'; buildingTag(); expression { params.PUSH_IMAGE } }
+                anyOf { branch 'develop'; buildingTag(); expression { env.PUSH_IMAGE == 'true' } }
             }
             steps {
                 script {
-                    sh "rm -rf .build/master-data-service && git clone --quiet --depth 1 --branch '${params.MDS_REF}' ${MDS_REPO} .build/master-data-service"
+                    sh "rm -rf .build/master-data-service && git clone --quiet --depth 1 --branch '${env.MDS_REF}' ${MDS_REPO} .build/master-data-service"
                     env.MDS_SHA = sh(script: 'git -C .build/master-data-service rev-parse HEAD', returnStdout: true).trim()
                     env.IMAGE_TAG = "${env.DATA_SHA.take(12)}-mds-${env.MDS_SHA.take(8)}"
                     env.LOCAL_IMAGE = "openg2p-data-ci/master-data-db-seed:${env.IMAGE_TAG}"
-                    echo "master-data-service ${params.MDS_REF} @ ${env.MDS_SHA}; image tag ${env.IMAGE_TAG}"
+                    echo "master-data-service ${env.MDS_REF} @ ${env.MDS_SHA}; image tag ${env.IMAGE_TAG}"
                 }
                 sh '''#!/bin/bash
                     set -euo pipefail
@@ -300,7 +316,7 @@ EOF
 
         stage('Push to ECR') {
             when {
-                anyOf { branch 'develop'; buildingTag(); expression { params.PUSH_IMAGE } }
+                anyOf { branch 'develop'; buildingTag(); expression { env.PUSH_IMAGE == 'true' } }
             }
             steps {
                 withCredentials([
@@ -355,7 +371,7 @@ EOF
 
         stage('Deploy to dev') {
             when {
-                allOf { branch 'develop'; expression { params.DEPLOY_DEV } }
+                allOf { branch 'develop'; expression { env.DEPLOY_DEV == 'true' } }
             }
             steps {
                 withCredentials([file(credentialsId: "${DEV_KUBECONFIG_CRED_ID}", variable: 'KUBECONFIG')]) {
