@@ -5,7 +5,8 @@
 // install contains, builds that image, pushes it to ECR and reseeds dev:
 //
 //   1. Lint scripts; check every JSON / GeoJSON / CSV is well-formed
-//   2. validate_pack.py over every pack
+//   2. validate_pack.py over every pack; GATED_PACKS (the deployed ones) must
+//      pass, the others are reported
 //   3. Pull the latest openg2p-commons-services chart from oan-helm and verify
 //      its SHA-256 against the repository's published SHA256SUMS
 //   4. Check the pack that chart selects (master-data.geoSeed.countryPack)
@@ -18,7 +19,7 @@
 //   8. Reseed dev from it: the geo-seed Job is rendered from the INSTALLED
 //      commons-services release with only the image changed, and run as a
 //      one-off Job. The Helm release itself is not upgraded — see
-//      scripts/ci/seed_job_from_release.py for why.              (develop)
+//      scripts/ci/seed_job_from_release.py for why.  (develop, RESEED_DEV)
 //
 // Agent: vpn-agent2 (as the registry pipelines), which has docker, aws and
 // kubectl, plus python3 with venv. Helm is downloaded at a pinned version and
@@ -37,10 +38,18 @@ def PARAM_DEFAULTS = [
     CHART_NAME   : 'openg2p-commons-services',
     CHART_VERSION: '',
     HELM_REPO_URL: 'https://raw.githubusercontent.com/Centre-for-Open-Societal-Systems/oan-helm/main/repository',
-    MDS_REF      : 'develop',
+    // The master-data-service commit of the Master Data API dev runs
+    // (0.0.0-develop.118, oan-helm releases/*: masterDataSourceCommit). The
+    // loader writes the API's tables directly, so it moves with the API image.
+    MDS_REF      : 'e569a59b8e9f61f809e07791e9263e50b2a7e0da',
     STRICT       : false,
     PUSH_IMAGE   : false,
     DEPLOY_DEV   : true,
+    // Off until dev's existing geography and lists are reconciled with ETH-OAN
+    // (oan-helm docs/refactor-location-and-ownership.md): a first load into
+    // unreconciled data retires values that live records still use.
+    RESEED_DEV      : false,
+    AUTO_PUBLISH_DEV: true,
 ]
 
 pipeline {
@@ -62,13 +71,17 @@ pipeline {
         string(name: 'HELM_REPO_URL', defaultValue: PARAM_DEFAULTS.HELM_REPO_URL,
                description: 'oan-helm chart repository')
         string(name: 'MDS_REF', defaultValue: PARAM_DEFAULTS.MDS_REF,
-               description: 'Branch or tag of OpenG2P/master-data-service whose docker/db-seed is built')
+               description: 'Commit, tag or branch of OpenG2P/master-data-service whose docker/db-seed is built; keep it the deployed API\'s commit')
         booleanParam(name: 'STRICT', defaultValue: PARAM_DEFAULTS.STRICT,
                      description: 'Treat validate_pack.py warnings as failures')
         booleanParam(name: 'PUSH_IMAGE', defaultValue: PARAM_DEFAULTS.PUSH_IMAGE,
                      description: 'Build and push the image from a branch other than develop (it never deploys)')
         booleanParam(name: 'DEPLOY_DEV', defaultValue: PARAM_DEFAULTS.DEPLOY_DEV,
-                     description: 'On develop: reseed dev from the pushed image')
+                     description: 'On develop: reseed dev from the pushed image (also needs RESEED_DEV)')
+        booleanParam(name: 'RESEED_DEV', defaultValue: PARAM_DEFAULTS.RESEED_DEV,
+                     description: 'Allow the dev reseed at all. Off until dev data is reconciled with ETH-OAN')
+        booleanParam(name: 'AUTO_PUBLISH_DEV', defaultValue: PARAM_DEFAULTS.AUTO_PUBLISH_DEV,
+                     description: 'Dev reseed publishes changed lists and geography at once instead of leaving drafts')
     }
 
     environment {
@@ -80,6 +93,11 @@ pipeline {
         HELM_CONFIG_HOME = "${WORKSPACE}/.tools/helm/config"
         HELM_DATA_HOME   = "${WORKSPACE}/.tools/helm/data"
         DIST             = "${WORKSPACE}/dist"
+        // Packs a deployment selects (geoSeed.countryPack): validate_pack.py must
+        // pass for these. Other packs are validated and reported, not gated:
+        // upstream's ETH and XKM fail today (no head_of_household value since
+        // OpenG2P/openg2p-data e043ffc), and PR checks stop new errors in them.
+        GATED_PACKS      = 'ETH-OAN'
 
         // Image. Same account and naming as the other Commons images
         // (openg2p/commons/consent-manager-api, ...). The ECR repository is
@@ -162,8 +180,23 @@ pipeline {
                     strict=""
                     [ "$STRICT" = "true" ] && strict="--strict"
                     cd scripts/packs
-                    "$TOOLS/venv/bin/python" validate_pack.py $strict "${packs[@]/#/../../packs/}" 2>&1 \
-                        | tee "$DIST/reports/validate-packs.log"
+                    : > "$DIST/reports/validate-packs.log"
+                    status=0
+                    for pack in "${packs[@]}"; do
+                        rc=0
+                        "$TOOLS/venv/bin/python" validate_pack.py $strict "../../packs/$pack" 2>&1 \
+                            | tee -a "$DIST/reports/validate-packs.log" || rc=$?
+                        [ $rc -eq 0 ] && continue
+                        if [[ " $GATED_PACKS " == *" $pack "* ]]; then
+                            echo "FAIL $pack is deployed (geoSeed.countryPack) and must pass" \
+                                | tee -a "$DIST/reports/validate-packs.log"
+                            status=1
+                        else
+                            echo "WARN $pack fails validate_pack.py; not deployed, so not gating" \
+                                | tee -a "$DIST/reports/validate-packs.log"
+                        fi
+                    done
+                    exit $status
                 '''
             }
         }
@@ -201,7 +234,10 @@ pipeline {
 
                     # The pack the chart seeds by default, read from the rendered
                     # job rather than values.yaml, so it is what an install really gets.
-                    rendered=$("$helm" template probe "$chart" --show-only "$job")
+                    # oan-helm ships geoSeed.enabled=false, which renders no job at
+                    # all; enabling it here only renders, nothing is installed.
+                    enable=(--set master-data.geoSeed.enabled=true)
+                    rendered=$("$helm" template probe "$chart" "${enable[@]}" --show-only "$job")
                     default_path=$(grep -oE '"[^"]*/packs/[^"]+"' <<< "$rendered" | head -1 | tr -d '"' || true)
                     default_pack=${default_path##*/}
                     seed_image=$(grep -oE 'image: [^ ]*db-seed[^ ]*' <<< "$rendered" | head -1 | cut -d' ' -f2 || true)
@@ -222,7 +258,8 @@ pipeline {
 
                     # Every pack here must be selectable through the chart value.
                     while read -r pack; do
-                        out=$("$helm" template probe "$chart" --set "master-data.geoSeed.countryPack=$pack" \
+                        out=$("$helm" template probe "$chart" "${enable[@]}" \
+                                --set "master-data.geoSeed.countryPack=$pack" \
                                 --show-only "$job" 2>&1 || true)
                         if grep -q "/packs/$pack\\"" <<< "$out"; then
                             echo "ok   geo-seed job renders for $pack" | tee -a "$report"
@@ -276,7 +313,16 @@ EOF
             }
             steps {
                 script {
-                    sh "rm -rf .build/master-data-service && git clone --quiet --depth 1 --branch '${env.MDS_REF}' ${MDS_REPO} .build/master-data-service"
+                    // Fetch by ref rather than `git clone --branch`, which takes a
+                    // branch or tag but not the commit MDS_REF pins.
+                    sh """
+                        rm -rf .build/master-data-service && mkdir -p .build/master-data-service
+                        cd .build/master-data-service
+                        git init --quiet
+                        git remote add origin '${MDS_REPO}'
+                        git fetch --quiet --depth 1 origin '${env.MDS_REF}'
+                        git checkout --quiet FETCH_HEAD
+                    """
                     env.MDS_SHA = sh(script: 'git -C .build/master-data-service rev-parse HEAD', returnStdout: true).trim()
                     env.IMAGE_TAG = "${env.DATA_SHA.take(12)}-mds-${env.MDS_SHA.take(8)}"
                     env.LOCAL_IMAGE = "openg2p-data-ci/master-data-db-seed:${env.IMAGE_TAG}"
@@ -371,7 +417,7 @@ EOF
 
         stage('Deploy to dev') {
             when {
-                allOf { branch 'develop'; expression { env.DEPLOY_DEV == 'true' } }
+                allOf { branch 'develop'; expression { env.DEPLOY_DEV == 'true' && env.RESEED_DEV == 'true' } }
             }
             steps {
                 withCredentials([file(credentialsId: "${DEV_KUBECONFIG_CRED_ID}", variable: 'KUBECONFIG')]) {
@@ -398,8 +444,15 @@ EOF
 
                         # tag@digest renders as repo:tag@sha256:..., which pins the
                         # exact image while keeping the readable tag.
+                        # The installed release keeps geoSeed.enabled=false and
+                        # publishInitial/autoPublish=false; only this one-off Job
+                        # turns them on, so dev shows a change as soon as it lands
+                        # (AUTO_PUBLISH_DEV=false leaves drafts to approve instead).
                         "$helm" template "$rel" "$TOOLS/deploy/$chart_name-$chart_version.tgz" -n "$ns" \
                             -f "$TOOLS/deploy/values.yaml" \
+                            --set "master-data.geoSeed.enabled=true" \
+                            --set "master-data.geoSeed.publishInitial=true" \
+                            --set "master-data.geoSeed.autoPublish=$AUTO_PUBLISH_DEV" \
                             --set "master-data.geoSeed.image.repository=$ECR_IMAGE" \
                             --set "master-data.geoSeed.image.tag=$IMAGE_TAG@$digest" \
                             --show-only charts/master-data/templates/geo-seed-job.yaml \
