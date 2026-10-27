@@ -1,0 +1,37 @@
+{
+  "attribute_id": "LIVESTOCK_SEX",
+  "attribute_code": "LIVESTOCK_SEX",
+  "attribute_display": "Livestock sex",
+  "description": "Animal biological and reproductive sex classification. Source: National Livestock Data Standard for Ethiopia (MOA, 2024).",
+  "is_hierarchical": false,
+  "values": [
+    {
+      "value_id": "SEX_MALE",
+      "value_code": "SEX_MALE",
+      "value_display": "Male",
+      "sort_order": 1,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "SEX_FEMALE",
+      "value_code": "SEX_FEMALE",
+      "value_display": "Female",
+      "sort_order": 2,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "SEX_MALE_NEUTER",
+      "value_code": "SEX_MALE_NEUTER",
+      "value_display": "Castrated male",
+      "sort_order": 3,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "SEX_FEMALE_NEUTER",
+      "value_code": "SEX_FEMALE_NEUTER",
+      "value_display": "Female neuter",
+      "sort_order": 4,
+      "display_i18n": {}
+    }
+  ]
+}

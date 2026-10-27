@@ -1,0 +1,1050 @@
+{
+  "attribute_id": "LIVESTOCK_BREED_NAME",
+  "attribute_code": "LIVESTOCK_BREED_NAME",
+  "attribute_display": "Livestock breed name",
+  "description": "National livestock breeds of Ethiopia. Source: National Livestock Data Standard for Ethiopia (MOA, March 2024).",
+  "is_hierarchical": false,
+  "attribute_schema": {
+    "type": "object",
+    "properties": {
+      "species": {
+        "type": "string",
+        "x-list-ref": "LIVESTOCK_TYPE",
+        "title": "Species"
+      },
+      "breed_type": {
+        "type": "string",
+        "title": "Breed type"
+      }
+    },
+    "required": [
+      "species"
+    ],
+    "additionalProperties": false
+  },
+  "values": [
+    {
+      "value_id": "BREED_CATTLE_ABERGELE",
+      "value_code": "BREED_CATTLE_ABERGELE",
+      "value_display": "Abergele",
+      "sort_order": 1,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_ABIGAR",
+      "value_code": "BREED_CATTLE_ABIGAR",
+      "value_display": "Abigar",
+      "sort_order": 2,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_ADWA",
+      "value_code": "BREED_CATTLE_ADWA",
+      "value_display": "Adwa",
+      "sort_order": 3,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_AFAR",
+      "value_code": "BREED_CATTLE_AFAR",
+      "value_display": "Afar",
+      "sort_order": 4,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_AMBO",
+      "value_code": "BREED_CATTLE_AMBO",
+      "value_display": "Ambo",
+      "sort_order": 5,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_ARADO",
+      "value_code": "BREED_CATTLE_ARADO",
+      "value_display": "Arado",
+      "sort_order": 6,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_ARSI",
+      "value_code": "BREED_CATTLE_ARSI",
+      "value_display": "Arsi",
+      "sort_order": 7,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_BALE",
+      "value_code": "BREED_CATTLE_BALE",
+      "value_display": "Bale",
+      "sort_order": 8,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_BEGAIT",
+      "value_code": "BREED_CATTLE_BEGAIT",
+      "value_display": "Begait",
+      "sort_order": 9,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_BORAN",
+      "value_code": "BREED_CATTLE_BORAN",
+      "value_display": "Boran",
+      "sort_order": 10,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_FOGERA",
+      "value_code": "BREED_CATTLE_FOGERA",
+      "value_display": "Fogera",
+      "sort_order": 11,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_GOFFA",
+      "value_code": "BREED_CATTLE_GOFFA",
+      "value_display": "Goffa",
+      "sort_order": 12,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_GURAGHE",
+      "value_code": "BREED_CATTLE_GURAGHE",
+      "value_display": "Guraghe",
+      "sort_order": 13,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_HAMMER",
+      "value_code": "BREED_CATTLE_HAMMER",
+      "value_display": "Hammer",
+      "sort_order": 14,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_HARAR",
+      "value_code": "BREED_CATTLE_HARAR",
+      "value_display": "Harar",
+      "sort_order": 15,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_HORRO",
+      "value_code": "BREED_CATTLE_HORRO",
+      "value_display": "Horro",
+      "sort_order": 16,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_JEM_JEM_ZEBU",
+      "value_code": "BREED_CATTLE_JEM_JEM_ZEBU",
+      "value_display": "Jem-Jem Zebu",
+      "sort_order": 17,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_JIDDU",
+      "value_code": "BREED_CATTLE_JIDDU",
+      "value_display": "Jiddu",
+      "sort_order": 18,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_JIJJIGA",
+      "value_code": "BREED_CATTLE_JIJJIGA",
+      "value_display": "Jijjiga",
+      "sort_order": 19,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_MEDENES",
+      "value_code": "BREED_CATTLE_MEDENES",
+      "value_display": "Medenes",
+      "sort_order": 20,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_MURSI",
+      "value_code": "BREED_CATTLE_MURSI",
+      "value_display": "Mursi",
+      "sort_order": 21,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_OGADEN",
+      "value_code": "BREED_CATTLE_OGADEN",
+      "value_display": "Ogaden",
+      "sort_order": 22,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_RAYA_AZEBO",
+      "value_code": "BREED_CATTLE_RAYA_AZEBO",
+      "value_display": "Raya Azebo",
+      "sort_order": 23,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_SHEKO",
+      "value_code": "BREED_CATTLE_SHEKO",
+      "value_display": "Sheko",
+      "sort_order": 24,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_SMADA",
+      "value_code": "BREED_CATTLE_SMADA",
+      "value_display": "Smada",
+      "sort_order": 25,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_HOLSTEIN_FRIESIAN",
+      "value_code": "BREED_CATTLE_HOLSTEIN_FRIESIAN",
+      "value_display": "Holstein Friesian",
+      "sort_order": 26,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Exotic"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_JERSEY",
+      "value_code": "BREED_CATTLE_JERSEY",
+      "value_display": "Jersey",
+      "sort_order": 27,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Exotic"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_SIMMENTAL",
+      "value_code": "BREED_CATTLE_SIMMENTAL",
+      "value_display": "Simmental",
+      "sort_order": 28,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Exotic"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_AYRSHIRE",
+      "value_code": "BREED_CATTLE_AYRSHIRE",
+      "value_display": "Ayrshire",
+      "sort_order": 29,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Exotic"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_HOLSTEIN_FRIESIAN_X_HORRO",
+      "value_code": "BREED_CATTLE_HOLSTEIN_FRIESIAN_X_HORRO",
+      "value_display": "Holstein Friesian x Horro",
+      "sort_order": 30,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Cross"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_JERSEY_X_ARSI",
+      "value_code": "BREED_CATTLE_JERSEY_X_ARSI",
+      "value_display": "Jersey x Arsi",
+      "sort_order": 31,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Cross"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_JERSEY_X_HORRO",
+      "value_code": "BREED_CATTLE_JERSEY_X_HORRO",
+      "value_display": "Jersey x Horro",
+      "sort_order": 32,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Cross"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_SIMMENTAL_X_BORAN",
+      "value_code": "BREED_CATTLE_SIMMENTAL_X_BORAN",
+      "value_display": "Simmental x Boran",
+      "sort_order": 33,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Cross"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_SIMMENTAL_X_HORRO",
+      "value_code": "BREED_CATTLE_SIMMENTAL_X_HORRO",
+      "value_display": "Simmental x Horro",
+      "sort_order": 34,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Cross"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_ABERGELE",
+      "value_code": "BREED_GOAT_ABERGELE",
+      "value_display": "Abergele",
+      "sort_order": 35,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_GOAT",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_AFAR",
+      "value_code": "BREED_GOAT_AFAR",
+      "value_display": "Afar",
+      "sort_order": 36,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_GOAT",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_AGEW",
+      "value_code": "BREED_GOAT_AGEW",
+      "value_display": "Agew",
+      "sort_order": 37,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_GOAT",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_ARAB",
+      "value_code": "BREED_GOAT_ARAB",
+      "value_display": "Arab",
+      "sort_order": 38,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_GOAT",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_ARSI_BALE",
+      "value_code": "BREED_GOAT_ARSI_BALE",
+      "value_display": "Arsi-Bale",
+      "sort_order": 39,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_GOAT",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_BEGAYIT",
+      "value_code": "BREED_GOAT_BEGAYIT",
+      "value_display": "Begayit",
+      "sort_order": 40,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_GOAT",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_CENTRAL_HIGHLAND",
+      "value_code": "BREED_GOAT_CENTRAL_HIGHLAND",
+      "value_display": "Central Highland",
+      "sort_order": 41,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_GOAT",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_FELATA",
+      "value_code": "BREED_GOAT_FELATA",
+      "value_display": "Felata",
+      "sort_order": 42,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_GOAT",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_GUMUZ",
+      "value_code": "BREED_GOAT_GUMUZ",
+      "value_display": "Gumuz",
+      "sort_order": 43,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_GOAT",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_HARARGHE_HIGHLAND",
+      "value_code": "BREED_GOAT_HARARGHE_HIGHLAND",
+      "value_display": "Hararghe Highland",
+      "sort_order": 44,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_GOAT",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_KEFFA",
+      "value_code": "BREED_GOAT_KEFFA",
+      "value_display": "Keffa",
+      "sort_order": 45,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_GOAT",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_ILLE",
+      "value_code": "BREED_GOAT_ILLE",
+      "value_display": "Ille",
+      "sort_order": 46,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_GOAT",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_LONG_EARED_SOMALI",
+      "value_code": "BREED_GOAT_LONG_EARED_SOMALI",
+      "value_display": "Long eared Somali",
+      "sort_order": 47,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_GOAT",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_MAEFUR",
+      "value_code": "BREED_GOAT_MAEFUR",
+      "value_display": "Maefur",
+      "sort_order": 48,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_GOAT",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_SHORT_EARED_SOMALI",
+      "value_code": "BREED_GOAT_SHORT_EARED_SOMALI",
+      "value_display": "Short eared Somali",
+      "sort_order": 49,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_GOAT",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_WESTERN_HIGHLAND",
+      "value_code": "BREED_GOAT_WESTERN_HIGHLAND",
+      "value_display": "Western Highland",
+      "sort_order": 50,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_GOAT",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_WESTERN_LOWLANDS",
+      "value_code": "BREED_GOAT_WESTERN_LOWLANDS",
+      "value_display": "Western Lowlands",
+      "sort_order": 51,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_GOAT",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_WIDAR",
+      "value_code": "BREED_GOAT_WIDAR",
+      "value_display": "Widar",
+      "sort_order": 52,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_GOAT",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_WOYITO_GUJI",
+      "value_code": "BREED_GOAT_WOYITO_GUJI",
+      "value_display": "Woyito Guji",
+      "sort_order": 53,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_GOAT",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_ANGLO_NUBIAN",
+      "value_code": "BREED_GOAT_ANGLO_NUBIAN",
+      "value_display": "Anglo-Nubian",
+      "sort_order": 54,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_GOAT",
+        "breed_type": "Exotic"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_TOGGENBURG",
+      "value_code": "BREED_GOAT_TOGGENBURG",
+      "value_display": "Toggenburg",
+      "sort_order": 55,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_GOAT",
+        "breed_type": "Exotic"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_ANGLO_NUBIAN_X_HARARGHE_HIGHLAND",
+      "value_code": "BREED_GOAT_ANGLO_NUBIAN_X_HARARGHE_HIGHLAND",
+      "value_display": "Anglo-Nubian x Hararghe Highland",
+      "sort_order": 56,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_GOAT",
+        "breed_type": "Cross"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_ANGLO_NUBIAN_X_LONG_EARED_SOMALI",
+      "value_code": "BREED_GOAT_ANGLO_NUBIAN_X_LONG_EARED_SOMALI",
+      "value_display": "Anglo-Nubian x Long eared Somali",
+      "sort_order": 57,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_GOAT",
+        "breed_type": "Cross"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_TOGGENBURG_X_HARARGHE_HIGHLAND",
+      "value_code": "BREED_GOAT_TOGGENBURG_X_HARARGHE_HIGHLAND",
+      "value_display": "Toggenburg x Hararghe Highland",
+      "sort_order": 58,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_GOAT",
+        "breed_type": "Cross"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_ABERGELE",
+      "value_code": "BREED_SHEEP_ABERGELE",
+      "value_display": "Abergele",
+      "sort_order": 59,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_SHEEP",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_AFAR",
+      "value_code": "BREED_SHEEP_AFAR",
+      "value_display": "Afar",
+      "sort_order": 60,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_SHEEP",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_ARSI",
+      "value_code": "BREED_SHEEP_ARSI",
+      "value_display": "Arsi",
+      "sort_order": 61,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_SHEEP",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_BEGAYIT",
+      "value_code": "BREED_SHEEP_BEGAYIT",
+      "value_display": "Begayit",
+      "sort_order": 62,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_SHEEP",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_BEGI_DEGU",
+      "value_code": "BREED_SHEEP_BEGI_DEGU",
+      "value_display": "Begi-Degu",
+      "sort_order": 63,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_SHEEP",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_BLACK_HEAD_SOMALI",
+      "value_code": "BREED_SHEEP_BLACK_HEAD_SOMALI",
+      "value_display": "Black Head Somali",
+      "sort_order": 64,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_SHEEP",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_BONGA",
+      "value_code": "BREED_SHEEP_BONGA",
+      "value_display": "Bonga",
+      "sort_order": 65,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_SHEEP",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_DANGILA",
+      "value_code": "BREED_SHEEP_DANGILA",
+      "value_display": "Dangila",
+      "sort_order": 66,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_SHEEP",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_FARTA",
+      "value_code": "BREED_SHEEP_FARTA",
+      "value_display": "Farta",
+      "sort_order": 67,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_SHEEP",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_HORRO",
+      "value_code": "BREED_SHEEP_HORRO",
+      "value_display": "Horro",
+      "sort_order": 68,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_SHEEP",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_ILLE",
+      "value_code": "BREED_SHEEP_ILLE",
+      "value_display": "Ille",
+      "sort_order": 69,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_SHEEP",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_MENZ",
+      "value_code": "BREED_SHEEP_MENZ",
+      "value_display": "Menz",
+      "sort_order": 70,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_SHEEP",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_TUKUR",
+      "value_code": "BREED_SHEEP_TUKUR",
+      "value_display": "Tukur",
+      "sort_order": 71,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_SHEEP",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_AWASSI",
+      "value_code": "BREED_SHEEP_AWASSI",
+      "value_display": "Awassi",
+      "sort_order": 72,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_SHEEP",
+        "breed_type": "Exotic"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_BLEU_DU_MAINE",
+      "value_code": "BREED_SHEEP_BLEU_DU_MAINE",
+      "value_display": "Bleu du Maine",
+      "sort_order": 73,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_SHEEP",
+        "breed_type": "Exotic"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_CORRIEDALE",
+      "value_code": "BREED_SHEEP_CORRIEDALE",
+      "value_display": "Corriedale",
+      "sort_order": 74,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_SHEEP",
+        "breed_type": "Exotic"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_DORPER",
+      "value_code": "BREED_SHEEP_DORPER",
+      "value_display": "Dorper",
+      "sort_order": 75,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_SHEEP",
+        "breed_type": "Exotic"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_HAMPSHIRE",
+      "value_code": "BREED_SHEEP_HAMPSHIRE",
+      "value_display": "Hampshire",
+      "sort_order": 76,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_SHEEP",
+        "breed_type": "Exotic"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_MERINO",
+      "value_code": "BREED_SHEEP_MERINO",
+      "value_display": "Merino",
+      "sort_order": 77,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_SHEEP",
+        "breed_type": "Exotic"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_ROMNEY",
+      "value_code": "BREED_SHEEP_ROMNEY",
+      "value_display": "Romney",
+      "sort_order": 78,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_SHEEP",
+        "breed_type": "Exotic"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_AWASSI_X_MENZ",
+      "value_code": "BREED_SHEEP_AWASSI_X_MENZ",
+      "value_display": "Awassi x Menz",
+      "sort_order": 79,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_SHEEP",
+        "breed_type": "Cross"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_BLEU_DU_MAINE_X_MENZ",
+      "value_code": "BREED_SHEEP_BLEU_DU_MAINE_X_MENZ",
+      "value_display": "Bleu du Maine x Menz",
+      "sort_order": 80,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_SHEEP",
+        "breed_type": "Cross"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_DORPER_X_MENZ",
+      "value_code": "BREED_SHEEP_DORPER_X_MENZ",
+      "value_display": "Dorper x Menz",
+      "sort_order": 81,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_SHEEP",
+        "breed_type": "Cross"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_HAMPSHIRE_X_MENZ",
+      "value_code": "BREED_SHEEP_HAMPSHIRE_X_MENZ",
+      "value_display": "Hampshire x Menz",
+      "sort_order": 82,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_SHEEP",
+        "breed_type": "Cross"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_ROMNEY_X_MENZ",
+      "value_code": "BREED_SHEEP_ROMNEY_X_MENZ",
+      "value_display": "Romney x Menz",
+      "sort_order": 83,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_SHEEP",
+        "breed_type": "Cross"
+      }
+    },
+    {
+      "value_id": "BREED_CAMEL_AMIBARA",
+      "value_code": "BREED_CAMEL_AMIBARA",
+      "value_display": "Amibara",
+      "sort_order": 84,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CAMEL",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CAMEL_GELLEB",
+      "value_code": "BREED_CAMEL_GELLEB",
+      "value_display": "Gelleb",
+      "sort_order": 85,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CAMEL",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CAMEL_HOOR",
+      "value_code": "BREED_CAMEL_HOOR",
+      "value_display": "Hoor",
+      "sort_order": 86,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CAMEL",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CAMEL_JIJIGA",
+      "value_code": "BREED_CAMEL_JIJIGA",
+      "value_display": "Jijiga",
+      "sort_order": 87,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CAMEL",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CAMEL_LIBEN",
+      "value_code": "BREED_CAMEL_LIBEN",
+      "value_display": "Liben",
+      "sort_order": 88,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CAMEL",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CAMEL_MILLE",
+      "value_code": "BREED_CAMEL_MILLE",
+      "value_display": "Mille",
+      "sort_order": 89,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CAMEL",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_CAMEL_SHINILLE",
+      "value_code": "BREED_CAMEL_SHINILLE",
+      "value_display": "Shinille",
+      "sort_order": 90,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CAMEL",
+        "breed_type": "Indigenous"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_BOER",
+      "value_code": "BREED_GOAT_BOER",
+      "value_display": "Boer",
+      "sort_order": 91,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_GOAT",
+        "breed_type": "Exotic"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_GIR",
+      "value_code": "BREED_CATTLE_GIR",
+      "value_display": "Gir",
+      "sort_order": 92,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CATTLE",
+        "breed_type": "Exotic"
+      }
+    },
+    {
+      "value_id": "BREED_CAMEL_ETHIOPIAN_CAMEL",
+      "value_code": "BREED_CAMEL_ETHIOPIAN_CAMEL",
+      "value_display": "Ethiopian Camel",
+      "sort_order": 93,
+      "display_i18n": {},
+      "attributes": {
+        "species": "LSTK_CAMEL",
+        "breed_type": "Indigenous"
+      }
+    }
+  ]
+}

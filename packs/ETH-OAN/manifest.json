@@ -7,7 +7,7 @@
   "base_pack_version": "2026-04-17T09:59:45.523963",
   "license": "Creative Commons Attribution for Intergovernmental Organisations (CC BY-IGO)",
   "license_note": "Attribution required. Boundaries are operational, not a statement on legal or political status.",
-  "version": "2026-10-24",
+  "version": "2026-10-27",
   "identifier": "P-code used as level_value_id",
   "levels": [
     "country",
