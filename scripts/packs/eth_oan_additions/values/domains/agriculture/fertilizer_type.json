@@ -1,0 +1,26 @@
+{
+  "description": "Additional fertilizer and soil amendment products from MoA input catalog.",
+  "values": [
+    {
+      "value_id": "FERT_BIO_RHIZO",
+      "value_code": "FERT_BIO_RHIZO",
+      "value_display": "Bio-Rhizobium",
+      "sort_order": 8,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "FERT_ZINC_BORON",
+      "value_code": "FERT_ZINC_BORON",
+      "value_display": "Zinc and boron micronutrients",
+      "sort_order": 9,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "FERT_LIME",
+      "value_code": "FERT_LIME",
+      "value_display": "Agricultural lime",
+      "sort_order": 10,
+      "display_i18n": {}
+    }
+  ]
+}

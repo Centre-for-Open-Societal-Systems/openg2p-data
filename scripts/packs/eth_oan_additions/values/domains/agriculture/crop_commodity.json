@@ -1,0 +1,49 @@
+{
+  "description": "Additional crops required by MoA released varieties. Source: ethioseed.moa.gov.et snapshot.",
+  "values": [
+    {
+      "value_id": "CROP_OAT",
+      "value_code": "CROP_OAT",
+      "value_display": "Oat",
+      "sort_order": 122,
+      "display_i18n": {},
+      "attributes": {
+        "category": "CROPCAT_CEREAL",
+        "scientific_name": "Avena sativa L."
+      }
+    },
+    {
+      "value_id": "CROP_PIGEON_PEA",
+      "value_code": "CROP_PIGEON_PEA",
+      "value_display": "Pigeon pea",
+      "sort_order": 123,
+      "display_i18n": {},
+      "attributes": {
+        "category": "CROPCAT_FOOD_LEGUME",
+        "scientific_name": "Cajanus cajan (L.) Millsp."
+      }
+    },
+    {
+      "value_id": "CROP_ALFALFA",
+      "value_code": "CROP_ALFALFA",
+      "value_display": "Alfalfa",
+      "sort_order": 124,
+      "display_i18n": {},
+      "attributes": {
+        "category": "CROPCAT_OTHER",
+        "scientific_name": "Medicago sativa L."
+      }
+    },
+    {
+      "value_id": "CROP_BRACHIARIA",
+      "value_code": "CROP_BRACHIARIA",
+      "value_display": "Brachiaria brizantha",
+      "sort_order": 125,
+      "display_i18n": {},
+      "attributes": {
+        "category": "CROPCAT_OTHER",
+        "scientific_name": "Brachiaria brizantha (Hochst. ex A. Rich.) Stapf"
+      }
+    }
+  ]
+}
