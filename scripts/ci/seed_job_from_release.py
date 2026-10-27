@@ -25,6 +25,11 @@ container that replaces its openg2p-data directory with one commit of this
 repo, fetched by SHA. It checks the fetched packs hash to --packs-sha256 and
 fails the Job, unseeded, if they do not.
 
+--fresh-geo (development only) adds an init container that runs
+scripts/ci/reset_dev_geography.py from the image's openg2p-data checkout before
+the loader: every geography version and the legacy geo tables are removed, so
+the loader's first-load path publishes the pack. Code lists are untouched.
+
 Changes made to the rendered Job:
   - name gets --suffix, so it never collides with the release's own hook Job
   - helm.sh/hook* annotations are removed: applied by kubectl, they mean nothing
@@ -83,6 +88,10 @@ def main():
     p.add_argument("--data-repo", help="openg2p-data git URL to fetch from (with --data-ref)")
     p.add_argument("--data-ref", help="commit SHA (or tag) to fetch over the image's packs")
     p.add_argument("--packs-sha256", help="digest the fetched packs must match (with --data-ref)")
+    p.add_argument("--fresh-geo", action="store_true",
+                   help="DEVELOPMENT ONLY: add an init container that empties Master Data's "
+                        "geography first (scripts/ci/reset_dev_geography.py), so the loader "
+                        "publishes the pack as a first load")
     p.add_argument("--container", default="geo-seed", help="name of the loader container")
     p.add_argument("--ttl", type=int, default=86400, help="ttlSecondsAfterFinished")
     p.add_argument("--label", action="append", default=[], metavar="KEY=VALUE",
@@ -130,8 +139,31 @@ def main():
 
     if args.data_ref:
         add_fetch(pod, seed, args)
+    if args.fresh_geo:
+        add_reset(pod, seed)
 
     yaml.safe_dump(job, sys.stdout, sort_keys=False)
+
+
+def add_reset(pod, seed):
+    """Empty the geography before the loader runs: same image, same database env."""
+    data_dir = data_dir_of(seed)
+    reset = {
+        "name": "reset-dev-geography",
+        "image": seed["image"],
+        "command": ["python", f"{data_dir}/scripts/ci/reset_dev_geography.py"],
+        # The loader's connection settings (PGHOST, PGPORT, PGUSER, PGPASSWORD, MDS_DB,
+        # PACK_ACTOR) are the reset's too.
+        "env": list(seed.get("env") or []) + [{"name": "FRESH_GEO_CONFIRM", "value": "fresh-geo-dev"}],
+    }
+    if seed.get("imagePullPolicy"):
+        reset["imagePullPolicy"] = seed["imagePullPolicy"]
+    # The script lives in the image's openg2p-data checkout; with --data-ref that
+    # directory is replaced by the fetched commit, so the reset must run after
+    # the fetch and immediately before the loader.
+    if any(v.get("name") == "openg2p-data" for v in pod.get("volumes") or []):
+        reset["volumeMounts"] = [{"name": "openg2p-data", "mountPath": data_dir}]
+    pod.setdefault("initContainers", []).append(reset)
 
 
 def add_fetch(pod, seed, args):
