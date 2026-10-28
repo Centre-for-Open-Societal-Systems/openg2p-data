@@ -6,3 +6,6 @@ __pycache__/
 .tools/
 .build/
 dist/
+
+# Offline generator output is not a deployable country pack.
+generated/

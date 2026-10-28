@@ -71,6 +71,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import zlib
 import hashlib
 import json
 import os
@@ -316,6 +317,17 @@ def main():
     units = {v["level_value_id"] for v in values}
     for kind in ("individuals", "households"):
         recs = read_json(os.path.join(args.base, "samples", f"{kind}.json"))
+        if kind == "individuals":
+            # Three-part names are sample facts owned by this pack, not generated
+            # independently by each consuming registry. MDS persists full_name.
+            names = sorted({p["given_name"] for p in recs if p["gender"] == "MALE" and p["given_name"]})
+            if not names:
+                raise SystemExit("ETH-OAN samples require a name pool")
+            for person in recs:
+                father = person["fathers_name"]
+                pool = [n for n in names if n not in (father, person["given_name"])] or names
+                grandfather = pool[zlib.crc32(person["individual_id"].encode()) % len(pool)]
+                person["full_name"] = f"{person['given_name']} {father} {grandfather}"
         for rec in recs:
             parts = dict(rec.get("address_parts") or {})
             kebele = rec["geo_pcode"] + parts.pop("kebele", "")

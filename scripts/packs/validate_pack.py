@@ -413,6 +413,23 @@ def check_samples(pack_dir, r, geo_ids):
             return
         data[kind] = read_json(path)
 
+    if os.path.basename(os.path.normpath(pack_dir)) == "ETH-OAN":
+        identities = set()
+        for rec in data["individuals"]:
+            ident = rec.get("individual_id")
+            prefix = f"{rec.get('given_name')} {rec.get('fathers_name')} "
+            full = rec.get("full_name") or ""
+            if not full.startswith(prefix) or not full[len(prefix):].strip():
+                r.error(f"sample individual {ident} needs a three-part full_name for Farmer")
+            national_id = str(rec.get("national_id") or "")
+            if len(national_id) != 12 or not national_id.isascii() or not national_id.isdigit():
+                r.error(f"sample individual {ident} needs a 12-digit national_id for Farmer")
+            if national_id in identities:
+                r.error(f"sample individual {ident} duplicates a national_id")
+            identities.add(national_id)
+            if not rec.get("birth_date"):
+                r.error(f"sample individual {ident} needs birth_date for Farmer")
+
     for kind, fields in SAMPLE_CODED.items():
         for rec in data[kind]:
             for field, attr in fields.items():

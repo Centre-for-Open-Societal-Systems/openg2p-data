@@ -2,7 +2,7 @@
 
 Reads demography CSVs from openg2p-data/demography/ (the same synthetic
 population used by NSR) and writes JSON sub-table files into the
-farmer-registry repo's docker/db-seed/seed-data/ folder.
+local generated/farmer/ folder for offline analysis only (not an MDS or registry import).
 
 Mapping to farmer registers:
 - every individual becomes a Farmer (g2p_register_farmers reuses the individual
@@ -21,7 +21,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DEMO_DIR = REPO_ROOT / "demography"
-OUT_DIR = Path("/Volumes/Work/OpenG2P/farmer-registry/docker/db-seed/seed-data")
+OUT_DIR = REPO_ROOT / "generated" / "farmer"
 
 SEED = 2025
 random.seed(SEED)
