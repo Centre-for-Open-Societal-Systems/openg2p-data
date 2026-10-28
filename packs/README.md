@@ -35,6 +35,10 @@ domains/<domain>/*.json        lists that vary by domain AND country, e.g. crops
 address.json                   how an address is written BELOW the lowest level
 samples/individuals.json       a few dozen people, coherent with this country
 samples/households.json        and the households they form
+samples/farms.json             their farm facts, for registries that hold farmers:
+                               lands, crops, livestock, farm inputs and
+                               membership per individual_id, in value_codes of
+                               codelists/ and domains/agriculture/
 ```
 
 Everything after `manifest.json` is optional — a pack with geography alone is

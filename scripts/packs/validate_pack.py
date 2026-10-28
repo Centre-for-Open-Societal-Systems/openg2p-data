@@ -508,6 +508,81 @@ def check_samples(pack_dir, r, geo_ids):
                     f"but its head is {head.get('gender')}")
 
 
+# farms.json: the farm facts of the sample people, for registries that hold
+# farmers (land, crops, livestock, farm inputs, cooperative membership). Field
+# -> code list, per record kind; a list the pack does not ship is not checked.
+# Values are value_codes: a registry stores and validates the code, which for
+# some lists differs from the value_id (LBCOND_GOOD has the code GOOD).
+FARM_CODED = {
+    "farmer": {"language_spoken": "LANGUAGE", "local_language": "LANGUAGE",
+               "farming_type": "FARMING_TYPE", "income_sources": "SOURCE_OF_INCOME",
+               "identity_document_type": "IDENTITY_DOCUMENT_TYPE",
+               "phone_type": "PHONE_NUMBER_TYPE"},
+    "lands": {"land_ownership_type": "LAND_OWNERSHIP_TYPE", "unit": "LAND_SIZE_UNIT",
+              "soil_fertility": "SOIL_FERTILITY", "current_land_use": "CURRENT_LAND_USE",
+              "farming_type": "FARMING_TYPE", "means_of_acquisition": "MEANS_OF_ACQUISITION"},
+    "crops": {"commodity": "CROP_COMMODITY", "season": "CROP_SEASON",
+              "end_use": "CROP_END_USE", "water_sources": "WATER_SOURCE"},
+    "livestock": {"livestock_type": "LIVESTOCK_TYPE", "breed": "LIVESTOCK_BREED",
+                  "livestock_system": "LIVESTOCK_SYSTEM",
+                  "body_condition": "LIVESTOCK_BODY_CONDITION",
+                  "production_type": "LIVESTOCK_PRODUCTION_TYPE",
+                  "water_sources": "WATER_SOURCE"},
+    "farm_inputs": {"water_sources": "WATER_SOURCE", "machinery_types": "FARM_MACHINERY",
+                    "finance_access_types": "FINANCE_ACCESS_TYPE",
+                    "irrigation_type": "IRRIGATION_METHOD"},
+    "membership": {"farmer_cluster_role": "FARMER_CLUSTER_ROLE",
+                   "primary_commodity": "CROP_COMMODITY"},
+}
+
+
+def check_farm_samples(pack_dir, r):
+    """Farm facts must belong to a sample person and use the pack's own codes.
+
+    Crops, livestock and farm inputs sit on one of the person's lands, named by
+    land_ref, as a registry links them; a dangling land_ref has nowhere to go.
+    """
+    path = os.path.join(pack_dir, "samples", "farms.json")
+    if not os.path.exists(path):
+        return
+    lists = {}
+    for sub in ("codelists", os.path.join("domains", "agriculture")):
+        dd = os.path.join(pack_dir, sub)
+        if os.path.isdir(dd):
+            for fn in os.listdir(dd):
+                if fn.endswith(".json"):
+                    doc = read_json(os.path.join(dd, fn))
+                    lists[doc.get("attribute_id")] = {v.get("value_code") for v in doc.get("values", [])}
+    people = {i.get("individual_id") for i in read_json(os.path.join(pack_dir, "samples", "individuals.json"))}
+    seen = set()
+    for farm in read_json(path):
+        ident = farm.get("individual_id")
+        if ident not in people:
+            r.error(f"farms.json names unknown individual {ident}")
+        if ident in seen:
+            r.error(f"farms.json has more than one record for {ident}")
+        seen.add(ident)
+        land_refs = [land.get("land_ref") for land in farm.get("lands", [])]
+        if len(land_refs) != len(set(land_refs)):
+            r.error(f"farm of {ident} repeats a land_ref")
+        for kind, fields in FARM_CODED.items():
+            records = farm.get(kind) or []
+            for rec in records if isinstance(records, list) else [records]:
+                for field, attr in fields.items():
+                    if attr not in lists:
+                        continue
+                    for val in rec.get(field) if isinstance(rec.get(field), list) else [rec.get(field)]:
+                        if val is not None and val not in lists[attr]:
+                            r.error(f"farm of {ident}: {kind}.{field}={val!r} is not a value of {attr}")
+                if kind in ("crops", "livestock", "farm_inputs") and rec.get("land_ref") not in land_refs:
+                    r.error(f"farm of {ident}: {kind} row on unknown land_ref {rec.get('land_ref')!r}")
+                if kind == "lands" and not (isinstance(rec.get("land_size"), (int, float)) and rec["land_size"] > 0):
+                    r.error(f"farm of {ident}: land {rec.get('land_ref')} needs a positive land_size")
+    missing = people - seen
+    if missing:
+        r.warn(f"farms.json has no record for {len(missing)} sample people")
+
+
 def check_sample_locations(pack_dir, r, geoms):
     """A sample's coordinates must fall inside the unit its P-code names.
 
@@ -643,6 +718,7 @@ def validate(pack_dir):
 
     check_codelists(pack_dir, r)
     check_samples(pack_dir, r, set(vals))
+    check_farm_samples(pack_dir, r)
 
     # -- boundaries --------------------------------------------------------
     bdir = os.path.join(pack_dir, "boundaries")
