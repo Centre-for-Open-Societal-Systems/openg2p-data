@@ -48,10 +48,10 @@ def PARAM_DEFAULTS = [
     STRICT       : false,
     PUSH_IMAGE   : false,
     DEPLOY_DEV   : true,
-    // Off until dev's existing geography and lists are reconciled with ETH-OAN
-    // (oan-helm docs/refactor-location-and-ownership.md): a first load into
-    // unreconciled data retires values that live records still use.
-    RESEED_DEV      : false,
+    // Every develop build reseeds dev. Set false on a run whose pack would
+    // retire values that live dev records still use (see oan-helm
+    // docs/refactor-location-and-ownership.md).
+    RESEED_DEV      : true,
     AUTO_PUBLISH_DEV: true,
     // Dev's geography was loaded from the OpenAgriNet source catalog (levels
     // level-region..., units woreda-ET010101...), not from ETH-OAN (l0..l4,
@@ -98,7 +98,7 @@ pipeline {
         booleanParam(name: 'DEPLOY_DEV', defaultValue: PARAM_DEFAULTS.DEPLOY_DEV,
                      description: 'On develop: reseed dev from the pushed image (also needs RESEED_DEV)')
         booleanParam(name: 'RESEED_DEV', defaultValue: PARAM_DEFAULTS.RESEED_DEV,
-                     description: 'Allow the dev reseed at all. Off until dev data is reconciled with ETH-OAN')
+                     description: 'Allow the dev reseed at all. Turn off for a run that must not touch dev data')
         booleanParam(name: 'AUTO_PUBLISH_DEV', defaultValue: PARAM_DEFAULTS.AUTO_PUBLISH_DEV,
                      description: 'Dev reseed publishes changed lists and geography at once instead of leaving drafts')
         booleanParam(name: 'SEED_GEO_DEV', defaultValue: PARAM_DEFAULTS.SEED_GEO_DEV,
