@@ -510,11 +510,11 @@ EOF
                         # FRESH_GEO_DEV empties the geography first (init container
                         # from scripts/ci/reset_dev_geography.py): a one-off that
                         # takes SEED_GEO_DEV and the typed confirmation.
-                        fresh=()
+                        seed_args=(--suffix "ci-$BUILD_NUMBER" --pull-secret "$DEV_PULL_SECRET")
                         if [ "$FRESH_GEO_DEV" = "true" ]; then
                             [ "$SEED_GEO_DEV" = "true" ] || { echo "FAIL FRESH_GEO_DEV needs SEED_GEO_DEV=true (nothing would replace the removed geography)" | tee -a "$report"; exit 1; }
                             [ "$CONFIRM_FRESH_GEO" = "fresh-geo-dev" ] || { echo "FAIL FRESH_GEO_DEV needs CONFIRM_FRESH_GEO=fresh-geo-dev" | tee -a "$report"; exit 1; }
-                            fresh=(--fresh-geo)
+                            seed_args+=(--fresh-geo)
                             echo "FRESH GEOGRAPHY: dev's geography versions and legacy geo tables are removed before the load" | tee -a "$report"
                         fi
                         "$helm" template "$rel" "$TOOLS/deploy/$chart_name-$chart_version.tgz" -n "$ns" \
@@ -528,7 +528,7 @@ EOF
                             --set "master-data.geoSeed.image.tag=$IMAGE_TAG@$digest" \
                             --show-only charts/master-data/templates/geo-seed-job.yaml \
                           | "$TOOLS/venv/bin/python" scripts/ci/seed_job_from_release.py \
-                                --suffix "ci-$BUILD_NUMBER" --pull-secret "$DEV_PULL_SECRET" "${fresh[@]}" \
+                                "${seed_args[@]}" \
                                 --label "openg2p-data/commit=${DATA_SHA:0:12}" --label "openg2p-data/build=$BUILD_NUMBER" \
                           > "$DIST/reports/geo-seed-job.yaml"
 
