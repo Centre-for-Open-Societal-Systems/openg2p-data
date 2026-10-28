@@ -1,0 +1,1202 @@
+[
+  {
+    "individual_id": "ETH-IND-0001",
+    "farmer": {
+      "grandfathers_name": "Assefa",
+      "language_spoken": "TIGRINYA",
+      "local_language": "TIGRINYA",
+      "is_psnp_user": true,
+      "is_farmer": true,
+      "farming_type": "MIXED",
+      "income_sources": [
+        "SOI_CROP_PRODUCTION",
+        "SOI_LIVESTOCK_PRODUCTION"
+      ],
+      "identity_document_type": "FAYDA",
+      "phone_type": "PRIMARY"
+    },
+    "lands": [
+      {
+        "land_ref": "L1",
+        "land_ownership_type": "OWNER",
+        "land_size": 0.5,
+        "unit": "HECTARE",
+        "soil_fertility": "SF_HIGH",
+        "current_land_use": "AGRICULTURAL",
+        "farming_type": "CROP",
+        "year_of_acquisition": 2000,
+        "means_of_acquisition": "MOA_INHERITANCE"
+      },
+      {
+        "land_ref": "L2",
+        "land_ownership_type": "TENANT",
+        "land_size": 1.25,
+        "unit": "HECTARE",
+        "soil_fertility": "SF_MEDIUM",
+        "current_land_use": "GRAZING",
+        "farming_type": "LIVESTOCK",
+        "year_of_acquisition": 2001,
+        "means_of_acquisition": "MOA_REALLOCATION"
+      }
+    ],
+    "crops": [
+      {
+        "land_ref": "L1",
+        "commodity": "CROP_TEFF",
+        "season": "SEASON_MEHER",
+        "end_use": "FOOD_HUMAN_CONSUMPTION",
+        "planted_date": "2026-07-10",
+        "water_sources": [
+          "WS_RAINFED"
+        ],
+        "is_diseased": false
+      },
+      {
+        "land_ref": "L2",
+        "commodity": "CROP_SORGHUM",
+        "season": "SEASON_MEHER",
+        "end_use": "FOOD_HUMAN_CONSUMPTION",
+        "planted_date": "2026-07-11",
+        "water_sources": [
+          "WS_RAINFED"
+        ],
+        "is_diseased": false
+      }
+    ],
+    "livestock": [
+      {
+        "land_ref": "L2",
+        "livestock_type": "LSTK_CATTLE",
+        "breed": "BREED_LOCAL",
+        "head_count": 4,
+        "livestock_system": "MIXED",
+        "production_type": "MILK",
+        "body_condition": "GOOD",
+        "is_diseased": false,
+        "water_sources": [
+          "WS_SURFACE_WATER"
+        ]
+      }
+    ],
+    "farm_inputs": [
+      {
+        "land_ref": "L1",
+        "fertilizer_use": true,
+        "pesticide_use": false,
+        "insecticide_use": true,
+        "improved_seed_use": true,
+        "access_to_machinery": true,
+        "access_to_finance": true,
+        "water_sources": [
+          "WS_RAINFED"
+        ],
+        "machinery_types": [
+          "MACH_THRESHER"
+        ],
+        "finance_access_types": [
+          "SAVING"
+        ],
+        "amount_fertilizer_utilized": 50
+      },
+      {
+        "land_ref": "L2",
+        "fertilizer_use": false,
+        "pesticide_use": false,
+        "insecticide_use": true,
+        "improved_seed_use": true,
+        "access_to_machinery": true,
+        "access_to_finance": true,
+        "water_sources": [
+          "WS_RAINFED"
+        ],
+        "machinery_types": [
+          "MACH_THRESHER"
+        ],
+        "finance_access_types": [
+          "SAVING"
+        ]
+      }
+    ],
+    "membership": {
+      "is_primary_cooperative_member": true,
+      "primary_cooperative_name": "Tsehay Primary Cooperative",
+      "is_cooperative_union_member": true,
+      "cooperative_union_name": "Raya Farmers Cooperative Union",
+      "is_farmer_cluster_member": true,
+      "farmer_cluster_role": "LEAD",
+      "primary_commodity": "CROP_TEFF"
+    }
+  },
+  {
+    "individual_id": "ETH-IND-0002",
+    "farmer": {
+      "grandfathers_name": "Solomon",
+      "language_spoken": "TIGRINYA",
+      "local_language": "TIGRINYA",
+      "is_psnp_user": false,
+      "is_farmer": true,
+      "farming_type": "CROP",
+      "income_sources": [
+        "SOI_CROP_PRODUCTION"
+      ],
+      "identity_document_type": "FAYDA",
+      "phone_type": "PRIMARY"
+    },
+    "lands": [
+      {
+        "land_ref": "L1",
+        "land_ownership_type": "TENANT",
+        "land_size": 2.25,
+        "unit": "HECTARE",
+        "soil_fertility": "SF_MEDIUM",
+        "current_land_use": "AGRICULTURAL",
+        "farming_type": "CROP",
+        "year_of_acquisition": 2003,
+        "means_of_acquisition": "MOA_REALLOCATION"
+      }
+    ],
+    "crops": [
+      {
+        "land_ref": "L1",
+        "commodity": "CROP_SORGHUM",
+        "season": "SEASON_MEHER",
+        "end_use": "FOOD_HUMAN_CONSUMPTION",
+        "planted_date": "2026-07-11",
+        "water_sources": [
+          "WS_RAINFED"
+        ],
+        "is_diseased": false
+      }
+    ],
+    "livestock": [
+      {
+        "land_ref": "L1",
+        "livestock_type": "LSTK_GOAT",
+        "breed": "BREED_LOCAL",
+        "head_count": 9,
+        "livestock_system": "MIXED",
+        "production_type": "MEAT",
+        "body_condition": "GOOD",
+        "is_diseased": false,
+        "water_sources": [
+          "WS_SURFACE_WATER"
+        ]
+      }
+    ],
+    "farm_inputs": [
+      {
+        "land_ref": "L1",
+        "fertilizer_use": true,
+        "pesticide_use": false,
+        "insecticide_use": false,
+        "improved_seed_use": false,
+        "access_to_machinery": false,
+        "access_to_finance": false,
+        "water_sources": [
+          "WS_RAINFED"
+        ],
+        "amount_fertilizer_utilized": 55
+      }
+    ],
+    "membership": {
+      "is_primary_cooperative_member": true,
+      "primary_cooperative_name": "Tsehay Primary Cooperative",
+      "is_cooperative_union_member": false,
+      "cooperative_union_name": "",
+      "is_farmer_cluster_member": true,
+      "farmer_cluster_role": "MEMBER",
+      "primary_commodity": "CROP_SORGHUM"
+    }
+  },
+  {
+    "individual_id": "ETH-IND-0003",
+    "farmer": {
+      "grandfathers_name": "Abebe",
+      "language_spoken": "TIGRINYA",
+      "local_language": "TIGRINYA",
+      "is_psnp_user": false,
+      "is_farmer": false,
+      "income_sources": [],
+      "identity_document_type": "FAYDA",
+      "phone_type": "PRIMARY"
+    }
+  },
+  {
+    "individual_id": "ETH-IND-0004",
+    "farmer": {
+      "grandfathers_name": "Abebe",
+      "language_spoken": "TIGRINYA",
+      "local_language": "TIGRINYA",
+      "is_psnp_user": true,
+      "is_farmer": false,
+      "income_sources": [],
+      "identity_document_type": "FAYDA",
+      "phone_type": "PRIMARY"
+    }
+  },
+  {
+    "individual_id": "ETH-IND-0005",
+    "farmer": {
+      "grandfathers_name": "Abebe",
+      "language_spoken": "TIGRINYA",
+      "local_language": "TIGRINYA",
+      "is_psnp_user": false,
+      "is_farmer": false,
+      "income_sources": [],
+      "identity_document_type": "FAYDA",
+      "phone_type": "PRIMARY"
+    }
+  },
+  {
+    "individual_id": "ETH-IND-0006",
+    "farmer": {
+      "grandfathers_name": "Assefa",
+      "language_spoken": "TIGRINYA",
+      "local_language": "TIGRINYA",
+      "is_psnp_user": false,
+      "is_farmer": true,
+      "farming_type": "LIVESTOCK",
+      "income_sources": [
+        "SOI_CROP_PRODUCTION"
+      ],
+      "identity_document_type": "FAYDA",
+      "phone_type": "PRIMARY"
+    },
+    "lands": [
+      {
+        "land_ref": "L1",
+        "land_ownership_type": "CROP_SHARE",
+        "land_size": 1.75,
+        "unit": "HECTARE",
+        "soil_fertility": "SF_LOW",
+        "current_land_use": "AGRICULTURAL",
+        "farming_type": "CROP",
+        "year_of_acquisition": 2015,
+        "means_of_acquisition": "MOA_RENTING_LEASING"
+      },
+      {
+        "land_ref": "L2",
+        "land_ownership_type": "OWNER",
+        "land_size": 2.5,
+        "unit": "HECTARE",
+        "soil_fertility": "SF_HIGH",
+        "current_land_use": "GRAZING",
+        "farming_type": "LIVESTOCK",
+        "year_of_acquisition": 2016,
+        "means_of_acquisition": "MOA_INHERITANCE"
+      }
+    ],
+    "crops": [
+      {
+        "land_ref": "L1",
+        "commodity": "CROP_SESAME",
+        "season": "SEASON_MEHER",
+        "end_use": "FOOD_HUMAN_CONSUMPTION",
+        "planted_date": "2026-07-15",
+        "water_sources": [
+          "WS_RAINFED"
+        ],
+        "is_diseased": false
+      },
+      {
+        "land_ref": "L2",
+        "commodity": "CROP_MAIZE",
+        "season": "SEASON_IRRIGATION",
+        "end_use": "FOOD_HUMAN_CONSUMPTION",
+        "planted_date": "2026-07-16",
+        "water_sources": [
+          "WS_IRRIGATION_SURFACE"
+        ],
+        "is_diseased": false
+      }
+    ],
+    "livestock": [
+      {
+        "land_ref": "L2",
+        "livestock_type": "LSTK_CATTLE",
+        "breed": "BREED_LOCAL",
+        "head_count": 4,
+        "livestock_system": "MIXED",
+        "production_type": "MILK",
+        "body_condition": "GOOD",
+        "is_diseased": false,
+        "water_sources": [
+          "WS_SURFACE_WATER"
+        ]
+      }
+    ],
+    "farm_inputs": [
+      {
+        "land_ref": "L1",
+        "fertilizer_use": true,
+        "pesticide_use": false,
+        "insecticide_use": false,
+        "improved_seed_use": false,
+        "access_to_machinery": true,
+        "access_to_finance": false,
+        "water_sources": [
+          "WS_RAINFED"
+        ],
+        "machinery_types": [
+          "MACH_THRESHER"
+        ],
+        "amount_fertilizer_utilized": 75
+      },
+      {
+        "land_ref": "L2",
+        "fertilizer_use": false,
+        "pesticide_use": false,
+        "insecticide_use": false,
+        "improved_seed_use": false,
+        "access_to_machinery": true,
+        "access_to_finance": false,
+        "water_sources": [
+          "WS_RAINFED"
+        ],
+        "machinery_types": [
+          "MACH_THRESHER"
+        ]
+      }
+    ],
+    "membership": {
+      "is_primary_cooperative_member": true,
+      "primary_cooperative_name": "Tsehay Primary Cooperative",
+      "is_cooperative_union_member": true,
+      "cooperative_union_name": "Raya Farmers Cooperative Union",
+      "is_farmer_cluster_member": true,
+      "farmer_cluster_role": "MEMBER",
+      "primary_commodity": "CROP_SESAME"
+    }
+  },
+  {
+    "individual_id": "ETH-IND-0007",
+    "farmer": {
+      "grandfathers_name": "Assefa",
+      "language_spoken": "TIGRINYA",
+      "local_language": "TIGRINYA",
+      "is_psnp_user": true,
+      "is_farmer": true,
+      "farming_type": "MIXED",
+      "income_sources": [
+        "SOI_CROP_PRODUCTION",
+        "SOI_LIVESTOCK_PRODUCTION"
+      ],
+      "identity_document_type": "FAYDA",
+      "phone_type": "PRIMARY"
+    },
+    "lands": [
+      {
+        "land_ref": "L1",
+        "land_ownership_type": "OWNER",
+        "land_size": 1.0,
+        "unit": "HECTARE",
+        "soil_fertility": "SF_HIGH",
+        "current_land_use": "AGRICULTURAL",
+        "farming_type": "CROP",
+        "year_of_acquisition": 2018,
+        "means_of_acquisition": "MOA_INHERITANCE"
+      }
+    ],
+    "crops": [
+      {
+        "land_ref": "L1",
+        "commodity": "CROP_MAIZE",
+        "season": "SEASON_IRRIGATION",
+        "end_use": "FOOD_HUMAN_CONSUMPTION",
+        "planted_date": "2026-07-16",
+        "water_sources": [
+          "WS_IRRIGATION_SURFACE"
+        ],
+        "is_diseased": false
+      }
+    ],
+    "livestock": [
+      {
+        "land_ref": "L1",
+        "livestock_type": "LSTK_GOAT",
+        "breed": "BREED_LOCAL",
+        "head_count": 9,
+        "livestock_system": "MIXED",
+        "production_type": "MEAT",
+        "body_condition": "GOOD",
+        "is_diseased": false,
+        "water_sources": [
+          "WS_SURFACE_WATER"
+        ]
+      }
+    ],
+    "farm_inputs": [
+      {
+        "land_ref": "L1",
+        "fertilizer_use": true,
+        "pesticide_use": false,
+        "insecticide_use": false,
+        "improved_seed_use": true,
+        "access_to_machinery": false,
+        "access_to_finance": true,
+        "water_sources": [
+          "WS_RAINFED"
+        ],
+        "finance_access_types": [
+          "SAVING"
+        ],
+        "amount_fertilizer_utilized": 80
+      }
+    ],
+    "membership": {
+      "is_primary_cooperative_member": true,
+      "primary_cooperative_name": "Tsehay Primary Cooperative",
+      "is_cooperative_union_member": false,
+      "cooperative_union_name": "",
+      "is_farmer_cluster_member": true,
+      "farmer_cluster_role": "MEMBER",
+      "primary_commodity": "CROP_MAIZE"
+    }
+  },
+  {
+    "individual_id": "ETH-IND-0008",
+    "farmer": {
+      "grandfathers_name": "Berhanu",
+      "language_spoken": "TIGRINYA",
+      "local_language": "TIGRINYA",
+      "is_psnp_user": false,
+      "is_farmer": false,
+      "income_sources": [],
+      "identity_document_type": "FAYDA",
+      "phone_type": "PRIMARY"
+    }
+  },
+  {
+    "individual_id": "ETH-IND-0009",
+    "farmer": {
+      "grandfathers_name": "Mekonnen",
+      "language_spoken": "TIGRINYA",
+      "local_language": "TIGRINYA",
+      "is_psnp_user": false,
+      "is_farmer": true,
+      "farming_type": "LIVESTOCK",
+      "income_sources": [
+        "SOI_CROP_PRODUCTION",
+        "SOI_LIVESTOCK_PRODUCTION"
+      ],
+      "identity_document_type": "FAYDA",
+      "phone_type": "PRIMARY"
+    },
+    "lands": [
+      {
+        "land_ref": "L1",
+        "land_ownership_type": "CROP_SHARE",
+        "land_size": 2.0,
+        "unit": "HECTARE",
+        "soil_fertility": "SF_LOW",
+        "current_land_use": "AGRICULTURAL",
+        "farming_type": "CROP",
+        "year_of_acquisition": 2000,
+        "means_of_acquisition": "MOA_RENTING_LEASING"
+      },
+      {
+        "land_ref": "L2",
+        "land_ownership_type": "OWNER",
+        "land_size": 2.75,
+        "unit": "HECTARE",
+        "soil_fertility": "SF_HIGH",
+        "current_land_use": "GRAZING",
+        "farming_type": "LIVESTOCK",
+        "year_of_acquisition": 2001,
+        "means_of_acquisition": "MOA_INHERITANCE"
+      }
+    ],
+    "crops": [
+      {
+        "land_ref": "L1",
+        "commodity": "CROP_SORGHUM",
+        "season": "SEASON_MEHER",
+        "end_use": "FOOD_HUMAN_CONSUMPTION",
+        "planted_date": "2026-07-18",
+        "water_sources": [
+          "WS_RAINFED"
+        ],
+        "is_diseased": false
+      },
+      {
+        "land_ref": "L2",
+        "commodity": "CROP_BARLEY",
+        "season": "SEASON_BELG",
+        "end_use": "FOOD_HUMAN_CONSUMPTION",
+        "planted_date": "2026-07-19",
+        "water_sources": [
+          "WS_RAINFED"
+        ],
+        "is_diseased": false
+      }
+    ],
+    "livestock": [
+      {
+        "land_ref": "L2",
+        "livestock_type": "LSTK_CHICKEN",
+        "breed": "BREED_LOCAL",
+        "head_count": 15,
+        "livestock_system": "MIXED",
+        "production_type": "EGG",
+        "body_condition": "GOOD",
+        "is_diseased": false,
+        "water_sources": [
+          "WS_SURFACE_WATER"
+        ]
+      }
+    ],
+    "farm_inputs": [
+      {
+        "land_ref": "L1",
+        "fertilizer_use": true,
+        "pesticide_use": false,
+        "insecticide_use": true,
+        "improved_seed_use": true,
+        "access_to_machinery": false,
+        "access_to_finance": false,
+        "water_sources": [
+          "WS_RAINFED"
+        ],
+        "amount_fertilizer_utilized": 90
+      },
+      {
+        "land_ref": "L2",
+        "fertilizer_use": false,
+        "pesticide_use": false,
+        "insecticide_use": true,
+        "improved_seed_use": true,
+        "access_to_machinery": false,
+        "access_to_finance": false,
+        "water_sources": [
+          "WS_RAINFED"
+        ]
+      }
+    ],
+    "membership": {
+      "is_primary_cooperative_member": true,
+      "primary_cooperative_name": "Tsehay Primary Cooperative",
+      "is_cooperative_union_member": true,
+      "cooperative_union_name": "Raya Farmers Cooperative Union",
+      "is_farmer_cluster_member": true,
+      "farmer_cluster_role": "MEMBER",
+      "primary_commodity": "CROP_SORGHUM"
+    }
+  },
+  {
+    "individual_id": "ETH-IND-0010",
+    "farmer": {
+      "grandfathers_name": "Berhanu",
+      "language_spoken": "TIGRINYA",
+      "local_language": "TIGRINYA",
+      "is_psnp_user": true,
+      "is_farmer": true,
+      "farming_type": "MIXED",
+      "income_sources": [
+        "SOI_CROP_PRODUCTION"
+      ],
+      "identity_document_type": "FAYDA",
+      "phone_type": "PRIMARY"
+    },
+    "lands": [
+      {
+        "land_ref": "L1",
+        "land_ownership_type": "OWNER",
+        "land_size": 1.25,
+        "unit": "HECTARE",
+        "soil_fertility": "SF_HIGH",
+        "current_land_use": "AGRICULTURAL",
+        "farming_type": "CROP",
+        "year_of_acquisition": 2003,
+        "means_of_acquisition": "MOA_INHERITANCE"
+      }
+    ],
+    "crops": [
+      {
+        "land_ref": "L1",
+        "commodity": "CROP_BARLEY",
+        "season": "SEASON_BELG",
+        "end_use": "FOOD_HUMAN_CONSUMPTION",
+        "planted_date": "2026-07-19",
+        "water_sources": [
+          "WS_RAINFED"
+        ],
+        "is_diseased": false
+      }
+    ],
+    "livestock": [
+      {
+        "land_ref": "L1",
+        "livestock_type": "LSTK_DONKEY",
+        "breed": "BREED_LOCAL",
+        "head_count": 2,
+        "livestock_system": "MIXED",
+        "production_type": "PACK_ANIMAL",
+        "body_condition": "GOOD",
+        "is_diseased": false,
+        "water_sources": [
+          "WS_SURFACE_WATER"
+        ]
+      }
+    ],
+    "farm_inputs": [
+      {
+        "land_ref": "L1",
+        "fertilizer_use": true,
+        "pesticide_use": false,
+        "insecticide_use": false,
+        "improved_seed_use": false,
+        "access_to_machinery": false,
+        "access_to_finance": true,
+        "water_sources": [
+          "WS_RAINFED"
+        ],
+        "finance_access_types": [
+          "SAVING"
+        ],
+        "amount_fertilizer_utilized": 95
+      }
+    ],
+    "membership": {
+      "is_primary_cooperative_member": true,
+      "primary_cooperative_name": "Tsehay Primary Cooperative",
+      "is_cooperative_union_member": false,
+      "cooperative_union_name": "",
+      "is_farmer_cluster_member": true,
+      "farmer_cluster_role": "MEMBER",
+      "primary_commodity": "CROP_BARLEY"
+    }
+  },
+  {
+    "individual_id": "ETH-IND-0011",
+    "farmer": {
+      "grandfathers_name": "Berhanu",
+      "language_spoken": "TIGRINYA",
+      "local_language": "TIGRINYA",
+      "is_psnp_user": false,
+      "is_farmer": false,
+      "income_sources": [],
+      "identity_document_type": "FAYDA",
+      "phone_type": "PRIMARY"
+    }
+  },
+  {
+    "individual_id": "ETH-IND-0012",
+    "farmer": {
+      "grandfathers_name": "Berhanu",
+      "language_spoken": "TIGRINYA",
+      "local_language": "TIGRINYA",
+      "is_psnp_user": false,
+      "is_farmer": false,
+      "income_sources": [],
+      "identity_document_type": "FAYDA",
+      "phone_type": "PRIMARY"
+    }
+  },
+  {
+    "individual_id": "ETH-IND-0013",
+    "farmer": {
+      "grandfathers_name": "Berhanu",
+      "language_spoken": "TIGRINYA",
+      "local_language": "TIGRINYA",
+      "is_psnp_user": true,
+      "is_farmer": false,
+      "income_sources": [],
+      "identity_document_type": "FAYDA",
+      "phone_type": "PRIMARY"
+    }
+  },
+  {
+    "individual_id": "ETH-IND-0014",
+    "farmer": {
+      "grandfathers_name": "Berhanu",
+      "language_spoken": "TIGRINYA",
+      "local_language": "TIGRINYA",
+      "is_psnp_user": false,
+      "is_farmer": true,
+      "farming_type": "CROP",
+      "income_sources": [
+        "SOI_CROP_PRODUCTION"
+      ],
+      "identity_document_type": "FAYDA",
+      "phone_type": "PRIMARY"
+    },
+    "lands": [
+      {
+        "land_ref": "L1",
+        "land_ownership_type": "TENANT",
+        "land_size": 0.75,
+        "unit": "HECTARE",
+        "soil_fertility": "SF_MEDIUM",
+        "current_land_use": "AGRICULTURAL",
+        "farming_type": "CROP",
+        "year_of_acquisition": 2015,
+        "means_of_acquisition": "MOA_REALLOCATION"
+      },
+      {
+        "land_ref": "L2",
+        "land_ownership_type": "CROP_SHARE",
+        "land_size": 1.5,
+        "unit": "HECTARE",
+        "soil_fertility": "SF_LOW",
+        "current_land_use": "GRAZING",
+        "farming_type": "LIVESTOCK",
+        "year_of_acquisition": 2016,
+        "means_of_acquisition": "MOA_RENTING_LEASING"
+      }
+    ],
+    "crops": [
+      {
+        "land_ref": "L1",
+        "commodity": "CROP_MAIZE",
+        "season": "SEASON_IRRIGATION",
+        "end_use": "FOOD_HUMAN_CONSUMPTION",
+        "planted_date": "2026-07-13",
+        "water_sources": [
+          "WS_IRRIGATION_SURFACE"
+        ],
+        "is_diseased": false
+      },
+      {
+        "land_ref": "L2",
+        "commodity": "CROP_TEFF",
+        "season": "SEASON_MEHER",
+        "end_use": "FOOD_HUMAN_CONSUMPTION",
+        "planted_date": "2026-07-14",
+        "water_sources": [
+          "WS_RAINFED"
+        ],
+        "is_diseased": false
+      }
+    ],
+    "livestock": [
+      {
+        "land_ref": "L2",
+        "livestock_type": "LSTK_CHICKEN",
+        "breed": "BREED_LOCAL",
+        "head_count": 15,
+        "livestock_system": "MIXED",
+        "production_type": "EGG",
+        "body_condition": "GOOD",
+        "is_diseased": false,
+        "water_sources": [
+          "WS_SURFACE_WATER"
+        ]
+      }
+    ],
+    "farm_inputs": [
+      {
+        "land_ref": "L1",
+        "fertilizer_use": true,
+        "pesticide_use": false,
+        "insecticide_use": false,
+        "improved_seed_use": false,
+        "access_to_machinery": false,
+        "access_to_finance": false,
+        "water_sources": [
+          "WS_RAINFED"
+        ],
+        "amount_fertilizer_utilized": 115
+      },
+      {
+        "land_ref": "L2",
+        "fertilizer_use": false,
+        "pesticide_use": false,
+        "insecticide_use": false,
+        "improved_seed_use": false,
+        "access_to_machinery": false,
+        "access_to_finance": false,
+        "water_sources": [
+          "WS_RAINFED"
+        ]
+      }
+    ],
+    "membership": {
+      "is_primary_cooperative_member": true,
+      "primary_cooperative_name": "Tsehay Primary Cooperative",
+      "is_cooperative_union_member": true,
+      "cooperative_union_name": "Raya Farmers Cooperative Union",
+      "is_farmer_cluster_member": true,
+      "farmer_cluster_role": "MEMBER",
+      "primary_commodity": "CROP_MAIZE"
+    }
+  },
+  {
+    "individual_id": "ETH-IND-0015",
+    "farmer": {
+      "grandfathers_name": "Mekonnen",
+      "language_spoken": "TIGRINYA",
+      "local_language": "TIGRINYA",
+      "is_psnp_user": false,
+      "is_farmer": false,
+      "income_sources": [],
+      "identity_document_type": "FAYDA",
+      "phone_type": "PRIMARY"
+    }
+  },
+  {
+    "individual_id": "ETH-IND-0016",
+    "farmer": {
+      "grandfathers_name": "Assefa",
+      "language_spoken": "TIGRINYA",
+      "local_language": "TIGRINYA",
+      "is_psnp_user": true,
+      "is_farmer": true,
+      "farming_type": "MIXED",
+      "income_sources": [
+        "SOI_CROP_PRODUCTION"
+      ],
+      "identity_document_type": "FAYDA",
+      "phone_type": "PRIMARY"
+    },
+    "lands": [
+      {
+        "land_ref": "L1",
+        "land_ownership_type": "OWNER",
+        "land_size": 1.75,
+        "unit": "HECTARE",
+        "soil_fertility": "SF_HIGH",
+        "current_land_use": "AGRICULTURAL",
+        "farming_type": "CROP",
+        "year_of_acquisition": 2021,
+        "means_of_acquisition": "MOA_INHERITANCE"
+      },
+      {
+        "land_ref": "L2",
+        "land_ownership_type": "TENANT",
+        "land_size": 2.5,
+        "unit": "HECTARE",
+        "soil_fertility": "SF_MEDIUM",
+        "current_land_use": "GRAZING",
+        "farming_type": "LIVESTOCK",
+        "year_of_acquisition": 2022,
+        "means_of_acquisition": "MOA_REALLOCATION"
+      }
+    ],
+    "crops": [
+      {
+        "land_ref": "L1",
+        "commodity": "CROP_SORGHUM",
+        "season": "SEASON_MEHER",
+        "end_use": "FOOD_HUMAN_CONSUMPTION",
+        "planted_date": "2026-07-15",
+        "water_sources": [
+          "WS_RAINFED"
+        ],
+        "is_diseased": false
+      },
+      {
+        "land_ref": "L2",
+        "commodity": "CROP_BARLEY",
+        "season": "SEASON_BELG",
+        "end_use": "FOOD_HUMAN_CONSUMPTION",
+        "planted_date": "2026-07-16",
+        "water_sources": [
+          "WS_RAINFED"
+        ],
+        "is_diseased": false
+      }
+    ],
+    "livestock": [
+      {
+        "land_ref": "L2",
+        "livestock_type": "LSTK_CATTLE",
+        "breed": "BREED_LOCAL",
+        "head_count": 4,
+        "livestock_system": "MIXED",
+        "production_type": "MILK",
+        "body_condition": "GOOD",
+        "is_diseased": false,
+        "water_sources": [
+          "WS_SURFACE_WATER"
+        ]
+      }
+    ],
+    "farm_inputs": [
+      {
+        "land_ref": "L1",
+        "fertilizer_use": true,
+        "pesticide_use": false,
+        "insecticide_use": false,
+        "improved_seed_use": false,
+        "access_to_machinery": true,
+        "access_to_finance": true,
+        "water_sources": [
+          "WS_RAINFED"
+        ],
+        "machinery_types": [
+          "MACH_THRESHER"
+        ],
+        "finance_access_types": [
+          "SAVING"
+        ],
+        "amount_fertilizer_utilized": 125
+      },
+      {
+        "land_ref": "L2",
+        "fertilizer_use": false,
+        "pesticide_use": false,
+        "insecticide_use": false,
+        "improved_seed_use": false,
+        "access_to_machinery": true,
+        "access_to_finance": true,
+        "water_sources": [
+          "WS_RAINFED"
+        ],
+        "machinery_types": [
+          "MACH_THRESHER"
+        ],
+        "finance_access_types": [
+          "SAVING"
+        ]
+      }
+    ],
+    "membership": {
+      "is_primary_cooperative_member": true,
+      "primary_cooperative_name": "Tsehay Primary Cooperative",
+      "is_cooperative_union_member": true,
+      "cooperative_union_name": "Raya Farmers Cooperative Union",
+      "is_farmer_cluster_member": true,
+      "farmer_cluster_role": "MEMBER",
+      "primary_commodity": "CROP_SORGHUM"
+    }
+  },
+  {
+    "individual_id": "ETH-IND-0017",
+    "farmer": {
+      "grandfathers_name": "Mulugeta",
+      "language_spoken": "TIGRINYA",
+      "local_language": "TIGRINYA",
+      "is_psnp_user": false,
+      "is_farmer": false,
+      "income_sources": [],
+      "identity_document_type": "FAYDA",
+      "phone_type": "PRIMARY"
+    }
+  },
+  {
+    "individual_id": "ETH-IND-0018",
+    "farmer": {
+      "grandfathers_name": "Mekonnen",
+      "language_spoken": "TIGRINYA",
+      "local_language": "TIGRINYA",
+      "is_psnp_user": false,
+      "is_farmer": true,
+      "farming_type": "LIVESTOCK",
+      "income_sources": [
+        "SOI_CROP_PRODUCTION"
+      ],
+      "identity_document_type": "FAYDA",
+      "phone_type": "PRIMARY"
+    },
+    "lands": [
+      {
+        "land_ref": "L1",
+        "land_ownership_type": "CROP_SHARE",
+        "land_size": 2.75,
+        "unit": "HECTARE",
+        "soil_fertility": "SF_LOW",
+        "current_land_use": "AGRICULTURAL",
+        "farming_type": "CROP",
+        "year_of_acquisition": 2003,
+        "means_of_acquisition": "MOA_RENTING_LEASING"
+      },
+      {
+        "land_ref": "L2",
+        "land_ownership_type": "OWNER",
+        "land_size": 1.0,
+        "unit": "HECTARE",
+        "soil_fertility": "SF_HIGH",
+        "current_land_use": "GRAZING",
+        "farming_type": "LIVESTOCK",
+        "year_of_acquisition": 2004,
+        "means_of_acquisition": "MOA_INHERITANCE"
+      }
+    ],
+    "crops": [
+      {
+        "land_ref": "L1",
+        "commodity": "CROP_BREAD_WHEAT",
+        "season": "SEASON_MEHER",
+        "end_use": "FOOD_HUMAN_CONSUMPTION",
+        "planted_date": "2026-07-17",
+        "water_sources": [
+          "WS_RAINFED"
+        ],
+        "is_diseased": false
+      },
+      {
+        "land_ref": "L2",
+        "commodity": "CROP_FABA_BEAN",
+        "season": "SEASON_MEHER",
+        "end_use": "FOOD_HUMAN_CONSUMPTION",
+        "planted_date": "2026-07-18",
+        "water_sources": [
+          "WS_RAINFED"
+        ],
+        "is_diseased": false
+      }
+    ],
+    "livestock": [
+      {
+        "land_ref": "L2",
+        "livestock_type": "LSTK_SHEEP",
+        "breed": "BREED_LOCAL",
+        "head_count": 7,
+        "livestock_system": "MIXED",
+        "production_type": "WOOL",
+        "body_condition": "GOOD",
+        "is_diseased": false,
+        "water_sources": [
+          "WS_SURFACE_WATER"
+        ]
+      }
+    ],
+    "farm_inputs": [
+      {
+        "land_ref": "L1",
+        "fertilizer_use": true,
+        "pesticide_use": false,
+        "insecticide_use": false,
+        "improved_seed_use": false,
+        "access_to_machinery": false,
+        "access_to_finance": false,
+        "water_sources": [
+          "WS_RAINFED"
+        ],
+        "amount_fertilizer_utilized": 135
+      },
+      {
+        "land_ref": "L2",
+        "fertilizer_use": false,
+        "pesticide_use": false,
+        "insecticide_use": false,
+        "improved_seed_use": false,
+        "access_to_machinery": false,
+        "access_to_finance": false,
+        "water_sources": [
+          "WS_RAINFED"
+        ]
+      }
+    ],
+    "membership": {
+      "is_primary_cooperative_member": true,
+      "primary_cooperative_name": "Tsehay Primary Cooperative",
+      "is_cooperative_union_member": true,
+      "cooperative_union_name": "Raya Farmers Cooperative Union",
+      "is_farmer_cluster_member": true,
+      "farmer_cluster_role": "MEMBER",
+      "primary_commodity": "CROP_BREAD_WHEAT"
+    }
+  },
+  {
+    "individual_id": "ETH-IND-0019",
+    "farmer": {
+      "grandfathers_name": "Tadesse",
+      "language_spoken": "TIGRINYA",
+      "local_language": "TIGRINYA",
+      "is_psnp_user": true,
+      "is_farmer": true,
+      "farming_type": "MIXED",
+      "income_sources": [
+        "SOI_CROP_PRODUCTION",
+        "SOI_LIVESTOCK_PRODUCTION"
+      ],
+      "identity_document_type": "FAYDA",
+      "phone_type": "PRIMARY"
+    },
+    "lands": [
+      {
+        "land_ref": "L1",
+        "land_ownership_type": "OWNER",
+        "land_size": 2.0,
+        "unit": "HECTARE",
+        "soil_fertility": "SF_HIGH",
+        "current_land_use": "AGRICULTURAL",
+        "farming_type": "CROP",
+        "year_of_acquisition": 2006,
+        "means_of_acquisition": "MOA_INHERITANCE"
+      }
+    ],
+    "crops": [
+      {
+        "land_ref": "L1",
+        "commodity": "CROP_FABA_BEAN",
+        "season": "SEASON_MEHER",
+        "end_use": "FOOD_HUMAN_CONSUMPTION",
+        "planted_date": "2026-07-18",
+        "water_sources": [
+          "WS_RAINFED"
+        ],
+        "is_diseased": false
+      }
+    ],
+    "livestock": [
+      {
+        "land_ref": "L1",
+        "livestock_type": "LSTK_CHICKEN",
+        "breed": "BREED_LOCAL",
+        "head_count": 15,
+        "livestock_system": "MIXED",
+        "production_type": "EGG",
+        "body_condition": "GOOD",
+        "is_diseased": false,
+        "water_sources": [
+          "WS_SURFACE_WATER"
+        ]
+      }
+    ],
+    "farm_inputs": [
+      {
+        "land_ref": "L1",
+        "fertilizer_use": true,
+        "pesticide_use": false,
+        "insecticide_use": false,
+        "improved_seed_use": true,
+        "access_to_machinery": false,
+        "access_to_finance": true,
+        "water_sources": [
+          "WS_RAINFED"
+        ],
+        "finance_access_types": [
+          "SAVING"
+        ],
+        "amount_fertilizer_utilized": 140
+      }
+    ],
+    "membership": {
+      "is_primary_cooperative_member": true,
+      "primary_cooperative_name": "Tsehay Primary Cooperative",
+      "is_cooperative_union_member": false,
+      "cooperative_union_name": "",
+      "is_farmer_cluster_member": true,
+      "farmer_cluster_role": "MEMBER",
+      "primary_commodity": "CROP_FABA_BEAN"
+    }
+  },
+  {
+    "individual_id": "ETH-IND-0020",
+    "farmer": {
+      "grandfathers_name": "Mulugeta",
+      "language_spoken": "TIGRINYA",
+      "local_language": "TIGRINYA",
+      "is_psnp_user": false,
+      "is_farmer": false,
+      "income_sources": [],
+      "identity_document_type": "FAYDA",
+      "phone_type": "PRIMARY"
+    }
+  },
+  {
+    "individual_id": "ETH-IND-0021",
+    "farmer": {
+      "grandfathers_name": "Mulugeta",
+      "language_spoken": "TIGRINYA",
+      "local_language": "TIGRINYA",
+      "is_psnp_user": false,
+      "is_farmer": false,
+      "income_sources": [],
+      "identity_document_type": "FAYDA",
+      "phone_type": "PRIMARY"
+    }
+  }
+]
