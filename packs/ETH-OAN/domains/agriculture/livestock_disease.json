@@ -1,0 +1,212 @@
+{
+  "attribute_id": "LIVESTOCK_DISEASE",
+  "attribute_code": "LIVESTOCK_DISEASE",
+  "attribute_display": "Livestock disease",
+  "description": "Livestock diseases recorded in health events. Source: OpenAgriNet Livestock Registry disease list, as configured on the OAN development Master Data (Oct 2026).",
+  "is_hierarchical": false,
+  "values": [
+    {
+      "value_id": "LIVESTOCK_DISEASE_ANTHRAX",
+      "value_code": "LIVESTOCK_DISEASE_ANTHRAX",
+      "value_display": "Anthrax",
+      "sort_order": 1,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_DISEASE_BLACKLEG",
+      "value_code": "LIVESTOCK_DISEASE_BLACKLEG",
+      "value_display": "Blackleg",
+      "sort_order": 2,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_DISEASE_CBPP",
+      "value_code": "LIVESTOCK_DISEASE_CBPP",
+      "value_display": "Contagious Bovine Pleuropneumonia",
+      "sort_order": 3,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_DISEASE_CCPP",
+      "value_code": "LIVESTOCK_DISEASE_CCPP",
+      "value_display": "Contagious Caprine Pleuropneumonia",
+      "sort_order": 4,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_DISEASE_FMD",
+      "value_code": "LIVESTOCK_DISEASE_FMD",
+      "value_display": "Foot and Mouth Disease",
+      "sort_order": 5,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_DISEASE_LSD",
+      "value_code": "LIVESTOCK_DISEASE_LSD",
+      "value_display": "Lumpy Skin Disease",
+      "sort_order": 6,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_DISEASE_PPR",
+      "value_code": "LIVESTOCK_DISEASE_PPR",
+      "value_display": "Peste des Petits Ruminants",
+      "sort_order": 7,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_DISEASE_SHEEP_GOAT_POX",
+      "value_code": "LIVESTOCK_DISEASE_SHEEP_GOAT_POX",
+      "value_display": "Sheep and Goat Pox",
+      "sort_order": 8,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_DISEASE_NEWCASTLE_DISEASE",
+      "value_code": "LIVESTOCK_DISEASE_NEWCASTLE_DISEASE",
+      "value_display": "Newcastle Disease",
+      "sort_order": 9,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_DISEASE_GUMBORO_DISEASE",
+      "value_code": "LIVESTOCK_DISEASE_GUMBORO_DISEASE",
+      "value_display": "Gumboro",
+      "sort_order": 10,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_DISEASE_FOWL_TYPHOID_DISEASE",
+      "value_code": "LIVESTOCK_DISEASE_FOWL_TYPHOID_DISEASE",
+      "value_display": "Fowl Typhoid",
+      "sort_order": 11,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_DISEASE_FOWL_POX_DISEASE",
+      "value_code": "LIVESTOCK_DISEASE_FOWL_POX_DISEASE",
+      "value_display": "Fowl Pox",
+      "sort_order": 12,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_DISEASE_RABIES",
+      "value_code": "LIVESTOCK_DISEASE_RABIES",
+      "value_display": "Rabies",
+      "sort_order": 13,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_DISEASE_BRUCELLOSIS",
+      "value_code": "LIVESTOCK_DISEASE_BRUCELLOSIS",
+      "value_display": "Brucellosis",
+      "sort_order": 14,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_DISEASE_TRYPANOSOMIASIS",
+      "value_code": "LIVESTOCK_DISEASE_TRYPANOSOMIASIS",
+      "value_display": "Trypanosomiasis",
+      "sort_order": 15,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_DISEASE_MASTITIS",
+      "value_code": "LIVESTOCK_DISEASE_MASTITIS",
+      "value_display": "Mastitis",
+      "sort_order": 16,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_DISEASE_INTERNAL_PARASITES",
+      "value_code": "LIVESTOCK_DISEASE_INTERNAL_PARASITES",
+      "value_display": "Internal Parasites",
+      "sort_order": 17,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_DISEASE_EXTERNAL_PARASITES",
+      "value_code": "LIVESTOCK_DISEASE_EXTERNAL_PARASITES",
+      "value_display": "External Parasites",
+      "sort_order": 18,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_DISEASE_PASTEURELLOSIS",
+      "value_code": "LIVESTOCK_DISEASE_PASTEURELLOSIS",
+      "value_display": "Pasteurellosis",
+      "sort_order": 19,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_DISEASE_BOVINE_TB",
+      "value_code": "LIVESTOCK_DISEASE_BOVINE_TB",
+      "value_display": "Bovine Tuberculosis",
+      "sort_order": 20,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_DISEASE_CAMEL_POX",
+      "value_code": "LIVESTOCK_DISEASE_CAMEL_POX",
+      "value_display": "Camel Pox",
+      "sort_order": 21,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_DISEASE_AFRICAN_HORSE_SICKNESS",
+      "value_code": "LIVESTOCK_DISEASE_AFRICAN_HORSE_SICKNESS",
+      "value_display": "African Horse Sickness",
+      "sort_order": 22,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_DISEASE_ENTEROTOXAEMIA_DISEASE",
+      "value_code": "LIVESTOCK_DISEASE_ENTEROTOXAEMIA_DISEASE",
+      "value_display": "Enterotoxaemia",
+      "sort_order": 23,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_DISEASE_COCCIDIOSIS",
+      "value_code": "LIVESTOCK_DISEASE_COCCIDIOSIS",
+      "value_display": "Coccidiosis",
+      "sort_order": 24,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_DISEASE_FOOT_ROT",
+      "value_code": "LIVESTOCK_DISEASE_FOOT_ROT",
+      "value_display": "Foot Rot",
+      "sort_order": 25,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_DISEASE_BLOAT",
+      "value_code": "LIVESTOCK_DISEASE_BLOAT",
+      "value_display": "Bloat",
+      "sort_order": 26,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_DISEASE_RETAINED_PLACENTA",
+      "value_code": "LIVESTOCK_DISEASE_RETAINED_PLACENTA",
+      "value_display": "Retained Placenta",
+      "sort_order": 27,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_DISEASE_DIARRHOEA",
+      "value_code": "LIVESTOCK_DISEASE_DIARRHOEA",
+      "value_display": "Diarrhoea",
+      "sort_order": 28,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_DISEASE_OTHER_DISEASE",
+      "value_code": "LIVESTOCK_DISEASE_OTHER_DISEASE",
+      "value_display": "Other",
+      "sort_order": 29,
+      "display_i18n": {}
+    }
+  ]
+}
