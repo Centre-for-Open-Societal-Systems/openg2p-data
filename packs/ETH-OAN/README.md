@@ -80,6 +80,11 @@ poultry is a flock; other has neither. The settings come from
 adds attributes to a base list and never replaces a value. The build stops if the overlay names a
 value the list lacks, or if the base list already has a different `attribute_schema`.
 
+`VACCINE_TYPE` (an OAN list) has an optional `interval_days` attribute next to `species`: the
+default number of days until the next dose, from which the livestock registry fills a
+vaccination's next due date. An approved row in the registry's Vaccine Schedule register
+overrides it. Values without `interval_days` get no default due date.
+
 ## Lists the farmer registry adds
 
 The farmer registry's own choice lists come from Master Data like every other dropdown, so the

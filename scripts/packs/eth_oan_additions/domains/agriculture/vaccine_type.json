@@ -11,6 +11,11 @@
         "type": "string",
         "x-list-ref": "LIVESTOCK_SPECIES",
         "title": "Species"
+      },
+      "interval_days": {
+        "type": "integer",
+        "minimum": 1,
+        "title": "Default days until the next dose"
       }
     },
     "required": [
@@ -26,7 +31,8 @@
       "sort_order": 1,
       "display_i18n": {},
       "attributes": {
-        "species": "CATTLE"
+        "species": "CATTLE",
+        "interval_days": 365
       }
     },
     {
@@ -36,7 +42,8 @@
       "sort_order": 2,
       "display_i18n": {},
       "attributes": {
-        "species": "CATTLE"
+        "species": "CATTLE",
+        "interval_days": 365
       }
     },
     {
@@ -66,7 +73,8 @@
       "sort_order": 5,
       "display_i18n": {},
       "attributes": {
-        "species": "CATTLE"
+        "species": "CATTLE",
+        "interval_days": 365
       }
     },
     {
@@ -106,7 +114,8 @@
       "sort_order": 9,
       "display_i18n": {},
       "attributes": {
-        "species": "SHEEP"
+        "species": "SHEEP",
+        "interval_days": 365
       }
     },
     {
@@ -156,7 +165,8 @@
       "sort_order": 14,
       "display_i18n": {},
       "attributes": {
-        "species": "GOATS"
+        "species": "GOATS",
+        "interval_days": 365
       }
     },
     {
@@ -176,7 +186,8 @@
       "sort_order": 16,
       "display_i18n": {},
       "attributes": {
-        "species": "GOATS"
+        "species": "GOATS",
+        "interval_days": 365
       }
     },
     {
@@ -206,7 +217,8 @@
       "sort_order": 19,
       "display_i18n": {},
       "attributes": {
-        "species": "CAMELS"
+        "species": "CAMELS",
+        "interval_days": 365
       }
     },
     {
@@ -236,7 +248,8 @@
       "sort_order": 22,
       "display_i18n": {},
       "attributes": {
-        "species": "POULTRY"
+        "species": "POULTRY",
+        "interval_days": 90
       }
     },
     {
