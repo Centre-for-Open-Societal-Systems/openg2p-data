@@ -1,0 +1,22 @@
+{
+  "attribute_id": "CLUSTER_STATUS",
+  "attribute_code": "CLUSTER_STATUS",
+  "attribute_display": "Cluster / Non Cluster Status",
+  "is_hierarchical": false,
+  "values": [
+    {
+      "value_id": "CLUSTERED",
+      "value_code": "CLUSTERED",
+      "value_display": "Clustered",
+      "sort_order": 1,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "INDEPENDENT",
+      "value_code": "INDEPENDENT",
+      "value_display": "Independent",
+      "sort_order": 2,
+      "display_i18n": {}
+    }
+  ]
+}

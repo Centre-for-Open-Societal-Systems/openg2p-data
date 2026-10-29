@@ -1,0 +1,29 @@
+{
+  "attribute_id": "PLOT_CATEGORY",
+  "attribute_code": "PLOT_CATEGORY",
+  "attribute_display": "Plot Category",
+  "is_hierarchical": false,
+  "values": [
+    {
+      "value_id": "ANNUAL_CROP",
+      "value_code": "ANNUAL_CROP",
+      "value_display": "Annual Crop",
+      "sort_order": 1,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "PERENNIAL_CROP",
+      "value_code": "PERENNIAL_CROP",
+      "value_display": "Perennial Crop",
+      "sort_order": 2,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "BIENNIAL_CROP",
+      "value_code": "BIENNIAL_CROP",
+      "value_display": "Biennial Crop",
+      "sort_order": 3,
+      "display_i18n": {}
+    }
+  ]
+}

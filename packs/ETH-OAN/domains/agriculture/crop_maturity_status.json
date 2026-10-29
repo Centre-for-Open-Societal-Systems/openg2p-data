@@ -1,0 +1,22 @@
+{
+  "attribute_id": "CROP_MATURITY_STATUS",
+  "attribute_code": "CROP_MATURITY_STATUS",
+  "attribute_display": "Crop Maturity Status",
+  "is_hierarchical": false,
+  "values": [
+    {
+      "value_id": "READY_FOR_HARVEST",
+      "value_code": "READY_FOR_HARVEST",
+      "value_display": "Ready For Harvest",
+      "sort_order": 1,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "NOT_YET_READY_FOR_HARVEST",
+      "value_code": "NOT_YET_READY_FOR_HARVEST",
+      "value_display": "Not Yet Ready For Harvest",
+      "sort_order": 2,
+      "display_i18n": {}
+    }
+  ]
+}
