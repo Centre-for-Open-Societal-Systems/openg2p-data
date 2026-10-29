@@ -601,7 +601,6 @@ FARMER_ID = re.compile(r"^FR-[0-9]{12}$")
 MOBILE = re.compile(r"^0[79][0-9]{8}$")
 # letters, spaces and apostrophes: what the registries accept as a person's name
 PERSON_NAME = re.compile(r"^[A-Za-z]+(?:[ '][A-Za-z]+)*$")
-DAMAGE = re.compile(r"^[0-9]+(?:\.[0-9]+)?%?$")
 EAR_TAG = re.compile(r"^ET[0-9]{10}$")
 
 # farms.json names a species by its LIVESTOCK_TYPE code; the registries use
@@ -969,10 +968,10 @@ def check_crop_sown_samples(pack_dir, r):
             name_field = {"INFT_PEST": "pest_name", "INFT_WEED": "weed_name", "INFT_DISEASE": "disease_name"}.get(kind)
             if name_field and not row.get(name_field):
                 r.error(f"{label}: a {kind} row needs {name_field}")
+            # a number: the registry stores it in a numeric column, where "12%" fails the save
             damage = row.get("estimated_damage_pct")
-            if damage is not None and not (isinstance(damage, str) and DAMAGE.match(damage)
-                                           and float(damage.rstrip('%')) <= 100):
-                r.error(f"{label}: estimated_damage_pct={damage!r} is not a percentage")
+            if damage is not None and not (_number(damage) is not None and 0 <= damage <= 100):
+                r.error(f"{label}: estimated_damage_pct={damage!r} must be a number from 0 to 100")
 
         # stages of a land follow one another
         for (ref, what), stages in sorted(independent.items(), key=lambda kv: str(kv[0])):

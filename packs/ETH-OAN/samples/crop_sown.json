@@ -175,7 +175,7 @@
         "growth_stage": "FLOWERING",
         "observation_date": "2026-09-04",
         "severity_level": "MEDIUM",
-        "estimated_damage_pct": "12%"
+        "estimated_damage_pct": 12
       }
     ],
     "harvest": [
@@ -484,7 +484,7 @@
         "growth_stage": "VEGETATIVE",
         "observation_date": "2026-08-22",
         "severity_level": "LOW",
-        "estimated_damage_pct": "5%"
+        "estimated_damage_pct": 5
       }
     ],
     "harvest": [
@@ -611,7 +611,7 @@
         "growth_stage": "VEGETATIVE",
         "observation_date": "2026-03-26",
         "severity_level": "HIGH",
-        "estimated_damage_pct": "22%"
+        "estimated_damage_pct": 22
       }
     ],
     "harvest": [
@@ -905,7 +905,7 @@
         "growth_stage": "FLOWERING",
         "observation_date": "2026-04-21",
         "severity_level": "MEDIUM",
-        "estimated_damage_pct": "10%"
+        "estimated_damage_pct": 10
       }
     ],
     "harvest": [
@@ -1325,7 +1325,7 @@
         "growth_stage": "FLOWERING",
         "observation_date": "2026-09-10",
         "severity_level": "HIGH",
-        "estimated_damage_pct": "18%"
+        "estimated_damage_pct": 18
       }
     ],
     "harvest": [
