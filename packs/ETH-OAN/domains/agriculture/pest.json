@@ -1,0 +1,15 @@
+{
+  "attribute_id": "PEST",
+  "attribute_code": "PEST",
+  "attribute_display": "Pest",
+  "is_hierarchical": false,
+  "values": [
+    {
+      "value_id": "LEAFHOPPER_JASSIDS",
+      "value_code": "LEAFHOPPER_JASSIDS",
+      "value_display": "Leafhopper (jassids)",
+      "sort_order": 1,
+      "display_i18n": {}
+    }
+  ]
+}

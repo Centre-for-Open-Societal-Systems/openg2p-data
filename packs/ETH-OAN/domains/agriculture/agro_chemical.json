@@ -1,0 +1,120 @@
+{
+  "attribute_id": "AGRO_CHEMICAL",
+  "attribute_code": "AGRO_CHEMICAL",
+  "attribute_display": "Agro chemical",
+  "is_hierarchical": false,
+  "values": [
+    {
+      "value_id": "PESTICIDE_ALUMINIUM_PHOSPHIDE",
+      "value_code": "PESTICIDE_ALUMINIUM_PHOSPHIDE",
+      "value_display": "Aluminium phosphide",
+      "sort_order": 1,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "PESTICIDE_BORDEAUX_MIXTURE",
+      "value_code": "PESTICIDE_BORDEAUX_MIXTURE",
+      "value_display": "Bordeaux mixture",
+      "sort_order": 2,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "PESTICIDE_COPPER_HYDROXIDE",
+      "value_code": "PESTICIDE_COPPER_HYDROXIDE",
+      "value_display": "Copper hydroxide",
+      "sort_order": 3,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "PESTICIDE_COPPER_OXYCHLORIDE",
+      "value_code": "PESTICIDE_COPPER_OXYCHLORIDE",
+      "value_display": "Copper oxychloride",
+      "sort_order": 4,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "PESTICIDE_COPPER_SULPHATE",
+      "value_code": "PESTICIDE_COPPER_SULPHATE",
+      "value_display": "Copper sulphate",
+      "sort_order": 5,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "PESTICIDE_IRON_PHOSPHATE",
+      "value_code": "PESTICIDE_IRON_PHOSPHATE",
+      "value_display": "Iron phosphate",
+      "sort_order": 6,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "PESTICIDE_NEEM_OIL",
+      "value_code": "PESTICIDE_NEEM_OIL",
+      "value_display": "Neem oil",
+      "sort_order": 7,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "PESTICIDE_SALICYLIC_ACID",
+      "value_code": "PESTICIDE_SALICYLIC_ACID",
+      "value_display": "Salicylic acid",
+      "sort_order": 8,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "PESTICIDE_ZINC_PHOSPHIDE",
+      "value_code": "PESTICIDE_ZINC_PHOSPHIDE",
+      "value_display": "Zinc phosphide",
+      "sort_order": 9,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "WEEDICIDE_2_4_D_AMINE",
+      "value_code": "WEEDICIDE_2_4_D_AMINE",
+      "value_display": "2,4-D amine",
+      "sort_order": 10,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "WEEDICIDE_2_4_D_METSULFURON",
+      "value_code": "WEEDICIDE_2_4_D_METSULFURON",
+      "value_display": "2,4-D + metsulfuron",
+      "sort_order": 11,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "WEEDICIDE_BISPYRIBAC_SODIUM",
+      "value_code": "WEEDICIDE_BISPYRIBAC_SODIUM",
+      "value_display": "Bispyribac sodium",
+      "sort_order": 12,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "WEEDICIDE_COPPER_SULPHATE",
+      "value_code": "WEEDICIDE_COPPER_SULPHATE",
+      "value_display": "Copper sulphate",
+      "sort_order": 13,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "WEEDICIDE_HALOSULFURON_METHYL",
+      "value_code": "WEEDICIDE_HALOSULFURON_METHYL",
+      "value_display": "Halosulfuron methyl",
+      "sort_order": 14,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "WEEDICIDE_MCPA",
+      "value_code": "WEEDICIDE_MCPA",
+      "value_display": "MCPA",
+      "sort_order": 15,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "WEEDICIDE_METSULFURON_METHYL",
+      "value_code": "WEEDICIDE_METSULFURON_METHYL",
+      "value_display": "Metsulfuron methyl",
+      "sort_order": 16,
+      "display_i18n": {}
+    }
+  ]
+}

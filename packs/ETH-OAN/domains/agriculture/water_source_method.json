@@ -1,0 +1,15 @@
+{
+  "attribute_id": "WATER_SOURCE_METHOD",
+  "attribute_code": "WATER_SOURCE_METHOD",
+  "attribute_display": "Water source method",
+  "is_hierarchical": false,
+  "values": [
+    {
+      "value_id": "SURFACE",
+      "value_code": "SURFACE",
+      "value_display": "Surface / flood",
+      "sort_order": 1,
+      "display_i18n": {}
+    }
+  ]
+}

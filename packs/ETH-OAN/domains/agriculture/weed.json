@@ -1,0 +1,22 @@
+{
+  "attribute_id": "WEED",
+  "attribute_code": "WEED",
+  "attribute_display": "Weed",
+  "is_hierarchical": false,
+  "values": [
+    {
+      "value_id": "KHARIF_SUMMER",
+      "value_code": "KHARIF_SUMMER",
+      "value_display": "Kharif / summer",
+      "sort_order": 1,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "RABI_WINTER",
+      "value_code": "RABI_WINTER",
+      "value_display": "Rabi / winter",
+      "sort_order": 2,
+      "display_i18n": {}
+    }
+  ]
+}

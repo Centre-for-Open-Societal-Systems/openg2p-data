@@ -22,49 +22,49 @@
     {
       "value_id": "LIVESTOCK_DISEASE_CBPP",
       "value_code": "LIVESTOCK_DISEASE_CBPP",
-      "value_display": "Contagious Bovine Pleuropneumonia",
+      "value_display": "Contagious bovine pleuropneumonia",
       "sort_order": 3,
       "display_i18n": {}
     },
     {
       "value_id": "LIVESTOCK_DISEASE_CCPP",
       "value_code": "LIVESTOCK_DISEASE_CCPP",
-      "value_display": "Contagious Caprine Pleuropneumonia",
+      "value_display": "Contagious caprine pleuropneumonia",
       "sort_order": 4,
       "display_i18n": {}
     },
     {
       "value_id": "LIVESTOCK_DISEASE_FMD",
       "value_code": "LIVESTOCK_DISEASE_FMD",
-      "value_display": "Foot and Mouth Disease",
+      "value_display": "Foot and mouth disease",
       "sort_order": 5,
       "display_i18n": {}
     },
     {
       "value_id": "LIVESTOCK_DISEASE_LSD",
       "value_code": "LIVESTOCK_DISEASE_LSD",
-      "value_display": "Lumpy Skin Disease",
+      "value_display": "Lumpy skin disease",
       "sort_order": 6,
       "display_i18n": {}
     },
     {
       "value_id": "LIVESTOCK_DISEASE_PPR",
       "value_code": "LIVESTOCK_DISEASE_PPR",
-      "value_display": "Peste des Petits Ruminants",
+      "value_display": "Peste des petits ruminants",
       "sort_order": 7,
       "display_i18n": {}
     },
     {
       "value_id": "LIVESTOCK_DISEASE_SHEEP_GOAT_POX",
       "value_code": "LIVESTOCK_DISEASE_SHEEP_GOAT_POX",
-      "value_display": "Sheep and Goat Pox",
+      "value_display": "Sheep and goat pox",
       "sort_order": 8,
       "display_i18n": {}
     },
     {
       "value_id": "LIVESTOCK_DISEASE_NEWCASTLE_DISEASE",
       "value_code": "LIVESTOCK_DISEASE_NEWCASTLE_DISEASE",
-      "value_display": "Newcastle Disease",
+      "value_display": "Newcastle disease",
       "sort_order": 9,
       "display_i18n": {}
     },
@@ -78,14 +78,14 @@
     {
       "value_id": "LIVESTOCK_DISEASE_FOWL_TYPHOID_DISEASE",
       "value_code": "LIVESTOCK_DISEASE_FOWL_TYPHOID_DISEASE",
-      "value_display": "Fowl Typhoid",
+      "value_display": "Fowl typhoid",
       "sort_order": 11,
       "display_i18n": {}
     },
     {
       "value_id": "LIVESTOCK_DISEASE_FOWL_POX_DISEASE",
       "value_code": "LIVESTOCK_DISEASE_FOWL_POX_DISEASE",
-      "value_display": "Fowl Pox",
+      "value_display": "Fowl pox",
       "sort_order": 12,
       "display_i18n": {}
     },
@@ -120,14 +120,14 @@
     {
       "value_id": "LIVESTOCK_DISEASE_INTERNAL_PARASITES",
       "value_code": "LIVESTOCK_DISEASE_INTERNAL_PARASITES",
-      "value_display": "Internal Parasites",
+      "value_display": "Internal parasites",
       "sort_order": 17,
       "display_i18n": {}
     },
     {
       "value_id": "LIVESTOCK_DISEASE_EXTERNAL_PARASITES",
       "value_code": "LIVESTOCK_DISEASE_EXTERNAL_PARASITES",
-      "value_display": "External Parasites",
+      "value_display": "External parasites",
       "sort_order": 18,
       "display_i18n": {}
     },
@@ -141,21 +141,21 @@
     {
       "value_id": "LIVESTOCK_DISEASE_BOVINE_TB",
       "value_code": "LIVESTOCK_DISEASE_BOVINE_TB",
-      "value_display": "Bovine Tuberculosis",
+      "value_display": "Bovine tuberculosis",
       "sort_order": 20,
       "display_i18n": {}
     },
     {
       "value_id": "LIVESTOCK_DISEASE_CAMEL_POX",
       "value_code": "LIVESTOCK_DISEASE_CAMEL_POX",
-      "value_display": "Camel Pox",
+      "value_display": "Camel pox",
       "sort_order": 21,
       "display_i18n": {}
     },
     {
       "value_id": "LIVESTOCK_DISEASE_AFRICAN_HORSE_SICKNESS",
       "value_code": "LIVESTOCK_DISEASE_AFRICAN_HORSE_SICKNESS",
-      "value_display": "African Horse Sickness",
+      "value_display": "African horse sickness",
       "sort_order": 22,
       "display_i18n": {}
     },
@@ -176,7 +176,7 @@
     {
       "value_id": "LIVESTOCK_DISEASE_FOOT_ROT",
       "value_code": "LIVESTOCK_DISEASE_FOOT_ROT",
-      "value_display": "Foot Rot",
+      "value_display": "Foot rot",
       "sort_order": 25,
       "display_i18n": {}
     },
@@ -190,7 +190,7 @@
     {
       "value_id": "LIVESTOCK_DISEASE_RETAINED_PLACENTA",
       "value_code": "LIVESTOCK_DISEASE_RETAINED_PLACENTA",
-      "value_display": "Retained Placenta",
+      "value_display": "Retained placenta",
       "sort_order": 27,
       "display_i18n": {}
     },

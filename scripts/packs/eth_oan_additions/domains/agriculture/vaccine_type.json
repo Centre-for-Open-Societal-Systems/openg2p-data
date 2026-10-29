@@ -49,7 +49,7 @@
     {
       "value_id": "VACCINE_TYPE_CBPP",
       "value_code": "VACCINE_TYPE_CBPP",
-      "value_display": "Contagious Bovine Pleuropneumonia",
+      "value_display": "Contagious bovine pleuropneumonia",
       "sort_order": 3,
       "display_i18n": {},
       "attributes": {
@@ -59,7 +59,7 @@
     {
       "value_id": "VACCINE_TYPE_FMD_CATTLE",
       "value_code": "VACCINE_TYPE_FMD_CATTLE",
-      "value_display": "Foot and Mouth Disease",
+      "value_display": "Foot and mouth disease",
       "sort_order": 4,
       "display_i18n": {},
       "attributes": {
@@ -69,7 +69,7 @@
     {
       "value_id": "VACCINE_TYPE_LSD",
       "value_code": "VACCINE_TYPE_LSD",
-      "value_display": "Lumpy Skin Disease",
+      "value_display": "Lumpy skin disease",
       "sort_order": 5,
       "display_i18n": {},
       "attributes": {
@@ -80,7 +80,7 @@
     {
       "value_id": "VACCINE_TYPE_PASTEURELLOSIS_CATTLE",
       "value_code": "VACCINE_TYPE_PASTEURELLOSIS_CATTLE",
-      "value_display": "Bovine Pasteurellosis",
+      "value_display": "Bovine pasteurellosis",
       "sort_order": 6,
       "display_i18n": {},
       "attributes": {
@@ -110,7 +110,7 @@
     {
       "value_id": "VACCINE_TYPE_PPR_SHEEP",
       "value_code": "VACCINE_TYPE_PPR_SHEEP",
-      "value_display": "Peste des Petits Ruminants",
+      "value_display": "Peste des petits ruminants",
       "sort_order": 9,
       "display_i18n": {},
       "attributes": {
@@ -121,7 +121,7 @@
     {
       "value_id": "VACCINE_TYPE_SGP_SHEEP",
       "value_code": "VACCINE_TYPE_SGP_SHEEP",
-      "value_display": "Sheep and Goat Pox",
+      "value_display": "Sheep and goat pox",
       "sort_order": 10,
       "display_i18n": {},
       "attributes": {
@@ -141,7 +141,7 @@
     {
       "value_id": "VACCINE_TYPE_PASTEURELLOSIS_SHEEP",
       "value_code": "VACCINE_TYPE_PASTEURELLOSIS_SHEEP",
-      "value_display": "Ovine Pasteurellosis",
+      "value_display": "Ovine pasteurellosis",
       "sort_order": 12,
       "display_i18n": {},
       "attributes": {
@@ -161,7 +161,7 @@
     {
       "value_id": "VACCINE_TYPE_PPR_GOAT",
       "value_code": "VACCINE_TYPE_PPR_GOAT",
-      "value_display": "Peste des Petits Ruminants",
+      "value_display": "Peste des petits ruminants",
       "sort_order": 14,
       "display_i18n": {},
       "attributes": {
@@ -172,7 +172,7 @@
     {
       "value_id": "VACCINE_TYPE_SGP_GOAT",
       "value_code": "VACCINE_TYPE_SGP_GOAT",
-      "value_display": "Sheep and Goat Pox",
+      "value_display": "Sheep and goat pox",
       "sort_order": 15,
       "display_i18n": {},
       "attributes": {
@@ -182,7 +182,7 @@
     {
       "value_id": "VACCINE_TYPE_CCPP",
       "value_code": "VACCINE_TYPE_CCPP",
-      "value_display": "Contagious Caprine Pleuropneumonia",
+      "value_display": "Contagious caprine pleuropneumonia",
       "sort_order": 16,
       "display_i18n": {},
       "attributes": {
@@ -203,7 +203,7 @@
     {
       "value_id": "VACCINE_TYPE_PASTEURELLOSIS_GOAT",
       "value_code": "VACCINE_TYPE_PASTEURELLOSIS_GOAT",
-      "value_display": "Caprine Pasteurellosis",
+      "value_display": "Caprine pasteurellosis",
       "sort_order": 18,
       "display_i18n": {},
       "attributes": {
@@ -224,7 +224,7 @@
     {
       "value_id": "VACCINE_TYPE_CAMEL_POX_VACCINE",
       "value_code": "VACCINE_TYPE_CAMEL_POX_VACCINE",
-      "value_display": "Camel Pox",
+      "value_display": "Camel pox",
       "sort_order": 20,
       "display_i18n": {},
       "attributes": {
@@ -234,7 +234,7 @@
     {
       "value_id": "VACCINE_TYPE_PASTEURELLOSIS_CAMEL",
       "value_code": "VACCINE_TYPE_PASTEURELLOSIS_CAMEL",
-      "value_display": "Camel Pasteurellosis",
+      "value_display": "Camel pasteurellosis",
       "sort_order": 21,
       "display_i18n": {},
       "attributes": {
@@ -244,7 +244,7 @@
     {
       "value_id": "VACCINE_TYPE_NEWCASTLE",
       "value_code": "VACCINE_TYPE_NEWCASTLE",
-      "value_display": "Newcastle Disease",
+      "value_display": "Newcastle disease",
       "sort_order": 22,
       "display_i18n": {},
       "attributes": {
@@ -255,7 +255,7 @@
     {
       "value_id": "VACCINE_TYPE_GUMBORO",
       "value_code": "VACCINE_TYPE_GUMBORO",
-      "value_display": "Gumboro (Infectious Bursal Disease)",
+      "value_display": "Gumboro (infectious bursal disease)",
       "sort_order": 23,
       "display_i18n": {},
       "attributes": {
@@ -265,7 +265,7 @@
     {
       "value_id": "VACCINE_TYPE_FOWL_TYPHOID",
       "value_code": "VACCINE_TYPE_FOWL_TYPHOID",
-      "value_display": "Fowl Typhoid",
+      "value_display": "Fowl typhoid",
       "sort_order": 24,
       "display_i18n": {},
       "attributes": {
@@ -275,7 +275,7 @@
     {
       "value_id": "VACCINE_TYPE_FOWL_POX",
       "value_code": "VACCINE_TYPE_FOWL_POX",
-      "value_display": "Fowl Pox",
+      "value_display": "Fowl pox",
       "sort_order": 25,
       "display_i18n": {},
       "attributes": {
@@ -285,7 +285,7 @@
     {
       "value_id": "VACCINE_TYPE_MAREK",
       "value_code": "VACCINE_TYPE_MAREK",
-      "value_display": "Marek Disease",
+      "value_display": "Marek disease",
       "sort_order": 26,
       "display_i18n": {},
       "attributes": {
@@ -295,7 +295,7 @@
     {
       "value_id": "VACCINE_TYPE_AHS",
       "value_code": "VACCINE_TYPE_AHS",
-      "value_display": "African Horse Sickness (horse)",
+      "value_display": "African horse sickness (horse)",
       "sort_order": 27,
       "display_i18n": {},
       "attributes": {
@@ -315,7 +315,7 @@
     {
       "value_id": "VACCINE_TYPE_AHS_DONKEY",
       "value_code": "VACCINE_TYPE_AHS_DONKEY",
-      "value_display": "African Horse Sickness (donkey)",
+      "value_display": "African horse sickness (donkey)",
       "sort_order": 29,
       "display_i18n": {},
       "attributes": {

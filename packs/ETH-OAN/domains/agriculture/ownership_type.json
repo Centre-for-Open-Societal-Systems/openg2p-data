@@ -1,0 +1,22 @@
+{
+  "attribute_id": "OWNERSHIP_TYPE",
+  "attribute_code": "OWNERSHIP_TYPE",
+  "attribute_display": "Ownership type",
+  "is_hierarchical": false,
+  "values": [
+    {
+      "value_id": "CROP_SHARING",
+      "value_code": "CROP_SHARING",
+      "value_display": "Crop sharing",
+      "sort_order": 1,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "FAMILY_GIFT",
+      "value_code": "FAMILY_GIFT",
+      "value_display": "Family gift",
+      "sort_order": 2,
+      "display_i18n": {}
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "attribute_id": "WATER_SOURCE_FREQUENCY",
+  "attribute_code": "WATER_SOURCE_FREQUENCY",
+  "attribute_display": "Water source frequency",
+  "is_hierarchical": false,
+  "values": [
+    {
+      "value_id": "AS_NEEDED",
+      "value_code": "AS_NEEDED",
+      "value_display": "As needed",
+      "sort_order": 1,
+      "display_i18n": {}
+    }
+  ]
+}
