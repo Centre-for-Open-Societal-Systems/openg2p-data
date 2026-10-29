@@ -35,7 +35,7 @@
     {
       "value_id": "PESTICIDE_COPPER_SULPHATE",
       "value_code": "PESTICIDE_COPPER_SULPHATE",
-      "value_display": "Copper sulphate",
+      "value_display": "Copper sulphate (pesticide)",
       "sort_order": 5,
       "display_i18n": {}
     },
@@ -91,7 +91,7 @@
     {
       "value_id": "WEEDICIDE_COPPER_SULPHATE",
       "value_code": "WEEDICIDE_COPPER_SULPHATE",
-      "value_display": "Copper sulphate",
+      "value_display": "Copper sulphate (weedicide)",
       "sort_order": 13,
       "display_i18n": {}
     },
