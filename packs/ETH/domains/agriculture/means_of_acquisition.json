@@ -14,7 +14,7 @@
     {
       "value_id": "MOA_DONATION_GIFT",
       "value_code": "MOA_DONATION_GIFT",
-      "value_display": "Donation gift",
+      "value_display": "Donation or gift",
       "sort_order": 2,
       "display_i18n": {}
     },
@@ -28,7 +28,7 @@
     {
       "value_id": "MOA_RENTING_LEASING",
       "value_code": "MOA_RENTING_LEASING",
-      "value_display": "Renting leasing",
+      "value_display": "Renting or leasing",
       "sort_order": 4,
       "display_i18n": {}
     },
