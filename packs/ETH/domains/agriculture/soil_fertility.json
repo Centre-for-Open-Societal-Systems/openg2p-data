@@ -7,14 +7,14 @@
     {
       "value_id": "SF_HIGH",
       "value_code": "SF_HIGH",
-      "value_display": "HIGH",
+      "value_display": "High",
       "sort_order": 1,
       "display_i18n": {}
     },
     {
       "value_id": "SF_MEDIUM",
       "value_code": "SF_MEDIUM",
-      "value_display": "MEDIUM",
+      "value_display": "Medium",
       "sort_order": 2,
       "display_i18n": {}
     },
