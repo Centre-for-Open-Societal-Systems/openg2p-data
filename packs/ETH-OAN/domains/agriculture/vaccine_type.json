@@ -27,7 +27,7 @@
     {
       "value_id": "VACCINE_TYPE_ANTHRAX_CATTLE",
       "value_code": "VACCINE_TYPE_ANTHRAX_CATTLE",
-      "value_display": "Anthrax",
+      "value_display": "Anthrax (cattle)",
       "sort_order": 1,
       "display_i18n": {},
       "attributes": {
@@ -100,7 +100,7 @@
     {
       "value_id": "VACCINE_TYPE_RABIES_CATTLE",
       "value_code": "VACCINE_TYPE_RABIES_CATTLE",
-      "value_display": "Rabies",
+      "value_display": "Rabies (cattle)",
       "sort_order": 8,
       "display_i18n": {},
       "attributes": {
@@ -110,7 +110,7 @@
     {
       "value_id": "VACCINE_TYPE_PPR_SHEEP",
       "value_code": "VACCINE_TYPE_PPR_SHEEP",
-      "value_display": "Peste des petits ruminants",
+      "value_display": "Peste des petits ruminants (sheep)",
       "sort_order": 9,
       "display_i18n": {},
       "attributes": {
@@ -121,7 +121,7 @@
     {
       "value_id": "VACCINE_TYPE_SGP_SHEEP",
       "value_code": "VACCINE_TYPE_SGP_SHEEP",
-      "value_display": "Sheep and goat pox",
+      "value_display": "Sheep and goat pox (sheep)",
       "sort_order": 10,
       "display_i18n": {},
       "attributes": {
@@ -131,7 +131,7 @@
     {
       "value_id": "VACCINE_TYPE_ANTHRAX_SHEEP",
       "value_code": "VACCINE_TYPE_ANTHRAX_SHEEP",
-      "value_display": "Anthrax",
+      "value_display": "Anthrax (sheep)",
       "sort_order": 11,
       "display_i18n": {},
       "attributes": {
@@ -161,7 +161,7 @@
     {
       "value_id": "VACCINE_TYPE_PPR_GOAT",
       "value_code": "VACCINE_TYPE_PPR_GOAT",
-      "value_display": "Peste des petits ruminants",
+      "value_display": "Peste des petits ruminants (goats)",
       "sort_order": 14,
       "display_i18n": {},
       "attributes": {
@@ -172,7 +172,7 @@
     {
       "value_id": "VACCINE_TYPE_SGP_GOAT",
       "value_code": "VACCINE_TYPE_SGP_GOAT",
-      "value_display": "Sheep and goat pox",
+      "value_display": "Sheep and goat pox (goats)",
       "sort_order": 15,
       "display_i18n": {},
       "attributes": {
@@ -193,7 +193,7 @@
     {
       "value_id": "VACCINE_TYPE_ANTHRAX_GOAT",
       "value_code": "VACCINE_TYPE_ANTHRAX_GOAT",
-      "value_display": "Anthrax",
+      "value_display": "Anthrax (goats)",
       "sort_order": 17,
       "display_i18n": {},
       "attributes": {
@@ -213,7 +213,7 @@
     {
       "value_id": "VACCINE_TYPE_ANTHRAX_CAMEL",
       "value_code": "VACCINE_TYPE_ANTHRAX_CAMEL",
-      "value_display": "Anthrax",
+      "value_display": "Anthrax (camels)",
       "sort_order": 19,
       "display_i18n": {},
       "attributes": {
@@ -325,7 +325,7 @@
     {
       "value_id": "VACCINE_TYPE_RABIES_DONKEY",
       "value_code": "VACCINE_TYPE_RABIES_DONKEY",
-      "value_display": "Rabies",
+      "value_display": "Rabies (donkeys)",
       "sort_order": 30,
       "display_i18n": {},
       "attributes": {
