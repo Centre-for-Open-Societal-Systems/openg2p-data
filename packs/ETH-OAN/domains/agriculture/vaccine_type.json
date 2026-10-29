@@ -282,7 +282,7 @@
     {
       "value_id": "VACCINE_TYPE_AHS",
       "value_code": "VACCINE_TYPE_AHS",
-      "value_display": "African Horse Sickness",
+      "value_display": "African Horse Sickness (horse)",
       "sort_order": 27,
       "display_i18n": {},
       "attributes": {
@@ -302,7 +302,7 @@
     {
       "value_id": "VACCINE_TYPE_AHS_DONKEY",
       "value_code": "VACCINE_TYPE_AHS_DONKEY",
-      "value_display": "African Horse Sickness",
+      "value_display": "African Horse Sickness (donkey)",
       "sort_order": 29,
       "display_i18n": {},
       "attributes": {
