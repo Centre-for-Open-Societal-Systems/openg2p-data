@@ -14,21 +14,21 @@
     {
       "value_id": "WS_IRRIGATION_GROUND",
       "value_code": "WS_IRRIGATION_GROUND",
-      "value_display": "Irrigation ground water",
+      "value_display": "Irrigation from ground water",
       "sort_order": 2,
       "display_i18n": {}
     },
     {
       "value_id": "WS_IRRIGATION_SURFACE",
       "value_code": "WS_IRRIGATION_SURFACE",
-      "value_display": "Irrigation surface water",
+      "value_display": "Irrigation from surface water",
       "sort_order": 3,
       "display_i18n": {}
     },
     {
       "value_id": "WS_WELL_GROUND",
       "value_code": "WS_WELL_GROUND",
-      "value_display": "Well ground water",
+      "value_display": "Well (ground water)",
       "sort_order": 4,
       "display_i18n": {}
     },

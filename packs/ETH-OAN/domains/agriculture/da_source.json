@@ -15,7 +15,7 @@
     {
       "value_id": "CSV_IMPORT",
       "value_code": "CSV_IMPORT",
-      "value_display": "CSV import",
+      "value_display": "File import",
       "sort_order": 2,
       "display_i18n": {}
     }

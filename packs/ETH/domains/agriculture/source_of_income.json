@@ -21,14 +21,14 @@
     {
       "value_id": "SOI_GOVERNMENT_NGO_SUPPORT",
       "value_code": "SOI_GOVERNMENT_NGO_SUPPORT",
-      "value_display": "Government / NGO support",
+      "value_display": "Government or non-governmental organisation support",
       "sort_order": 3,
       "display_i18n": {}
     },
     {
       "value_id": "SOI_OTHERS",
       "value_code": "SOI_OTHERS",
-      "value_display": "Others",
+      "value_display": "Other",
       "sort_order": 4,
       "display_i18n": {}
     }
