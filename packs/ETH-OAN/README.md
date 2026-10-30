@@ -124,8 +124,8 @@ arrived or is not yet approved is left for the next run. `validate_pack.py` reje
 ## Sample photos (`samples/photos/`)
 
 One profile photo per sample person, named by `individual_id` (`ETH-IND-0001.webp` …
-`ETH-IND-0021.webp`): 256 × 256 WebP, 3–6 KB each, 73 KB in all. They are synthetic
-portraits of fictional people, generated for test data; no real person is depicted. The
+`ETH-IND-0021.webp`): 256 × 256 WebP. They are synthetic portraits of fictional adult farmers
+of varied age, dress and setting (regenerated 30 October 2026 to match the ages below); no real person is depicted. The
 registry db-seed loaders upload them through the staff API as the farmer's profile image
 (`record_image_document_id`, label `profile image`). They are hand-added assets and are not
 produced by `build_eth_oan_pack.py`; add a matching file when a sample person is added.
@@ -141,8 +141,34 @@ grandfather's name, as the farmer list shows it) is unique.
 
 ## Sample ages
 
-Every sample person with a land record is an adult. The nine members without one who are under 18
-(ages 3 to 13) are the children of the sample households, kept as household members with their
-portraits. The two members who were 17 (`ETH-IND-0008`, `ETH-IND-0020`) are 18 now, with
-`birth_year`, `birth_date` and `age` moved together. If the base
-pack's `individuals.json` is rebuilt, re-apply these two dates.
+Every sample person is an adult farmer aged 31 to 66 (ages as of 30 October 2026). All 21 are
+registered as farmers by the farmer db-seed loader (each has a `farms.json` entry), and children
+in the Farmer registry look wrong, so the former children and the two 18-year-olds were given
+adult ages together with an adult relationship, marital status, education level and
+`SELF_EMPLOYED` employment. `birth_year`, `birth_date` and `age` move together, as the
+validator requires. Household heads, identifiers, names, phones and locations did not change.
+If the base pack's `individuals.json` is rebuilt, re-apply these dates and values.
+
+| Individual | Household | Name | Sex | Age | Birth date | Relationship to head |
+| --- | --- | --- | --- | --- | --- | --- |
+| `ETH-IND-0001` | ETH-HH-001 | Berhanu Abebe | M | 42 | 1984-08-06 | SELF |
+| `ETH-IND-0002` | ETH-HH-001 | Yeshi Kebede | F | 34 | 1992-08-18 | SPOUSE |
+| `ETH-IND-0003` | ETH-HH-001 | Berhanu Berhanu | M | 31 | 1995-03-01 | SIBLING |
+| `ETH-IND-0004` | ETH-HH-001 | Mulugeta Berhanu | M | 36 | 1990-03-04 | OTHER_RELATIVE |
+| `ETH-IND-0005` | ETH-HH-001 | Aster Berhanu | F | 33 | 1993-01-15 | SIBLING |
+| `ETH-IND-0006` | ETH-HH-002 | Tadesse Berhanu | M | 42 | 1983-12-18 | SELF |
+| `ETH-IND-0007` | ETH-HH-002 | Aster Dawit | F | 40 | 1986-07-02 | SPOUSE |
+| `ETH-IND-0008` | ETH-HH-002 | Solomon Tadesse | M | 45 | 1981-02-08 | SIBLING |
+| `ETH-IND-0009` | ETH-HH-003 | Abebe Berhanu | M | 34 | 1992-03-24 | SELF |
+| `ETH-IND-0010` | ETH-HH-003 | Bethlehem Dawit | F | 34 | 1992-06-10 | SPOUSE |
+| `ETH-IND-0011` | ETH-HH-003 | Mekonnen Abebe | M | 52 | 1974-09-01 | OTHER_RELATIVE |
+| `ETH-IND-0012` | ETH-HH-003 | Assefa Abebe | M | 61 | 1965-03-21 | PARENT |
+| `ETH-IND-0013` | ETH-HH-003 | Meseret Abebe | F | 47 | 1979-06-28 | OTHER_RELATIVE |
+| `ETH-IND-0014` | ETH-HH-004 | Tigist Mekonnen | F | 35 | 1991-03-13 | SELF |
+| `ETH-IND-0015` | ETH-HH-004 | Rahel Tigist | F | 58 | 1968-01-23 | PARENT |
+| `ETH-IND-0016` | ETH-HH-005 | Aster Mulugeta | F | 57 | 1969-03-20 | SELF |
+| `ETH-IND-0017` | ETH-HH-005 | Bekele Aster | M | 66 | 1960-02-03 | SIBLING |
+| `ETH-IND-0018` | ETH-HH-006 | Bekele Mulugeta | M | 51 | 1975-05-21 | SELF |
+| `ETH-IND-0019` | ETH-HH-006 | Selamawit Dawit | F | 38 | 1988-08-09 | SPOUSE |
+| `ETH-IND-0020` | ETH-HH-006 | Genet Bekele | F | 44 | 1982-08-28 | SIBLING |
+| `ETH-IND-0021` | ETH-HH-006 | Zewditu Bekele | F | 63 | 1962-11-03 | OTHER_RELATIVE |
