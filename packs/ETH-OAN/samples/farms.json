@@ -228,6 +228,15 @@
       "income_sources": [],
       "identity_document_type": "FAYDA",
       "phone_type": "PRIMARY"
+    },
+    "membership": {
+      "is_primary_cooperative_member": true,
+      "primary_cooperative_name": "Tsehay Primary Cooperative",
+      "is_cooperative_union_member": false,
+      "cooperative_union_name": "",
+      "is_farmer_cluster_member": true,
+      "farmer_cluster_role": "MEMBER",
+      "primary_commodity": "CROP_TEFF"
     }
   },
   {
@@ -244,6 +253,14 @@
       "income_sources": [],
       "identity_document_type": "FAYDA",
       "phone_type": "PRIMARY"
+    },
+    "membership": {
+      "is_primary_cooperative_member": false,
+      "primary_cooperative_name": "",
+      "is_cooperative_union_member": false,
+      "cooperative_union_name": "",
+      "is_farmer_cluster_member": false,
+      "primary_commodity": "CROP_MAIZE"
     }
   },
   {
@@ -260,6 +277,15 @@
       "income_sources": [],
       "identity_document_type": "FAYDA",
       "phone_type": "PRIMARY"
+    },
+    "membership": {
+      "is_primary_cooperative_member": true,
+      "primary_cooperative_name": "Tsehay Primary Cooperative",
+      "is_cooperative_union_member": true,
+      "cooperative_union_name": "Raya Farmers Cooperative Union",
+      "is_farmer_cluster_member": true,
+      "farmer_cluster_role": "MEMBER",
+      "primary_commodity": "CROP_BARLEY"
     }
   },
   {
@@ -488,6 +514,15 @@
       "income_sources": [],
       "identity_document_type": "FAYDA",
       "phone_type": "PRIMARY"
+    },
+    "membership": {
+      "is_primary_cooperative_member": true,
+      "primary_cooperative_name": "Tsehay Primary Cooperative",
+      "is_cooperative_union_member": false,
+      "cooperative_union_name": "",
+      "is_farmer_cluster_member": true,
+      "farmer_cluster_role": "LEAD",
+      "primary_commodity": "CROP_SORGHUM"
     }
   },
   {
@@ -710,6 +745,14 @@
       "income_sources": [],
       "identity_document_type": "FAYDA",
       "phone_type": "PRIMARY"
+    },
+    "membership": {
+      "is_primary_cooperative_member": false,
+      "primary_cooperative_name": "",
+      "is_cooperative_union_member": false,
+      "cooperative_union_name": "",
+      "is_farmer_cluster_member": false,
+      "primary_commodity": "CROP_TEFF"
     }
   },
   {
@@ -726,6 +769,15 @@
       "income_sources": [],
       "identity_document_type": "FAYDA",
       "phone_type": "PRIMARY"
+    },
+    "membership": {
+      "is_primary_cooperative_member": true,
+      "primary_cooperative_name": "Tsehay Primary Cooperative",
+      "is_cooperative_union_member": true,
+      "cooperative_union_name": "Raya Farmers Cooperative Union",
+      "is_farmer_cluster_member": true,
+      "farmer_cluster_role": "MEMBER",
+      "primary_commodity": "CROP_SESAME"
     }
   },
   {
@@ -742,6 +794,14 @@
       "income_sources": [],
       "identity_document_type": "FAYDA",
       "phone_type": "PRIMARY"
+    },
+    "membership": {
+      "is_primary_cooperative_member": false,
+      "primary_cooperative_name": "",
+      "is_cooperative_union_member": false,
+      "cooperative_union_name": "",
+      "is_farmer_cluster_member": false,
+      "primary_commodity": "CROP_BARLEY"
     }
   },
   {
@@ -876,6 +936,15 @@
       "income_sources": [],
       "identity_document_type": "FAYDA",
       "phone_type": "PRIMARY"
+    },
+    "membership": {
+      "is_primary_cooperative_member": true,
+      "primary_cooperative_name": "Tsehay Primary Cooperative",
+      "is_cooperative_union_member": false,
+      "cooperative_union_name": "",
+      "is_farmer_cluster_member": true,
+      "farmer_cluster_role": "MEMBER",
+      "primary_commodity": "CROP_MAIZE"
     }
   },
   {
@@ -1022,6 +1091,14 @@
       "income_sources": [],
       "identity_document_type": "FAYDA",
       "phone_type": "PRIMARY"
+    },
+    "membership": {
+      "is_primary_cooperative_member": false,
+      "primary_cooperative_name": "",
+      "is_cooperative_union_member": false,
+      "cooperative_union_name": "",
+      "is_farmer_cluster_member": false,
+      "primary_commodity": "CROP_FABA_BEAN"
     }
   },
   {
@@ -1244,6 +1321,15 @@
       "income_sources": [],
       "identity_document_type": "FAYDA",
       "phone_type": "PRIMARY"
+    },
+    "membership": {
+      "is_primary_cooperative_member": true,
+      "primary_cooperative_name": "Tsehay Primary Cooperative",
+      "is_cooperative_union_member": true,
+      "cooperative_union_name": "Raya Farmers Cooperative Union",
+      "is_farmer_cluster_member": true,
+      "farmer_cluster_role": "MEMBER",
+      "primary_commodity": "CROP_BREAD_WHEAT"
     }
   },
   {
@@ -1260,6 +1346,14 @@
       "income_sources": [],
       "identity_document_type": "FAYDA",
       "phone_type": "PRIMARY"
+    },
+    "membership": {
+      "is_primary_cooperative_member": false,
+      "primary_cooperative_name": "",
+      "is_cooperative_union_member": false,
+      "cooperative_union_name": "",
+      "is_farmer_cluster_member": false,
+      "primary_commodity": "CROP_SORGHUM"
     }
   }
 ]
