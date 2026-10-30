@@ -108,3 +108,12 @@ finance lists `IDENTITY_DOCUMENT_TYPE`, `BANK_DOCUMENT_TYPE`, `LAND_DOCUMENT_TYP
 `REPRESENTATIVE_DOCUMENT_TYPE`, `FARMER_DOCUMENT_TYPE`, `DOCUMENT_PURPOSE`,
 `PHONE_NUMBER_TYPE`, `FINANCE_ACCESS_TYPE`. Their codes are the values the registry already
 stores (`FAYDA`, `PRIMARY`, `LOAN`, ...), so an existing record needs no rewrite.
+
+## Sample photos (`samples/photos/`)
+
+One profile photo per sample person, named by `individual_id` (`ETH-IND-0001.webp` …
+`ETH-IND-0021.webp`): 256 × 256 WebP, 3–6 KB each, 73 KB in all. They are synthetic
+portraits of fictional people, generated for test data; no real person is depicted. The
+registry db-seed loaders upload them through the staff API as the farmer's profile image
+(`record_image_document_id`, label `profile image`). They are hand-added assets and are not
+produced by `build_eth_oan_pack.py`; add a matching file when a sample person is added.
