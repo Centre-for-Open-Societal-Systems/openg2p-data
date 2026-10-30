@@ -117,3 +117,20 @@ portraits of fictional people, generated for test data; no real person is depict
 registry db-seed loaders upload them through the staff API as the farmer's profile image
 (`record_image_document_id`, label `profile image`). They are hand-added assets and are not
 produced by `build_eth_oan_pack.py`; add a matching file when a sample person is added.
+
+## Sample names in the person's own script
+
+`samples/farms.json` carries the farmer's name in Ge'ez script next to the English one, in the
+`farmer` block: `first_name_local`, `middle_name_local` and `last_name_local` are the given,
+father's and grandfather's names (`grandfathers_name` is the English one), written in the language
+the farmer speaks (`language_spoken`, Tigrinya for all 21 samples). They are hand-added, like the
+rest of `farms.json`, and the build does not touch them. Each sample's display name (given name plus
+grandfather's name, as the farmer list shows it) is unique.
+
+## Sample ages
+
+Every sample person with a land record is an adult. The nine members without one who are under 18
+(ages 3 to 13) are the children of the sample households, kept as household members with their
+portraits. The two members who were 17 (`ETH-IND-0008`, `ETH-IND-0020`) are 18 now, with
+`birth_year`, `birth_date` and `age` moved together. If the base
+pack's `individuals.json` is rebuilt, re-apply these two dates.

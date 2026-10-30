@@ -3,6 +3,9 @@
     "individual_id": "ETH-IND-0001",
     "farmer": {
       "grandfathers_name": "Assefa",
+      "first_name_local": "ብርሃኑ",
+      "middle_name_local": "አበበ",
+      "last_name_local": "አሰፋ",
       "language_spoken": "TIGRINYA",
       "local_language": "TIGRINYA",
       "is_psnp_user": true,
@@ -131,6 +134,9 @@
     "individual_id": "ETH-IND-0002",
     "farmer": {
       "grandfathers_name": "Solomon",
+      "first_name_local": "የሺ",
+      "middle_name_local": "ከበደ",
+      "last_name_local": "ሰለሞን",
       "language_spoken": "TIGRINYA",
       "local_language": "TIGRINYA",
       "is_psnp_user": false,
@@ -212,6 +218,9 @@
     "individual_id": "ETH-IND-0003",
     "farmer": {
       "grandfathers_name": "Abebe",
+      "first_name_local": "ብርሃኑ",
+      "middle_name_local": "ብርሃኑ",
+      "last_name_local": "አበበ",
       "language_spoken": "TIGRINYA",
       "local_language": "TIGRINYA",
       "is_psnp_user": false,
@@ -225,6 +234,9 @@
     "individual_id": "ETH-IND-0004",
     "farmer": {
       "grandfathers_name": "Abebe",
+      "first_name_local": "ሙሉጌታ",
+      "middle_name_local": "ብርሃኑ",
+      "last_name_local": "አበበ",
       "language_spoken": "TIGRINYA",
       "local_language": "TIGRINYA",
       "is_psnp_user": true,
@@ -238,6 +250,9 @@
     "individual_id": "ETH-IND-0005",
     "farmer": {
       "grandfathers_name": "Abebe",
+      "first_name_local": "አስቴር",
+      "middle_name_local": "ብርሃኑ",
+      "last_name_local": "አበበ",
       "language_spoken": "TIGRINYA",
       "local_language": "TIGRINYA",
       "is_psnp_user": false,
@@ -251,6 +266,9 @@
     "individual_id": "ETH-IND-0006",
     "farmer": {
       "grandfathers_name": "Assefa",
+      "first_name_local": "ታደሰ",
+      "middle_name_local": "ብርሃኑ",
+      "last_name_local": "አሰፋ",
       "language_spoken": "TIGRINYA",
       "local_language": "TIGRINYA",
       "is_psnp_user": false,
@@ -372,6 +390,9 @@
     "individual_id": "ETH-IND-0007",
     "farmer": {
       "grandfathers_name": "Assefa",
+      "first_name_local": "አስቴር",
+      "middle_name_local": "ዳዊት",
+      "last_name_local": "አሰፋ",
       "language_spoken": "TIGRINYA",
       "local_language": "TIGRINYA",
       "is_psnp_user": true,
@@ -457,6 +478,9 @@
     "individual_id": "ETH-IND-0008",
     "farmer": {
       "grandfathers_name": "Berhanu",
+      "first_name_local": "ሰለሞን",
+      "middle_name_local": "ታደሰ",
+      "last_name_local": "ብርሃኑ",
       "language_spoken": "TIGRINYA",
       "local_language": "TIGRINYA",
       "is_psnp_user": false,
@@ -470,6 +494,9 @@
     "individual_id": "ETH-IND-0009",
     "farmer": {
       "grandfathers_name": "Mekonnen",
+      "first_name_local": "አበበ",
+      "middle_name_local": "ብርሃኑ",
+      "last_name_local": "መኮንን",
       "language_spoken": "TIGRINYA",
       "local_language": "TIGRINYA",
       "is_psnp_user": false,
@@ -586,6 +613,9 @@
     "individual_id": "ETH-IND-0010",
     "farmer": {
       "grandfathers_name": "Berhanu",
+      "first_name_local": "ቤተልሔም",
+      "middle_name_local": "ዳዊት",
+      "last_name_local": "ብርሃኑ",
       "language_spoken": "TIGRINYA",
       "local_language": "TIGRINYA",
       "is_psnp_user": true,
@@ -670,6 +700,9 @@
     "individual_id": "ETH-IND-0011",
     "farmer": {
       "grandfathers_name": "Berhanu",
+      "first_name_local": "መኮንን",
+      "middle_name_local": "አበበ",
+      "last_name_local": "ብርሃኑ",
       "language_spoken": "TIGRINYA",
       "local_language": "TIGRINYA",
       "is_psnp_user": false,
@@ -683,6 +716,9 @@
     "individual_id": "ETH-IND-0012",
     "farmer": {
       "grandfathers_name": "Berhanu",
+      "first_name_local": "አሰፋ",
+      "middle_name_local": "አበበ",
+      "last_name_local": "ብርሃኑ",
       "language_spoken": "TIGRINYA",
       "local_language": "TIGRINYA",
       "is_psnp_user": false,
@@ -696,6 +732,9 @@
     "individual_id": "ETH-IND-0013",
     "farmer": {
       "grandfathers_name": "Berhanu",
+      "first_name_local": "መሰረት",
+      "middle_name_local": "አበበ",
+      "last_name_local": "ብርሃኑ",
       "language_spoken": "TIGRINYA",
       "local_language": "TIGRINYA",
       "is_psnp_user": true,
@@ -709,6 +748,9 @@
     "individual_id": "ETH-IND-0014",
     "farmer": {
       "grandfathers_name": "Berhanu",
+      "first_name_local": "ትግስት",
+      "middle_name_local": "መኮንን",
+      "last_name_local": "ብርሃኑ",
       "language_spoken": "TIGRINYA",
       "local_language": "TIGRINYA",
       "is_psnp_user": false,
@@ -824,6 +866,9 @@
     "individual_id": "ETH-IND-0015",
     "farmer": {
       "grandfathers_name": "Mekonnen",
+      "first_name_local": "ራሄል",
+      "middle_name_local": "ትግስት",
+      "last_name_local": "መኮንን",
       "language_spoken": "TIGRINYA",
       "local_language": "TIGRINYA",
       "is_psnp_user": false,
@@ -836,7 +881,10 @@
   {
     "individual_id": "ETH-IND-0016",
     "farmer": {
-      "grandfathers_name": "Assefa",
+      "grandfathers_name": "Kebede",
+      "first_name_local": "አስቴር",
+      "middle_name_local": "ሙሉጌታ",
+      "last_name_local": "ከበደ",
       "language_spoken": "TIGRINYA",
       "local_language": "TIGRINYA",
       "is_psnp_user": true,
@@ -964,6 +1012,9 @@
     "individual_id": "ETH-IND-0017",
     "farmer": {
       "grandfathers_name": "Mulugeta",
+      "first_name_local": "በቀለ",
+      "middle_name_local": "አስቴር",
+      "last_name_local": "ሙሉጌታ",
       "language_spoken": "TIGRINYA",
       "local_language": "TIGRINYA",
       "is_psnp_user": false,
@@ -977,6 +1028,9 @@
     "individual_id": "ETH-IND-0018",
     "farmer": {
       "grandfathers_name": "Mekonnen",
+      "first_name_local": "በቀለ",
+      "middle_name_local": "ሙሉጌታ",
+      "last_name_local": "መኮንን",
       "language_spoken": "TIGRINYA",
       "local_language": "TIGRINYA",
       "is_psnp_user": false,
@@ -1092,6 +1146,9 @@
     "individual_id": "ETH-IND-0019",
     "farmer": {
       "grandfathers_name": "Tadesse",
+      "first_name_local": "ሰላማዊት",
+      "middle_name_local": "ዳዊት",
+      "last_name_local": "ታደሰ",
       "language_spoken": "TIGRINYA",
       "local_language": "TIGRINYA",
       "is_psnp_user": true,
@@ -1177,6 +1234,9 @@
     "individual_id": "ETH-IND-0020",
     "farmer": {
       "grandfathers_name": "Mulugeta",
+      "first_name_local": "ገነት",
+      "middle_name_local": "በቀለ",
+      "last_name_local": "ሙሉጌታ",
       "language_spoken": "TIGRINYA",
       "local_language": "TIGRINYA",
       "is_psnp_user": false,
@@ -1190,6 +1250,9 @@
     "individual_id": "ETH-IND-0021",
     "farmer": {
       "grandfathers_name": "Mulugeta",
+      "first_name_local": "ዘውዲቱ",
+      "middle_name_local": "በቀለ",
+      "last_name_local": "ሙሉጌታ",
       "language_spoken": "TIGRINYA",
       "local_language": "TIGRINYA",
       "is_psnp_user": false,
