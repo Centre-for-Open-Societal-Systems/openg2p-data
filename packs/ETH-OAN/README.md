@@ -109,6 +109,18 @@ finance lists `IDENTITY_DOCUMENT_TYPE`, `BANK_DOCUMENT_TYPE`, `LAND_DOCUMENT_TYP
 `PHONE_NUMBER_TYPE`, `FINANCE_ACCESS_TYPE`. Their codes are the values the registry already
 stores (`FAYDA`, `PRIMARY`, `LOAN`, ...), so an existing record needs no rewrite.
 
+## Farmer IDs are generated, never written in the pack
+
+The pack holds no Farmer ID. The Farmer Registry generates every Farmer ID (`FR-` and twelve
+digits) when a sample farmer is registered through its intake path, so the Farmer IDs differ
+from one deployment to the next. A sample person is the individual (`ETH-IND-00NN`), and the
+downstream samples (`crop_sown.json`, `livestock.json`) reference the individual only. The Crop
+Sown and Livestock loaders resolve the individual to its Fayda number, find the Farmer
+reference the Farmer Registry delivered to their own registry for that number (checking birth
+date and gender), and take the generated Farmer ID from it. A person whose reference has not
+arrived or is not yet approved is left for the next run. `validate_pack.py` rejects a
+`farmer_ids.json` and any Farmer ID in a sample.
+
 ## Sample photos (`samples/photos/`)
 
 One profile photo per sample person, named by `individual_id` (`ETH-IND-0001.webp` …
