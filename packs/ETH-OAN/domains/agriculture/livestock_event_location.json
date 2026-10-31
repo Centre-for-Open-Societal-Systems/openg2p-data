@@ -1,0 +1,51 @@
+{
+  "attribute_id": "LIVESTOCK_EVENT_LOCATION",
+  "attribute_code": "LIVESTOCK_EVENT_LOCATION",
+  "attribute_display": "Livestock event location",
+  "description": "Where a health, vital or breeding event took place. Source: OpenAgriNet Livestock Registry form, the codes the registry stores (Oct 2026).",
+  "is_hierarchical": false,
+  "values": [
+    {
+      "value_id": "LIVESTOCK_EVENT_LOCATION_HOME",
+      "value_code": "HOME",
+      "value_display": "Home",
+      "sort_order": 1,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_EVENT_LOCATION_VETERINARY",
+      "value_code": "VETERINARY",
+      "value_display": "Veterinary clinic",
+      "sort_order": 2,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_EVENT_LOCATION_MARKET",
+      "value_code": "MARKET",
+      "value_display": "Market",
+      "sort_order": 3,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_EVENT_LOCATION_FIELD",
+      "value_code": "FIELD",
+      "value_display": "Field",
+      "sort_order": 4,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_EVENT_LOCATION_QUARANTINE_CENTER",
+      "value_code": "QUARANTINE_CENTER",
+      "value_display": "Quarantine center",
+      "sort_order": 5,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_EVENT_LOCATION_OTHER",
+      "value_code": "OTHER",
+      "value_display": "Other",
+      "sort_order": 6,
+      "display_i18n": {}
+    }
+  ]
+}
