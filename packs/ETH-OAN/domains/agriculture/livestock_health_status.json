@@ -1,0 +1,37 @@
+{
+  "attribute_id": "LIVESTOCK_HEALTH_STATUS",
+  "attribute_code": "LIVESTOCK_HEALTH_STATUS",
+  "attribute_display": "Livestock health status",
+  "description": "Health status of an animal on its Livestock Details row; health events update it. The registry's rules read these codes, so a code must not be renamed or removed; only the label may change. Source: OpenAgriNet Livestock Registry form, the codes the registry stores (Oct 2026).",
+  "is_hierarchical": false,
+  "values": [
+    {
+      "value_id": "LIVESTOCK_HEALTH_STATUS_HEALTHY",
+      "value_code": "HEALTHY",
+      "value_display": "Healthy",
+      "sort_order": 1,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_HEALTH_STATUS_SICK",
+      "value_code": "SICK",
+      "value_display": "Sick",
+      "sort_order": 2,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_HEALTH_STATUS_QUARANTINED",
+      "value_code": "QUARANTINED",
+      "value_display": "Quarantined",
+      "sort_order": 3,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_HEALTH_STATUS_DECEASED",
+      "value_code": "DECEASED",
+      "value_display": "Deceased",
+      "sort_order": 4,
+      "display_i18n": {}
+    }
+  ]
+}

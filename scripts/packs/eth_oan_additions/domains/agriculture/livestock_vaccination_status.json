@@ -1,0 +1,30 @@
+{
+  "attribute_id": "LIVESTOCK_VACCINATION_STATUS",
+  "attribute_code": "LIVESTOCK_VACCINATION_STATUS",
+  "attribute_display": "Livestock vaccination status",
+  "description": "Vaccination status of an animal on its Livestock Details row; vaccinations and the overdue reminder update it. The registry's rules read these codes, so a code must not be renamed or removed; only the label may change. Source: OpenAgriNet Livestock Registry form, the codes the registry stores (Oct 2026).",
+  "is_hierarchical": false,
+  "values": [
+    {
+      "value_id": "LIVESTOCK_VACCINATION_STATUS_UP_TO_DATE",
+      "value_code": "UP_TO_DATE",
+      "value_display": "Up to date",
+      "sort_order": 1,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_VACCINATION_STATUS_OVERDUE",
+      "value_code": "OVERDUE",
+      "value_display": "Overdue",
+      "sort_order": 2,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_VACCINATION_STATUS_NONE",
+      "value_code": "NONE",
+      "value_display": "None",
+      "sort_order": 3,
+      "display_i18n": {}
+    }
+  ]
+}
