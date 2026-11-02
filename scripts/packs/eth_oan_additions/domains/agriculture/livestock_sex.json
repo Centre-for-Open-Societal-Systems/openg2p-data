@@ -32,6 +32,13 @@
       "value_display": "Female neuter",
       "sort_order": 4,
       "display_i18n": {}
+    },
+    {
+      "value_id": "SEX_MIXED",
+      "value_code": "SEX_MIXED",
+      "value_display": "Mixed / Not Applicable",
+      "sort_order": 5,
+      "display_i18n": {}
     }
   ]
 }

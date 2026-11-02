@@ -19,7 +19,7 @@
         "quantity": 1,
         "weight": 320,
         "date_of_birth": "2019-04-12",
-        "gender": "FEMALE",
+        "gender": "SEX_FEMALE",
         "health_status": "HEALTHY",
         "vaccination_status": "UP_TO_DATE",
         "registration_date": "2026-02-10"
@@ -31,7 +31,7 @@
         "quantity": 1,
         "weight": 385,
         "date_of_birth": "2018-07-03",
-        "gender": "MALE",
+        "gender": "SEX_MALE",
         "health_status": "HEALTHY",
         "vaccination_status": "UP_TO_DATE",
         "registration_date": "2026-02-10"
@@ -43,7 +43,7 @@
         "quantity": 1,
         "weight": 290,
         "date_of_birth": "2021-09-18",
-        "gender": "FEMALE",
+        "gender": "SEX_FEMALE",
         "health_status": "SICK",
         "vaccination_status": "UP_TO_DATE",
         "registration_date": "2026-02-10"
@@ -55,7 +55,7 @@
         "quantity": 1,
         "weight": 125,
         "date_of_birth": "2025-10-02",
-        "gender": "MALE",
+        "gender": "SEX_MALE",
         "health_status": "HEALTHY",
         "vaccination_status": "NONE",
         "registration_date": "2026-02-10"
@@ -141,7 +141,7 @@
         "quantity": 1,
         "weight": 34,
         "date_of_birth": "2022-03-08",
-        "gender": "FEMALE",
+        "gender": "SEX_FEMALE",
         "health_status": "HEALTHY",
         "vaccination_status": "UP_TO_DATE",
         "registration_date": "2026-02-12"
@@ -153,7 +153,7 @@
         "quantity": 1,
         "weight": 32,
         "date_of_birth": "2022-09-21",
-        "gender": "FEMALE",
+        "gender": "SEX_FEMALE",
         "health_status": "HEALTHY",
         "vaccination_status": "UP_TO_DATE",
         "registration_date": "2026-02-12"
@@ -165,7 +165,7 @@
         "quantity": 1,
         "weight": 30,
         "date_of_birth": "2023-02-14",
-        "gender": "FEMALE",
+        "gender": "SEX_FEMALE",
         "health_status": "HEALTHY",
         "vaccination_status": "UP_TO_DATE",
         "registration_date": "2026-02-12"
@@ -177,7 +177,7 @@
         "quantity": 1,
         "weight": 41,
         "date_of_birth": "2021-11-02",
-        "gender": "MALE",
+        "gender": "SEX_MALE",
         "health_status": "HEALTHY",
         "vaccination_status": "UP_TO_DATE",
         "registration_date": "2026-02-12"
@@ -189,7 +189,7 @@
         "quantity": 1,
         "weight": 29,
         "date_of_birth": "2023-06-30",
-        "gender": "FEMALE",
+        "gender": "SEX_FEMALE",
         "health_status": "HEALTHY",
         "vaccination_status": "OVERDUE",
         "registration_date": "2026-02-12"
@@ -201,7 +201,7 @@
         "quantity": 1,
         "weight": 26,
         "date_of_birth": "2024-01-19",
-        "gender": "FEMALE",
+        "gender": "SEX_FEMALE",
         "health_status": "HEALTHY",
         "vaccination_status": "NONE",
         "registration_date": "2026-02-12"
@@ -213,7 +213,7 @@
         "quantity": 1,
         "weight": 27,
         "date_of_birth": "2024-04-05",
-        "gender": "MALE",
+        "gender": "SEX_MALE",
         "health_status": "HEALTHY",
         "vaccination_status": "NONE",
         "registration_date": "2026-02-12"
@@ -225,7 +225,7 @@
         "quantity": 1,
         "weight": 18,
         "date_of_birth": "2025-03-11",
-        "gender": "FEMALE",
+        "gender": "SEX_FEMALE",
         "health_status": "HEALTHY",
         "vaccination_status": "NONE",
         "registration_date": "2026-02-12"
@@ -237,7 +237,7 @@
         "quantity": 1,
         "weight": 14,
         "date_of_birth": "2025-08-27",
-        "gender": "MALE",
+        "gender": "SEX_MALE",
         "health_status": "HEALTHY",
         "vaccination_status": "NONE",
         "registration_date": "2026-02-12"
@@ -301,7 +301,7 @@
         "quantity": 1,
         "weight": 330,
         "date_of_birth": "2019-05-23",
-        "gender": "FEMALE",
+        "gender": "SEX_FEMALE",
         "health_status": "HEALTHY",
         "vaccination_status": "UP_TO_DATE",
         "registration_date": "2026-02-12"
@@ -313,7 +313,7 @@
         "quantity": 1,
         "weight": 305,
         "date_of_birth": "2020-10-09",
-        "gender": "FEMALE",
+        "gender": "SEX_FEMALE",
         "health_status": "HEALTHY",
         "vaccination_status": "UP_TO_DATE",
         "registration_date": "2026-02-12"
@@ -325,7 +325,7 @@
         "quantity": 1,
         "weight": 400,
         "date_of_birth": "2018-12-01",
-        "gender": "MALE",
+        "gender": "SEX_MALE",
         "health_status": "HEALTHY",
         "vaccination_status": "UP_TO_DATE",
         "registration_date": "2026-02-12"
@@ -337,7 +337,7 @@
         "quantity": 1,
         "weight": 210,
         "date_of_birth": "2024-07-15",
-        "gender": "FEMALE",
+        "gender": "SEX_FEMALE",
         "health_status": "HEALTHY",
         "vaccination_status": "NONE",
         "registration_date": "2026-02-12"
@@ -379,7 +379,7 @@
         "location": "HOME",
         "location_details": "Cattle shed at the homestead",
         "offspring_count": 1,
-        "offspring_gender": "FEMALE",
+        "offspring_gender": "SEX_FEMALE",
         "reporting_officer": "Yeshi Kebede",
         "notes": "Healthy heifer calf, born without help"
       }
@@ -406,7 +406,7 @@
         "quantity": 1,
         "weight": 33,
         "date_of_birth": "2022-05-17",
-        "gender": "FEMALE",
+        "gender": "SEX_FEMALE",
         "health_status": "HEALTHY",
         "vaccination_status": "UP_TO_DATE",
         "registration_date": "2026-02-13"
@@ -418,7 +418,7 @@
         "quantity": 1,
         "weight": 31,
         "date_of_birth": "2022-12-03",
-        "gender": "FEMALE",
+        "gender": "SEX_FEMALE",
         "health_status": "HEALTHY",
         "vaccination_status": "UP_TO_DATE",
         "registration_date": "2026-02-13"
@@ -430,7 +430,7 @@
         "quantity": 1,
         "weight": 42,
         "date_of_birth": "2021-08-25",
-        "gender": "MALE",
+        "gender": "SEX_MALE",
         "health_status": "HEALTHY",
         "vaccination_status": "UP_TO_DATE",
         "registration_date": "2026-02-13"
@@ -442,7 +442,7 @@
         "quantity": 1,
         "weight": 28,
         "date_of_birth": "2023-04-09",
-        "gender": "FEMALE",
+        "gender": "SEX_FEMALE",
         "health_status": "HEALTHY",
         "vaccination_status": "NONE",
         "registration_date": "2026-02-13"
@@ -454,7 +454,7 @@
         "quantity": 1,
         "weight": 27,
         "date_of_birth": "2023-10-28",
-        "gender": "FEMALE",
+        "gender": "SEX_FEMALE",
         "health_status": "HEALTHY",
         "vaccination_status": "NONE",
         "registration_date": "2026-02-13"
@@ -466,7 +466,7 @@
         "quantity": 1,
         "weight": 25,
         "date_of_birth": "2024-06-12",
-        "gender": "MALE",
+        "gender": "SEX_MALE",
         "health_status": "HEALTHY",
         "vaccination_status": "NONE",
         "registration_date": "2026-02-13"
@@ -478,7 +478,7 @@
         "quantity": 1,
         "weight": 22,
         "date_of_birth": "2024-11-30",
-        "gender": "FEMALE",
+        "gender": "SEX_FEMALE",
         "health_status": "HEALTHY",
         "vaccination_status": "NONE",
         "registration_date": "2026-02-13"
@@ -490,7 +490,7 @@
         "quantity": 1,
         "weight": 17,
         "date_of_birth": "2025-05-06",
-        "gender": "FEMALE",
+        "gender": "SEX_FEMALE",
         "health_status": "HEALTHY",
         "vaccination_status": "NONE",
         "registration_date": "2026-02-13"
@@ -502,7 +502,7 @@
         "quantity": 1,
         "weight": 13,
         "date_of_birth": "2025-09-19",
-        "gender": "MALE",
+        "gender": "SEX_MALE",
         "health_status": "HEALTHY",
         "vaccination_status": "NONE",
         "registration_date": "2026-02-13"
@@ -569,7 +569,7 @@
         "breed": "BREED_LOCAL",
         "quantity": 15,
         "weight": 1.8,
-        "gender": "MIXED",
+        "gender": "SEX_MIXED",
         "health_status": "HEALTHY",
         "vaccination_status": "NONE",
         "registration_date": "2026-02-16",
@@ -601,7 +601,7 @@
         "quantity": 1,
         "weight": 160,
         "date_of_birth": "2020-02-20",
-        "gender": "FEMALE",
+        "gender": "SEX_FEMALE",
         "health_status": "HEALTHY",
         "vaccination_status": "NONE",
         "registration_date": "2026-02-16"
@@ -613,7 +613,7 @@
         "quantity": 1,
         "weight": 175,
         "date_of_birth": "2019-09-07",
-        "gender": "MALE",
+        "gender": "SEX_MALE",
         "health_status": "HEALTHY",
         "vaccination_status": "NONE",
         "registration_date": "2026-02-16"
@@ -643,7 +643,7 @@
         "breed": "BREED_LOCAL",
         "quantity": 15,
         "weight": 1.7,
-        "gender": "MIXED",
+        "gender": "SEX_MIXED",
         "health_status": "HEALTHY",
         "vaccination_status": "UP_TO_DATE",
         "registration_date": "2026-02-17",
@@ -684,7 +684,7 @@
         "quantity": 1,
         "weight": 340,
         "date_of_birth": "2020-01-30",
-        "gender": "FEMALE",
+        "gender": "SEX_FEMALE",
         "health_status": "HEALTHY",
         "vaccination_status": "UP_TO_DATE",
         "registration_date": "2026-02-18"
@@ -696,7 +696,7 @@
         "quantity": 1,
         "weight": 315,
         "date_of_birth": "2021-06-14",
-        "gender": "FEMALE",
+        "gender": "SEX_FEMALE",
         "health_status": "HEALTHY",
         "vaccination_status": "UP_TO_DATE",
         "registration_date": "2026-02-18"
@@ -708,7 +708,7 @@
         "quantity": 1,
         "weight": 395,
         "date_of_birth": "2019-03-08",
-        "gender": "MALE",
+        "gender": "SEX_MALE",
         "health_status": "HEALTHY",
         "vaccination_status": "UP_TO_DATE",
         "registration_date": "2026-02-18"
@@ -720,7 +720,7 @@
         "quantity": 1,
         "weight": 190,
         "date_of_birth": "2025-01-22",
-        "gender": "FEMALE",
+        "gender": "SEX_FEMALE",
         "health_status": "HEALTHY",
         "vaccination_status": "NONE",
         "registration_date": "2026-02-18"
@@ -794,7 +794,7 @@
         "quantity": 1,
         "weight": 32,
         "date_of_birth": "2022-04-04",
-        "gender": "FEMALE",
+        "gender": "SEX_FEMALE",
         "health_status": "HEALTHY",
         "vaccination_status": "UP_TO_DATE",
         "registration_date": "2026-03-20"
@@ -806,7 +806,7 @@
         "quantity": 1,
         "weight": 30,
         "date_of_birth": "2022-10-16",
-        "gender": "FEMALE",
+        "gender": "SEX_FEMALE",
         "health_status": "HEALTHY",
         "vaccination_status": "UP_TO_DATE",
         "registration_date": "2026-03-20"
@@ -818,7 +818,7 @@
         "quantity": 1,
         "weight": 45,
         "date_of_birth": "2021-07-29",
-        "gender": "MALE",
+        "gender": "SEX_MALE",
         "health_status": "HEALTHY",
         "vaccination_status": "UP_TO_DATE",
         "registration_date": "2026-03-20"
@@ -830,7 +830,7 @@
         "quantity": 1,
         "weight": 28,
         "date_of_birth": "2023-03-21",
-        "gender": "FEMALE",
+        "gender": "SEX_FEMALE",
         "health_status": "HEALTHY",
         "vaccination_status": "NONE",
         "registration_date": "2026-03-20"
@@ -842,7 +842,7 @@
         "quantity": 1,
         "weight": 26,
         "date_of_birth": "2023-11-08",
-        "gender": "FEMALE",
+        "gender": "SEX_FEMALE",
         "health_status": "HEALTHY",
         "vaccination_status": "NONE",
         "registration_date": "2026-03-20"
@@ -854,7 +854,7 @@
         "quantity": 1,
         "weight": 20,
         "date_of_birth": "2025-05-30",
-        "gender": "MALE",
+        "gender": "SEX_MALE",
         "health_status": "HEALTHY",
         "vaccination_status": "NONE",
         "registration_date": "2026-03-20"
@@ -866,7 +866,7 @@
         "quantity": 1,
         "weight": 18,
         "date_of_birth": "2026-03-02",
-        "gender": "FEMALE",
+        "gender": "SEX_FEMALE",
         "health_status": "DECEASED",
         "vaccination_status": "NONE",
         "registration_date": "2026-03-20"
@@ -933,7 +933,7 @@
         "breed": "BREED_LOCAL",
         "quantity": 15,
         "weight": 1.6,
-        "gender": "MIXED",
+        "gender": "SEX_MIXED",
         "health_status": "HEALTHY",
         "vaccination_status": "NONE",
         "registration_date": "2026-03-21",

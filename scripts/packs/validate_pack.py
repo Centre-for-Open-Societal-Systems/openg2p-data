@@ -677,23 +677,22 @@ CROP_NAMES = ("da_name", "supervisor_name")
 CROP_MOBILES = ("da_mobile_number", "supervisor_mobile_number")
 
 LIVESTOCK_OPTIONS = {
-    "animals": {"gender": {"MALE", "FEMALE", "MIXED"}, "health_status": {"HEALTHY", "SICK", "QUARANTINED", "DECEASED"},
+    "animals": {"health_status": {"HEALTHY", "SICK", "QUARANTINED", "DECEASED"},
                 "vaccination_status": {"UP_TO_DATE", "OVERDUE", "NONE"}},
     "health_events": {"event_type": {"DISEASE", "INJURY", "TREATMENT", "RECOVERY"},
                       "location": {"HOME", "VETERINARY", "MARKET", "FIELD", "QUARANTINE_CENTER", "OTHER"}},
     "vaccinations": {},
     "vital_events": {"event_type": {"BIRTH", "MORTALITY", "DISEASE"},
                      "cause": {"DISEASE", "ACCIDENT", "PREDATION", "SLAUGHTER", "UNKNOWN"},
-                     "location": {"HOME", "VETERINARY", "MARKET", "FIELD", "QUARANTINE_CENTER", "OTHER"},
-                     "offspring_gender": {"MALE", "FEMALE", "MIXED"}},
+                     "location": {"HOME", "VETERINARY", "MARKET", "FIELD", "QUARANTINE_CENTER", "OTHER"}},
     "breeding": {"event_type": {"NATURAL", "AI"}, "outcome": {"PENDING", "SUCCESSFUL", "FAILED"},
                  "location": {"HOME", "VETERINARY", "MARKET", "FIELD", "QUARANTINE_CENTER", "OTHER"}},
 }
 LIVESTOCK_CODED = {
-    "animals": {"species": "LIVESTOCK_SPECIES", "breed": "LIVESTOCK_BREED"},
+    "animals": {"species": "LIVESTOCK_SPECIES", "breed": "LIVESTOCK_BREED", "gender": "LIVESTOCK_SEX"},
     "health_events": {"species": "LIVESTOCK_SPECIES", "disease_type": "LIVESTOCK_DISEASE"},
     "vaccinations": {"species": "LIVESTOCK_SPECIES", "vaccine_type": "VACCINE_TYPE"},
-    "vital_events": {"species": "LIVESTOCK_SPECIES", "disease_type": "LIVESTOCK_DISEASE"},
+    "vital_events": {"species": "LIVESTOCK_SPECIES", "disease_type": "LIVESTOCK_DISEASE", "offspring_gender": "LIVESTOCK_SEX"},
     "breeding": {"species": "LIVESTOCK_SPECIES"},
 }
 LIVESTOCK_SECTIONS = ("animals", "health_events", "vaccinations", "vital_events", "breeding")
@@ -1134,10 +1133,10 @@ def check_livestock_samples(pack_dir, r):
             if qty is not None and not (isinstance(qty, int) and not isinstance(qty, bool) and qty >= 1):
                 r.error(f"{label}: quantity must be a whole number of at least 1")
             elif isinstance(qty, int):
-                if qty > 1 and a.get("gender") != "MIXED":
-                    r.error(f"{label}: a herd row (quantity {qty}) has gender MIXED")
-                if qty == 1 and a.get("gender") == "MIXED":
-                    r.error(f"{label}: gender MIXED belongs to a herd row (quantity above 1)")
+                if qty > 1 and a.get("gender") != "SEX_MIXED":
+                    r.error(f"{label}: a herd row (quantity {qty}) needs gender SEX_MIXED")
+                if qty == 1 and a.get("gender") == "SEX_MIXED":
+                    r.error(f"{label}: gender SEX_MIXED belongs to a herd row (quantity above 1)")
                 heads[(a.get("species"), a.get("breed"))] = heads.get((a.get("species"), a.get("breed")), 0) + qty
             if a.get("weight") is not None and not (_number(a["weight"]) is not None and a["weight"] > 0):
                 r.error(f"{label}: weight must be a positive number")
@@ -1250,7 +1249,7 @@ def check_livestock_samples(pack_dir, r):
                 r.error(f"{label}: offspring_count belongs to a BIRTH event")
             if kind == "BIRTH":
                 edge["birth"] += 1
-                if animal is not None and animal.get("gender") != "FEMALE":
+                if animal is not None and animal.get("gender") != "SEX_FEMALE":
                     r.error(f"{label}: a birth is logged against a female animal")
                 if not (isinstance(e.get("offspring_count"), int) and e["offspring_count"] >= 1):
                     r.error(f"{label}: a BIRTH event needs offspring_count of at least 1")
@@ -1278,7 +1277,7 @@ def check_livestock_samples(pack_dir, r):
             kind = b.get("event_type")
             if kind is None or b.get("breeding_date") is None:
                 r.error(f"{label}: event_type and breeding_date are required")
-            if animal is not None and animal.get("gender") != "FEMALE":
+            if animal is not None and animal.get("gender") != "SEX_FEMALE":
                 r.error(f"{label}: breeding is logged against a female animal")
             if kind == "AI":
                 edge["ai"] += 1

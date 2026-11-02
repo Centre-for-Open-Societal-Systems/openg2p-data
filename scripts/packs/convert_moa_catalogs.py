@@ -805,6 +805,16 @@ def convert_livestock_sex():
                 "value_display": "Female neuter",
                 "sort_order": 4,
                 "display_i18n": {}
+            },
+            # Not in the MOA standard: a livestock record that stands for a whole
+            # flock or hive, and a birth of offspring of both sexes (OpenAgriNet
+            # Livestock Registry).
+            {
+                "value_id": "SEX_MIXED",
+                "value_code": "SEX_MIXED",
+                "value_display": "Mixed / Not Applicable",
+                "sort_order": 5,
+                "display_i18n": {}
             }
         ]
     }
