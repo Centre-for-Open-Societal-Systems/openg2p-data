@@ -1,0 +1,37 @@
+{
+  "attribute_id": "LIVESTOCK_HEALTH_EVENT_TYPE",
+  "attribute_code": "LIVESTOCK_HEALTH_EVENT_TYPE",
+  "attribute_display": "Livestock health event type",
+  "description": "Kind of health event recorded for an animal. The registry's rules read these codes, so a code must not be renamed or removed; only the label may change. Source: OpenAgriNet Livestock Registry form, the codes the registry stores (Oct 2026).",
+  "is_hierarchical": false,
+  "values": [
+    {
+      "value_id": "LIVESTOCK_HEALTH_EVENT_TYPE_DISEASE",
+      "value_code": "DISEASE",
+      "value_display": "Disease",
+      "sort_order": 1,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_HEALTH_EVENT_TYPE_INJURY",
+      "value_code": "INJURY",
+      "value_display": "Injury",
+      "sort_order": 2,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_HEALTH_EVENT_TYPE_TREATMENT",
+      "value_code": "TREATMENT",
+      "value_display": "Treatment",
+      "sort_order": 3,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_HEALTH_EVENT_TYPE_RECOVERY",
+      "value_code": "RECOVERY",
+      "value_display": "Recovery",
+      "sort_order": 4,
+      "display_i18n": {}
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "attribute_id": "LIVESTOCK_CAUSE_OF_DEATH",
+  "attribute_code": "LIVESTOCK_CAUSE_OF_DEATH",
+  "attribute_display": "Livestock cause of death",
+  "description": "Cause recorded with a mortality vital event. Source: OpenAgriNet Livestock Registry form, the codes the registry stores (Oct 2026).",
+  "is_hierarchical": false,
+  "values": [
+    {
+      "value_id": "LIVESTOCK_CAUSE_OF_DEATH_DISEASE",
+      "value_code": "DISEASE",
+      "value_display": "Disease",
+      "sort_order": 1,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_CAUSE_OF_DEATH_ACCIDENT",
+      "value_code": "ACCIDENT",
+      "value_display": "Accident",
+      "sort_order": 2,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_CAUSE_OF_DEATH_PREDATION",
+      "value_code": "PREDATION",
+      "value_display": "Predation",
+      "sort_order": 3,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_CAUSE_OF_DEATH_SLAUGHTER",
+      "value_code": "SLAUGHTER",
+      "value_display": "Slaughter",
+      "sort_order": 4,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_CAUSE_OF_DEATH_UNKNOWN",
+      "value_code": "UNKNOWN",
+      "value_display": "Unknown",
+      "sort_order": 5,
+      "display_i18n": {}
+    }
+  ]
+}

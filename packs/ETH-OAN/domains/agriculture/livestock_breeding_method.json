@@ -1,0 +1,23 @@
+{
+  "attribute_id": "LIVESTOCK_BREEDING_METHOD",
+  "attribute_code": "LIVESTOCK_BREEDING_METHOD",
+  "attribute_display": "Livestock breeding method",
+  "description": "How an animal was bred; each method has its own duplicate window. The registry's rules read these codes, so a code must not be renamed or removed; only the label may change. Source: OpenAgriNet Livestock Registry form, the codes the registry stores (Oct 2026).",
+  "is_hierarchical": false,
+  "values": [
+    {
+      "value_id": "LIVESTOCK_BREEDING_METHOD_NATURAL",
+      "value_code": "NATURAL",
+      "value_display": "Natural breeding",
+      "sort_order": 1,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_BREEDING_METHOD_AI",
+      "value_code": "AI",
+      "value_display": "Artificial insemination",
+      "sort_order": 2,
+      "display_i18n": {}
+    }
+  ]
+}

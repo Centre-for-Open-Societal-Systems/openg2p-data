@@ -1,0 +1,30 @@
+{
+  "attribute_id": "LIVESTOCK_RETAG_REASON",
+  "attribute_code": "LIVESTOCK_RETAG_REASON",
+  "attribute_display": "Livestock retag reason",
+  "description": "Why an animal's ear tag was replaced. Source: OpenAgriNet Livestock Registry form, the codes the registry stores (Oct 2026).",
+  "is_hierarchical": false,
+  "values": [
+    {
+      "value_id": "LIVESTOCK_RETAG_REASON_LOST",
+      "value_code": "LOST",
+      "value_display": "Lost",
+      "sort_order": 1,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_RETAG_REASON_DAMAGED",
+      "value_code": "DAMAGED",
+      "value_display": "Damaged",
+      "sort_order": 2,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_RETAG_REASON_UPGRADE",
+      "value_code": "UPGRADE",
+      "value_display": "Upgrade",
+      "sort_order": 3,
+      "display_i18n": {}
+    }
+  ]
+}

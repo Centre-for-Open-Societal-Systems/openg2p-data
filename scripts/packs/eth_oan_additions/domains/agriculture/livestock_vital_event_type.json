@@ -1,0 +1,30 @@
+{
+  "attribute_id": "LIVESTOCK_VITAL_EVENT_TYPE",
+  "attribute_code": "LIVESTOCK_VITAL_EVENT_TYPE",
+  "attribute_display": "Livestock vital event type",
+  "description": "Kind of vital event recorded for an animal: a birth creates the calves, a mortality marks the animal deceased. The registry's rules read these codes, so a code must not be renamed or removed; only the label may change. Source: OpenAgriNet Livestock Registry form, the codes the registry stores (Oct 2026).",
+  "is_hierarchical": false,
+  "values": [
+    {
+      "value_id": "LIVESTOCK_VITAL_EVENT_TYPE_BIRTH",
+      "value_code": "BIRTH",
+      "value_display": "Birth",
+      "sort_order": 1,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_VITAL_EVENT_TYPE_MORTALITY",
+      "value_code": "MORTALITY",
+      "value_display": "Mortality",
+      "sort_order": 2,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_VITAL_EVENT_TYPE_DISEASE",
+      "value_code": "DISEASE",
+      "value_display": "Disease",
+      "sort_order": 3,
+      "display_i18n": {}
+    }
+  ]
+}

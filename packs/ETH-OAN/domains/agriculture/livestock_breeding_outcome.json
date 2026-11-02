@@ -1,0 +1,30 @@
+{
+  "attribute_id": "LIVESTOCK_BREEDING_OUTCOME",
+  "attribute_code": "LIVESTOCK_BREEDING_OUTCOME",
+  "attribute_display": "Livestock breeding outcome",
+  "description": "Result of a breeding event. Source: OpenAgriNet Livestock Registry form, the codes the registry stores (Oct 2026).",
+  "is_hierarchical": false,
+  "values": [
+    {
+      "value_id": "LIVESTOCK_BREEDING_OUTCOME_PENDING",
+      "value_code": "PENDING",
+      "value_display": "Pending",
+      "sort_order": 1,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_BREEDING_OUTCOME_SUCCESSFUL",
+      "value_code": "SUCCESSFUL",
+      "value_display": "Successful",
+      "sort_order": 2,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "LIVESTOCK_BREEDING_OUTCOME_FAILED",
+      "value_code": "FAILED",
+      "value_display": "Failed",
+      "sort_order": 3,
+      "display_i18n": {}
+    }
+  ]
+}
