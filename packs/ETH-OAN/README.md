@@ -74,11 +74,27 @@ the build stops and names the addition to drop.
 The livestock registry asks the pack, not its own code, how to record an animal of a species.
 `LIVESTOCK_SPECIES` therefore carries an `attribute_schema` with two booleans per value:
 `requires_ear_tag` (the animal carries an ear tag) and `is_flock_species` (it is recorded as a
-flock with a head count). Cattle, goats, sheep, camels and equines are tagged individually;
-poultry is a flock; other has neither. The settings come from
+flock with a head count). Cattle, goats, sheep, camels, equines, donkeys, horses, mules and pigs
+are tagged individually; poultry and beehives are flocks; other has neither. The settings come from
 [`eth_oan_additions/attributes/`](../../scripts/packs/eth_oan_additions/attributes), which only
 adds attributes to a base list and never replaces a value. The build stops if the overlay names a
 value the list lacks, or if the base list already has a different `attribute_schema`.
+
+Donkey, horse, mule, pig and beehive are added to the base list from
+[`eth_oan_additions/values/`](../../scripts/packs/eth_oan_additions/values): the livestock
+registry's species dropdown and its ODK form offered them before the list moved to Master Data.
+`EQUINES` and `OTHER` stay, for the records that already carry them.
+
+## Breeds per species on `LIVESTOCK_BREED`
+
+`LIVESTOCK_BREED` keeps the base list's breed types (Improved, Local, Hybrid) and gains 46 breeds
+from `eth_oan_additions/values/`, the ones the livestock registry and its ODK form offered before
+the list moved to Master Data. Each breed has a `species` attribute (a `LIVESTOCK_SPECIES` code)
+from `eth_oan_additions/attributes/`, so a form can offer only the breeds of the chosen species;
+the three breed types have none and apply to every species. A breed name can belong to more than
+one species (Afar sheep, Afar goat), so every code carries its species: `BREED_SHEEP_AFAR`,
+`BREED_GOAT_AFAR`. A form that reads the list without that filter (the farmer registry's
+livestock section) shows all of them.
 
 `VACCINE_TYPE` (an OAN list) has an optional `interval_days` attribute next to `species`: the
 default number of days until the next dose, from which the livestock registry fills a
@@ -91,7 +107,8 @@ A few base values are shown under OpenAgriNet's wording, so the dropdown matches
 field labels and reads as plain text in a farmer form: `SUBJECT_ID_TYPE` `FAYDA_FAN` reads "Fayda FAN
 ID", `EDUCATION_LEVEL` `BASIC` "Basic education" and `INTERMEDIARY` "Intermediate (middle school)",
 `MOBILE_PHONE_TYPE` `BASIC` "Basic phone (calls and SMS)", `LAND_OWNERSHIP_TYPE` `CROP_SHARE`
-"Sharecropper". The names come from
+"Sharecropper", `LIVESTOCK_SPECIES` `GOATS` "Goat" and `CAMELS` "Camel" (as the other species, and
+the livestock ODK form, read). The names come from
 [`eth_oan_additions/displays/`](../../scripts/packs/eth_oan_additions/displays), one file per list
 as `{"values": {value_id: value_display}}`. The build sets only `value_display` on those values,
 after the species settings, and leaves `ETH` as OpenG2P ships it. It stops if the list or a value

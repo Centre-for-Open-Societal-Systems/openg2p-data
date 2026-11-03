@@ -1,0 +1,465 @@
+{
+  "description": "Breeds per species, which the livestock registry's breed dropdown and ODK form offered before the list moved to Master Data. A breed name can belong to more than one species (Afar sheep, Afar goat), so every code carries its species.",
+  "values": [
+    {
+      "value_id": "BREED_CATTLE_BORAN",
+      "value_code": "BREED_CATTLE_BORAN",
+      "value_display": "Boran",
+      "sort_order": 4,
+      "display_i18n": {},
+      "attributes": {
+        "species": "CATTLE"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_FOGERA",
+      "value_code": "BREED_CATTLE_FOGERA",
+      "value_display": "Fogera",
+      "sort_order": 5,
+      "display_i18n": {},
+      "attributes": {
+        "species": "CATTLE"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_HORRO",
+      "value_code": "BREED_CATTLE_HORRO",
+      "value_display": "Horro",
+      "sort_order": 6,
+      "display_i18n": {},
+      "attributes": {
+        "species": "CATTLE"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_SHEKO",
+      "value_code": "BREED_CATTLE_SHEKO",
+      "value_display": "Sheko",
+      "sort_order": 7,
+      "display_i18n": {},
+      "attributes": {
+        "species": "CATTLE"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_BEGAIT",
+      "value_code": "BREED_CATTLE_BEGAIT",
+      "value_display": "Begait",
+      "sort_order": 8,
+      "display_i18n": {},
+      "attributes": {
+        "species": "CATTLE"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_ARSI",
+      "value_code": "BREED_CATTLE_ARSI",
+      "value_display": "Arsi",
+      "sort_order": 9,
+      "display_i18n": {},
+      "attributes": {
+        "species": "CATTLE"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_BARKA",
+      "value_code": "BREED_CATTLE_BARKA",
+      "value_display": "Barka",
+      "sort_order": 10,
+      "display_i18n": {},
+      "attributes": {
+        "species": "CATTLE"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_LOCAL_ZEBU",
+      "value_code": "BREED_CATTLE_LOCAL_ZEBU",
+      "value_display": "Local Zebu",
+      "sort_order": 11,
+      "display_i18n": {},
+      "attributes": {
+        "species": "CATTLE"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_HOLSTEIN_FRIESIAN_CROSS",
+      "value_code": "BREED_CATTLE_HOLSTEIN_FRIESIAN_CROSS",
+      "value_display": "Holstein Friesian Cross",
+      "sort_order": 12,
+      "display_i18n": {},
+      "attributes": {
+        "species": "CATTLE"
+      }
+    },
+    {
+      "value_id": "BREED_CATTLE_JERSEY_CROSS",
+      "value_code": "BREED_CATTLE_JERSEY_CROSS",
+      "value_display": "Jersey Cross",
+      "sort_order": 13,
+      "display_i18n": {},
+      "attributes": {
+        "species": "CATTLE"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_MENZ",
+      "value_code": "BREED_SHEEP_MENZ",
+      "value_display": "Menz",
+      "sort_order": 14,
+      "display_i18n": {},
+      "attributes": {
+        "species": "SHEEP"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_AFAR",
+      "value_code": "BREED_SHEEP_AFAR",
+      "value_display": "Afar",
+      "sort_order": 15,
+      "display_i18n": {},
+      "attributes": {
+        "species": "SHEEP"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_BLACKHEAD_SOMALI",
+      "value_code": "BREED_SHEEP_BLACKHEAD_SOMALI",
+      "value_display": "Blackhead Somali",
+      "sort_order": 16,
+      "display_i18n": {},
+      "attributes": {
+        "species": "SHEEP"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_HORRO",
+      "value_code": "BREED_SHEEP_HORRO",
+      "value_display": "Horro",
+      "sort_order": 17,
+      "display_i18n": {},
+      "attributes": {
+        "species": "SHEEP"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_BONGA",
+      "value_code": "BREED_SHEEP_BONGA",
+      "value_display": "Bonga",
+      "sort_order": 18,
+      "display_i18n": {},
+      "attributes": {
+        "species": "SHEEP"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_WASHERA",
+      "value_code": "BREED_SHEEP_WASHERA",
+      "value_display": "Washera",
+      "sort_order": 19,
+      "display_i18n": {},
+      "attributes": {
+        "species": "SHEEP"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_DORPER_CROSS",
+      "value_code": "BREED_SHEEP_DORPER_CROSS",
+      "value_display": "Dorper Cross",
+      "sort_order": 20,
+      "display_i18n": {},
+      "attributes": {
+        "species": "SHEEP"
+      }
+    },
+    {
+      "value_id": "BREED_SHEEP_LOCAL",
+      "value_code": "BREED_SHEEP_LOCAL",
+      "value_display": "Local",
+      "sort_order": 21,
+      "display_i18n": {},
+      "attributes": {
+        "species": "SHEEP"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_AFAR",
+      "value_code": "BREED_GOAT_AFAR",
+      "value_display": "Afar",
+      "sort_order": 22,
+      "display_i18n": {},
+      "attributes": {
+        "species": "GOATS"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_ABERGELE",
+      "value_code": "BREED_GOAT_ABERGELE",
+      "value_display": "Abergele",
+      "sort_order": 23,
+      "display_i18n": {},
+      "attributes": {
+        "species": "GOATS"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_BEGAIT",
+      "value_code": "BREED_GOAT_BEGAIT",
+      "value_display": "Begait",
+      "sort_order": 24,
+      "display_i18n": {},
+      "attributes": {
+        "species": "GOATS"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_CENTRAL_HIGHLAND",
+      "value_code": "BREED_GOAT_CENTRAL_HIGHLAND",
+      "value_display": "Central Highland",
+      "sort_order": 25,
+      "display_i18n": {},
+      "attributes": {
+        "species": "GOATS"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_LONG_EARED_SOMALI",
+      "value_code": "BREED_GOAT_LONG_EARED_SOMALI",
+      "value_display": "Long Eared Somali",
+      "sort_order": 26,
+      "display_i18n": {},
+      "attributes": {
+        "species": "GOATS"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_WOITO_GUJI",
+      "value_code": "BREED_GOAT_WOITO_GUJI",
+      "value_display": "Woito Guji",
+      "sort_order": 27,
+      "display_i18n": {},
+      "attributes": {
+        "species": "GOATS"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_BOER_CROSS",
+      "value_code": "BREED_GOAT_BOER_CROSS",
+      "value_display": "Boer Cross",
+      "sort_order": 28,
+      "display_i18n": {},
+      "attributes": {
+        "species": "GOATS"
+      }
+    },
+    {
+      "value_id": "BREED_GOAT_LOCAL",
+      "value_code": "BREED_GOAT_LOCAL",
+      "value_display": "Local",
+      "sort_order": 29,
+      "display_i18n": {},
+      "attributes": {
+        "species": "GOATS"
+      }
+    },
+    {
+      "value_id": "BREED_CAMEL_SOMALI",
+      "value_code": "BREED_CAMEL_SOMALI",
+      "value_display": "Somali",
+      "sort_order": 30,
+      "display_i18n": {},
+      "attributes": {
+        "species": "CAMELS"
+      }
+    },
+    {
+      "value_id": "BREED_CAMEL_AFAR",
+      "value_code": "BREED_CAMEL_AFAR",
+      "value_display": "Afar",
+      "sort_order": 31,
+      "display_i18n": {},
+      "attributes": {
+        "species": "CAMELS"
+      }
+    },
+    {
+      "value_id": "BREED_CAMEL_LOCAL",
+      "value_code": "BREED_CAMEL_LOCAL",
+      "value_display": "Local",
+      "sort_order": 32,
+      "display_i18n": {},
+      "attributes": {
+        "species": "CAMELS"
+      }
+    },
+    {
+      "value_id": "BREED_DONKEY_ABYSSINIAN",
+      "value_code": "BREED_DONKEY_ABYSSINIAN",
+      "value_display": "Abyssinian",
+      "sort_order": 33,
+      "display_i18n": {},
+      "attributes": {
+        "species": "DONKEY"
+      }
+    },
+    {
+      "value_id": "BREED_DONKEY_SINNAR",
+      "value_code": "BREED_DONKEY_SINNAR",
+      "value_display": "Sinnar",
+      "sort_order": 34,
+      "display_i18n": {},
+      "attributes": {
+        "species": "DONKEY"
+      }
+    },
+    {
+      "value_id": "BREED_DONKEY_LOCAL",
+      "value_code": "BREED_DONKEY_LOCAL",
+      "value_display": "Local",
+      "sort_order": 35,
+      "display_i18n": {},
+      "attributes": {
+        "species": "DONKEY"
+      }
+    },
+    {
+      "value_id": "BREED_HORSE_ABYSSINIAN",
+      "value_code": "BREED_HORSE_ABYSSINIAN",
+      "value_display": "Abyssinian",
+      "sort_order": 36,
+      "display_i18n": {},
+      "attributes": {
+        "species": "HORSE"
+      }
+    },
+    {
+      "value_id": "BREED_HORSE_OROMO",
+      "value_code": "BREED_HORSE_OROMO",
+      "value_display": "Oromo",
+      "sort_order": 37,
+      "display_i18n": {},
+      "attributes": {
+        "species": "HORSE"
+      }
+    },
+    {
+      "value_id": "BREED_HORSE_LOCAL",
+      "value_code": "BREED_HORSE_LOCAL",
+      "value_display": "Local",
+      "sort_order": 38,
+      "display_i18n": {},
+      "attributes": {
+        "species": "HORSE"
+      }
+    },
+    {
+      "value_id": "BREED_MULE_LOCAL",
+      "value_code": "BREED_MULE_LOCAL",
+      "value_display": "Local",
+      "sort_order": 39,
+      "display_i18n": {},
+      "attributes": {
+        "species": "MULE"
+      }
+    },
+    {
+      "value_id": "BREED_POULTRY_BOVANS_BROWN",
+      "value_code": "BREED_POULTRY_BOVANS_BROWN",
+      "value_display": "Bovans Brown",
+      "sort_order": 40,
+      "display_i18n": {},
+      "attributes": {
+        "species": "POULTRY"
+      }
+    },
+    {
+      "value_id": "BREED_POULTRY_ISA_BROWN",
+      "value_code": "BREED_POULTRY_ISA_BROWN",
+      "value_display": "Isa Brown",
+      "sort_order": 41,
+      "display_i18n": {},
+      "attributes": {
+        "species": "POULTRY"
+      }
+    },
+    {
+      "value_id": "BREED_POULTRY_SASSO",
+      "value_code": "BREED_POULTRY_SASSO",
+      "value_display": "Sasso",
+      "sort_order": 42,
+      "display_i18n": {},
+      "attributes": {
+        "species": "POULTRY"
+      }
+    },
+    {
+      "value_id": "BREED_POULTRY_KOEKOEK",
+      "value_code": "BREED_POULTRY_KOEKOEK",
+      "value_display": "Koekoek",
+      "sort_order": 43,
+      "display_i18n": {},
+      "attributes": {
+        "species": "POULTRY"
+      }
+    },
+    {
+      "value_id": "BREED_POULTRY_WHITE_LEGHORN_CROSS",
+      "value_code": "BREED_POULTRY_WHITE_LEGHORN_CROSS",
+      "value_display": "White Leghorn Cross",
+      "sort_order": 44,
+      "display_i18n": {},
+      "attributes": {
+        "species": "POULTRY"
+      }
+    },
+    {
+      "value_id": "BREED_POULTRY_LOCAL_CHICKEN",
+      "value_code": "BREED_POULTRY_LOCAL_CHICKEN",
+      "value_display": "Local Chicken",
+      "sort_order": 45,
+      "display_i18n": {},
+      "attributes": {
+        "species": "POULTRY"
+      }
+    },
+    {
+      "value_id": "BREED_PIG_LARGE_WHITE",
+      "value_code": "BREED_PIG_LARGE_WHITE",
+      "value_display": "Large White",
+      "sort_order": 46,
+      "display_i18n": {},
+      "attributes": {
+        "species": "PIG"
+      }
+    },
+    {
+      "value_id": "BREED_PIG_LANDRACE",
+      "value_code": "BREED_PIG_LANDRACE",
+      "value_display": "Landrace",
+      "sort_order": 47,
+      "display_i18n": {},
+      "attributes": {
+        "species": "PIG"
+      }
+    },
+    {
+      "value_id": "BREED_PIG_LOCAL",
+      "value_code": "BREED_PIG_LOCAL",
+      "value_display": "Local",
+      "sort_order": 48,
+      "display_i18n": {},
+      "attributes": {
+        "species": "PIG"
+      }
+    },
+    {
+      "value_id": "BREED_BEEHIVE_APIS_MELLIFERA_SCUTELLATA",
+      "value_code": "BREED_BEEHIVE_APIS_MELLIFERA_SCUTELLATA",
+      "value_display": "African Honey Bee (Apis mellifera scutellata)",
+      "sort_order": 49,
+      "display_i18n": {},
+      "attributes": {
+        "species": "BEEHIVE"
+      }
+    }
+  ]
+}

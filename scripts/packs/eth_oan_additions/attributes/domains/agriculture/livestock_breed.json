@@ -1,0 +1,18 @@
+{
+  "attribute_schema": {
+    "type": "object",
+    "properties": {
+      "species": {
+        "type": "string",
+        "x-list-ref": "LIVESTOCK_SPECIES",
+        "title": "Species"
+      }
+    },
+    "additionalProperties": false
+  },
+  "values": {
+    "BREED_IMPROVED": {},
+    "BREED_LOCAL": {},
+    "BREED_HYBRID": {}
+  }
+}

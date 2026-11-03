@@ -18,7 +18,7 @@
     {
       "value_id": "GOATS",
       "value_code": "GOATS",
-      "value_display": "Goats",
+      "value_display": "Goat",
       "sort_order": 2,
       "display_i18n": {},
       "attributes": {
@@ -51,7 +51,7 @@
     {
       "value_id": "CAMELS",
       "value_code": "CAMELS",
-      "value_display": "Camels",
+      "value_display": "Camel",
       "sort_order": 5,
       "display_i18n": {},
       "attributes": {
@@ -79,6 +79,61 @@
       "attributes": {
         "requires_ear_tag": false,
         "is_flock_species": false
+      }
+    },
+    {
+      "value_id": "DONKEY",
+      "value_code": "DONKEY",
+      "value_display": "Donkey",
+      "sort_order": 8,
+      "display_i18n": {},
+      "attributes": {
+        "requires_ear_tag": true,
+        "is_flock_species": false
+      }
+    },
+    {
+      "value_id": "HORSE",
+      "value_code": "HORSE",
+      "value_display": "Horse",
+      "sort_order": 9,
+      "display_i18n": {},
+      "attributes": {
+        "requires_ear_tag": true,
+        "is_flock_species": false
+      }
+    },
+    {
+      "value_id": "MULE",
+      "value_code": "MULE",
+      "value_display": "Mule",
+      "sort_order": 10,
+      "display_i18n": {},
+      "attributes": {
+        "requires_ear_tag": true,
+        "is_flock_species": false
+      }
+    },
+    {
+      "value_id": "PIG",
+      "value_code": "PIG",
+      "value_display": "Pig",
+      "sort_order": 11,
+      "display_i18n": {},
+      "attributes": {
+        "requires_ear_tag": true,
+        "is_flock_species": false
+      }
+    },
+    {
+      "value_id": "BEEHIVE",
+      "value_code": "BEEHIVE",
+      "value_display": "Beehive",
+      "sort_order": 12,
+      "display_i18n": {},
+      "attributes": {
+        "requires_ear_tag": false,
+        "is_flock_species": true
       }
     }
   ],
