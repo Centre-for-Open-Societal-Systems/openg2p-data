@@ -1,0 +1,60 @@
+{
+  "description": "Donkey, horse, mule, pig and beehive, which the livestock registry's species dropdown and ODK form offered before the list moved to Master Data, and which the base list lacks.",
+  "values": [
+    {
+      "value_id": "DONKEY",
+      "value_code": "DONKEY",
+      "value_display": "Donkey",
+      "sort_order": 8,
+      "display_i18n": {},
+      "attributes": {
+        "requires_ear_tag": true,
+        "is_flock_species": false
+      }
+    },
+    {
+      "value_id": "HORSE",
+      "value_code": "HORSE",
+      "value_display": "Horse",
+      "sort_order": 9,
+      "display_i18n": {},
+      "attributes": {
+        "requires_ear_tag": true,
+        "is_flock_species": false
+      }
+    },
+    {
+      "value_id": "MULE",
+      "value_code": "MULE",
+      "value_display": "Mule",
+      "sort_order": 10,
+      "display_i18n": {},
+      "attributes": {
+        "requires_ear_tag": true,
+        "is_flock_species": false
+      }
+    },
+    {
+      "value_id": "PIG",
+      "value_code": "PIG",
+      "value_display": "Pig",
+      "sort_order": 11,
+      "display_i18n": {},
+      "attributes": {
+        "requires_ear_tag": true,
+        "is_flock_species": false
+      }
+    },
+    {
+      "value_id": "BEEHIVE",
+      "value_code": "BEEHIVE",
+      "value_display": "Beehive",
+      "sort_order": 12,
+      "display_i18n": {},
+      "attributes": {
+        "requires_ear_tag": false,
+        "is_flock_species": true
+      }
+    }
+  ]
+}

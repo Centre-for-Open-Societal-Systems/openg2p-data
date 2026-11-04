@@ -299,7 +299,7 @@
       "sort_order": 27,
       "display_i18n": {},
       "attributes": {
-        "species": "EQUINES"
+        "species": "HORSE"
       }
     },
     {
@@ -309,7 +309,7 @@
       "sort_order": 28,
       "display_i18n": {},
       "attributes": {
-        "species": "EQUINES"
+        "species": "HORSE"
       }
     },
     {
@@ -319,7 +319,7 @@
       "sort_order": 29,
       "display_i18n": {},
       "attributes": {
-        "species": "EQUINES"
+        "species": "DONKEY"
       }
     },
     {
@@ -329,7 +329,7 @@
       "sort_order": 30,
       "display_i18n": {},
       "attributes": {
-        "species": "EQUINES"
+        "species": "DONKEY"
       }
     }
   ]
