@@ -90,7 +90,7 @@
     },
     {
       "value_id": "WEED_EPIPHYTIC",
-      "value_code": "WEED_EPIPHYTI",
+      "value_code": "WEED_EPIPHYTIC",
       "value_display": "Epiphytic",
       "sort_order": 13,
       "display_i18n": {}
