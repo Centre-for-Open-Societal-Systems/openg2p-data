@@ -1,0 +1,15 @@
+[
+{"creation":"2026-11-07 12:17:49.124960","docstatus":0,"icon":"","idx":0,"modified":"2026-06-29 13:03:15.924890","modified_by":"Administrator","name":"Active","owner":"Administrator","style":"","workflow_state_name":"Active"},
+{"creation":"2026-11-07 12:17:49.110431","docstatus":0,"icon":"ok-sign","idx":0,"modified":"2026-06-29 12:43:23.675578","modified_by":"Administrator","name":"Approved","owner":"Administrator","style":"Success","workflow_state_name":"Approved"},
+{"creation":"2026-11-07 12:17:49.190229","docstatus":0,"icon":"","idx":0,"modified":"2026-08-20 00:00:00","modified_by":"Administrator","name":"Cancelled","owner":"Administrator","style":"","workflow_state_name":"Cancelled"},
+{"creation":"2026-11-07 12:17:49.183218","docstatus":0,"icon":"","idx":0,"modified":"2026-08-20 00:00:00","modified_by":"Administrator","name":"Completed","owner":"Administrator","style":"","workflow_state_name":"Completed"},
+{"creation":"2026-11-07 12:17:49.153692","docstatus":0,"icon":"","idx":0,"modified":"2026-06-29 13:03:16.164915","modified_by":"Administrator","name":"Dormant","owner":"Administrator","style":"","workflow_state_name":"Dormant"},
+{"creation":"2026-11-07 12:17:49.160979","docstatus":0,"icon":"","idx":0,"modified":"2026-06-29 13:03:16.408887","modified_by":"Administrator","name":"Draft","owner":"Administrator","style":"","workflow_state_name":"Draft"},
+{"creation":"2026-11-07 12:17:49.146485","docstatus":0,"icon":"","idx":0,"modified":"2026-06-29 13:03:16.163517","modified_by":"Administrator","name":"Granted","owner":"Administrator","style":"","workflow_state_name":"Granted"},
+{"creation":"2026-11-07 12:17:49.175937","docstatus":0,"icon":"","idx":0,"modified":"2026-08-20 00:00:00","modified_by":"Administrator","name":"In Transition","owner":"Administrator","style":"","workflow_state_name":"In Transition"},
+{"creation":"2026-11-07 12:17:49.102315","docstatus":0,"icon":"question-sign","idx":0,"modified":"2026-06-29 12:43:23.674349","modified_by":"Administrator","name":"Pending","owner":"Administrator","style":"","workflow_state_name":"Pending"},
+{"creation":"2026-11-07 12:17:49.139409","docstatus":0,"icon":"","idx":0,"modified":"2026-06-29 13:03:16.156357","modified_by":"Administrator","name":"Processed","owner":"Administrator","style":"","workflow_state_name":"Processed"},
+{"creation":"2026-11-07 12:17:49.168229","docstatus":0,"icon":"","idx":0,"modified":"2026-06-29 13:03:16.411479","modified_by":"Administrator","name":"Processing","owner":"Administrator","style":"","workflow_state_name":"Processing"},
+{"creation":"2026-11-07 12:17:49.117450","docstatus":0,"icon":"remove","idx":0,"modified":"2026-06-29 12:43:23.676200","modified_by":"Administrator","name":"Rejected","owner":"Administrator","style":"Danger","workflow_state_name":"Rejected"},
+{"creation":"2026-11-07 12:17:49.132257","docstatus":0,"icon":"","idx":0,"modified":"2026-06-29 13:03:16.154638","modified_by":"Administrator","name":"Verified","owner":"Administrator","style":"","workflow_state_name":"Verified"}
+]

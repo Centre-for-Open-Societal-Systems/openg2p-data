@@ -1,0 +1,9 @@
+[
+{"creation":"2026-10-15 14:13:21.299733","dept_name":"Agricultural Machinery Department","docstatus":0,"idx":0,"modified":"2026-10-15 14:13:21.299733","modified_by":"Administrator","name":"Agricultural Machinery Department","owner":"Administrator","short_name":"AMD"},
+{"creation":"2026-10-09 07:07:15.406216","dept_name":"Agriculture Dept","docstatus":0,"idx":1,"modified":"2026-10-09 07:07:15.406216","modified_by":"Administrator","name":"Agriculture Dept","owner":"Administrator","short_name":"AD"},
+{"creation":"2026-10-15 14:16:28.648452","dept_name":"Human Resources Department","docstatus":0,"idx":0,"modified":"2026-10-15 14:16:28.648452","modified_by":"Administrator","name":"Human Resources Department","owner":"Administrator","short_name":"HRD"},
+{"creation":"2026-10-15 14:12:45.093471","dept_name":"Land Revenue Department","docstatus":0,"idx":1,"modified":"2026-10-15 14:12:45.093471","modified_by":"Administrator","name":"Land Revenue Department","owner":"Administrator","short_name":"LRD"},
+{"creation":"2026-10-12 09:07:09.822969","dept_name":"Market Dept","docstatus":0,"idx":2,"modified":"2026-10-12 09:07:09.822969","modified_by":"Administrator","name":"Market Dept","owner":"Administrator","short_name":"MRKT"},
+{"creation":"2026-10-15 14:14:38.083838","dept_name":"Regulatory Compliance Division","docstatus":0,"idx":0,"modified":"2026-10-15 14:14:38.083838","modified_by":"Administrator","name":"Regulatory Compliance Division","owner":"Administrator","short_name":"RCD"},
+{"creation":"2026-10-15 13:05:52.318112","dept_name":"Unrouted","docstatus":0,"idx":0,"modified":"2026-10-15 13:05:52.318112","modified_by":"Administrator","name":"Unrouted","owner":"Administrator","short_name":null}
+]

@@ -1,0 +1,13 @@
+[
+{"creation":"2026-11-07 12:17:48.995937","docstatus":0,"idx":0,"modified":"2026-06-29 12:43:23.681578","modified_by":"Administrator","name":"Approve","owner":"Administrator","workflow_action_name":"Approve"},
+{"creation":"2026-11-07 12:17:49.070688","docstatus":0,"idx":0,"modified":"2026-08-20 00:00:00","modified_by":"Administrator","name":"Complete","owner":"Administrator","workflow_action_name":"Complete"},
+{"creation":"2026-11-07 12:17:49.036335","docstatus":0,"idx":0,"modified":"2026-06-29 13:03:16.172406","modified_by":"Administrator","name":"Grant","owner":"Administrator","workflow_action_name":"Grant"},
+{"creation":"2026-11-07 12:17:49.043275","docstatus":0,"idx":0,"modified":"2026-06-29 13:03:16.173571","modified_by":"Administrator","name":"Mark Dormant","owner":"Administrator","workflow_action_name":"Mark Dormant"},
+{"creation":"2026-11-07 12:17:49.029340","docstatus":0,"idx":0,"modified":"2026-06-29 13:03:16.171519","modified_by":"Administrator","name":"Mark Processed","owner":"Administrator","workflow_action_name":"Mark Processed"},
+{"creation":"2026-11-07 12:17:49.050097","docstatus":0,"idx":0,"modified":"2026-06-29 13:03:16.174423","modified_by":"Administrator","name":"Reactivate","owner":"Administrator","workflow_action_name":"Reactivate"},
+{"creation":"2026-11-07 12:17:49.007560","docstatus":0,"idx":0,"modified":"2026-06-29 12:43:23.682571","modified_by":"Administrator","name":"Reject","owner":"Administrator","workflow_action_name":"Reject"},
+{"creation":"2026-11-07 12:17:49.014747","docstatus":0,"idx":0,"modified":"2026-06-29 12:43:23.683082","modified_by":"Administrator","name":"Review","owner":"Administrator","workflow_action_name":"Review"},
+{"creation":"2026-11-07 12:17:49.056883","docstatus":0,"idx":0,"modified":"2026-06-29 13:03:16.413313","modified_by":"Administrator","name":"Send for Review","owner":"Administrator","workflow_action_name":"Send for Review"},
+{"creation":"2026-11-07 12:17:49.063665","docstatus":0,"idx":0,"modified":"2026-08-20 00:00:00","modified_by":"Administrator","name":"Submit","owner":"Administrator","workflow_action_name":"Submit"},
+{"creation":"2026-11-07 12:17:49.022558","docstatus":0,"idx":0,"modified":"2026-06-29 13:03:16.167500","modified_by":"Administrator","name":"Verify","owner":"Administrator","workflow_action_name":"Verify"}
+]

@@ -13,6 +13,7 @@ time, so what is committed here is what a seeded install contains.
 | [`demography/`](demography) | Shared synthetic people: `individuals.csv`, `households.csv`, ~500 portrait images. Registry-agnostic — person `i0001` is the same individual in every registry, so cross-registry scenarios line up. |
 | [`household-info/`](household-info) | The same population as consolidated wide CSVs (housing, assets, livelihoods, scores). |
 | [`users/`](users) | Sample portal users. |
+| [`oan-seed/`](oan-seed) | Demo data for the OAN A2C and Grievance Frappe services, one directory per service. |
 | [`geo/`](geo) | **Legacy.** The pre-pack flat `geo.csv`. Superseded — see its [README](geo/README.md). |
 | [`scripts/`](scripts) | Generators for everything above. |
 
