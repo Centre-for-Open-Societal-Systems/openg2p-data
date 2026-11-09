@@ -1,0 +1,8 @@
+[
+{"code":"COOP","creation":"2026-09-24 11:53:06.433465","description":null,"docstatus":0,"idx":0,"is_active":1,"modified":"2026-09-24 11:53:06.433465","modified_by":"Administrator","name":"Cooperative","owner":"Administrator","type_name":"Cooperative"},
+{"code":"DA","creation":"2026-09-24 11:53:06.430824","description":null,"docstatus":0,"idx":0,"is_active":1,"modified":"2026-09-24 11:53:06.430824","modified_by":"Administrator","name":"Development Agent","owner":"Administrator","type_name":"Development Agent"},
+{"code":"FPO","creation":"2026-09-24 11:53:06.442225","description":null,"docstatus":0,"idx":0,"is_active":1,"modified":"2026-09-24 11:53:06.442225","modified_by":"Administrator","name":"FPO","owner":"Administrator","type_name":"FPO"},
+{"code":"IND","creation":"2026-09-24 11:53:06.427832","description":null,"docstatus":0,"idx":12,"is_active":1,"modified":"2026-09-24 11:53:06.427832","modified_by":"Administrator","name":"Individual Farmer","owner":"Administrator","type_name":"Individual Farmer"},
+{"code":"NGO","creation":"2026-09-24 11:53:06.444701","description":null,"docstatus":0,"idx":0,"is_active":1,"modified":"2026-09-24 11:53:06.444701","modified_by":"Administrator","name":"NGO","owner":"Administrator","type_name":"NGO"},
+{"code":"BODY","creation":"2026-09-24 11:53:06.446845","description":null,"docstatus":0,"idx":0,"is_active":1,"modified":"2026-09-24 11:53:06.446845","modified_by":"Administrator","name":"Woreda/Kebele Body","owner":"Administrator","type_name":"Woreda/Kebele Body"}
+]

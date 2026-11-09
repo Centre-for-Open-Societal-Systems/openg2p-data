@@ -1,0 +1,10 @@
+[
+{"creation":"2026-10-21 17:14:56.425466","description":null,"docstatus":0,"idx":0,"is_active":1,"modified":"2026-10-21 17:14:56.425466","modified_by":"Administrator","name":"Bank","owner":"Administrator","type_name":"Bank"},
+{"creation":"2026-10-21 17:14:56.432797","description":null,"docstatus":0,"idx":0,"is_active":1,"modified":"2026-10-21 17:14:56.432797","modified_by":"Administrator","name":"Cooperative","owner":"Administrator","type_name":"Cooperative"},
+{"creation":"2026-10-21 17:14:56.437011","description":null,"docstatus":0,"idx":0,"is_active":1,"modified":"2026-10-21 17:14:56.437011","modified_by":"Administrator","name":"Cooperative Union","owner":"Administrator","type_name":"Cooperative Union"},
+{"creation":"2026-10-21 17:14:56.443509","description":null,"docstatus":0,"idx":0,"is_active":1,"modified":"2026-10-21 17:14:56.443509","modified_by":"Administrator","name":"Government Office","owner":"Administrator","type_name":"Government Office"},
+{"creation":"2026-10-21 17:14:56.439042","description":null,"docstatus":0,"idx":0,"is_active":1,"modified":"2026-10-21 17:14:56.439042","modified_by":"Administrator","name":"Input Store","owner":"Administrator","type_name":"Input Store"},
+{"creation":"2026-10-21 17:14:56.441042","description":null,"docstatus":0,"idx":0,"is_active":1,"modified":"2026-10-21 17:14:56.441042","modified_by":"Administrator","name":"Market","owner":"Administrator","type_name":"Market"},
+{"creation":"2026-10-21 17:14:56.429548","description":null,"docstatus":0,"idx":0,"is_active":1,"modified":"2026-10-21 17:14:56.429548","modified_by":"Administrator","name":"Microfinance","owner":"Administrator","type_name":"Microfinance"},
+{"creation":"2026-10-21 17:14:56.445867","description":null,"docstatus":0,"idx":0,"is_active":1,"modified":"2026-10-21 17:14:56.445867","modified_by":"Administrator","name":"Other","owner":"Administrator","type_name":"Other"}
+]

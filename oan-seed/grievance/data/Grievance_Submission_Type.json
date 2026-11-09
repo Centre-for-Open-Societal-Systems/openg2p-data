@@ -1,0 +1,7 @@
+[
+{"code":"DA","creation":"2026-09-24 11:53:06.480610","description":null,"docstatus":0,"idx":0,"is_active":1,"modified":"2026-10-14 12:07:04.245656","modified_by":"Administrator","name":"Development Agent Assisted","owner":"Administrator","submission_type_name":"Development Agent Assisted"},
+{"code":"IVR","creation":"2026-09-24 11:53:06.478469","description":null,"docstatus":0,"idx":0,"is_active":1,"modified":"2026-10-14 12:07:04.238791","modified_by":"Administrator","name":"IVR Helpline","owner":"Administrator","submission_type_name":"IVR Helpline"},
+{"code":"APP","creation":"2026-09-24 11:53:06.472254","description":null,"docstatus":0,"idx":1,"is_active":1,"modified":"2026-10-14 12:07:04.224169","modified_by":"Administrator","name":"Mobile App","owner":"Administrator","submission_type_name":"Mobile App"},
+{"code":"CALL","creation":"2026-09-24 11:53:06.476530","description":null,"docstatus":0,"idx":0,"is_active":1,"modified":"2026-10-14 12:07:04.231628","modified_by":"Administrator","name":"Mobile Call","owner":"Administrator","submission_type_name":"Mobile Call"},
+{"code":"WEB","creation":"2026-09-24 11:53:06.474400","description":null,"docstatus":0,"idx":10,"is_active":1,"modified":"2026-10-14 12:07:04.228678","modified_by":"Administrator","name":"Web Portal","owner":"Administrator","submission_type_name":"Web Portal"}
+]

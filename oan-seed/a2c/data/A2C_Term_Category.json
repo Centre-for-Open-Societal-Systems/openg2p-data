@@ -1,0 +1,6 @@
+[
+{"creation":"2026-09-07 09:50:03.238337","description":"Loan products in the agricultural term loan group.","docstatus":0,"generation":0,"idx":0,"modified":"2026-09-07 09:50:03.238337","modified_by":"Administrator","name":"agricultural-term-loan","owner":"Administrator","parent_category":null,"term":"agricultural-term-loan"},
+{"creation":"2026-09-07 09:50:54.240575","description":"An Input loan (seeds, agrochemicals) description","docstatus":0,"generation":0,"idx":0,"modified":"2026-10-29 12:53:22.179408","modified_by":"Administrator","name":"input-loan-seeds-and-agrochemicals","owner":"Administrator","parent_category":null,"term":"input-loan-seeds-and-agrochemicals"},
+{"creation":"2026-09-29 17:38:26.983622","description":"Loan products in the input scheme group.","docstatus":0,"generation":0,"idx":1,"modified":"2026-09-29 17:38:26.983622","modified_by":"Administrator","name":"input-scheme","owner":"Administrator","parent_category":null,"term":"input-scheme"},
+{"creation":"2026-09-07 09:50:24.788574","description":"A Smallholder short-term loan description","docstatus":0,"generation":0,"idx":0,"modified":"2026-09-07 09:50:24.788574","modified_by":"Administrator","name":"smallholder-short-term-loan","owner":"Administrator","parent_category":null,"term":"smallholder-short-term-loan"}
+]

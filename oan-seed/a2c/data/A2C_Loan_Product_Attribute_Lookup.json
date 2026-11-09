@@ -1,0 +1,6 @@
+[
+{"accepting":1,"bank":"PB-0068","creation":"2026-09-07 09:56:59.857504","docstatus":0,"idx":0,"loan_product":"PROD-PB-0068-00076","modified":"2026-09-07 09:56:59.857504","modified_by":"Administrator","name":"PROD-PB-0068-00076-crop-registry-crop-registry","owner":"Administrator","taxonomy":"crop-registry","term_id":"crop-registry"},
+{"accepting":1,"bank":"PB-0068","creation":"2026-09-07 09:56:59.848193","docstatus":0,"idx":0,"loan_product":"PROD-PB-0068-00076","modified":"2026-09-07 09:56:59.848193","modified_by":"Administrator","name":"PROD-PB-0068-00076-land-registry-land-registry","owner":"Administrator","taxonomy":"land-registry","term_id":"land-registry"},
+{"accepting":1,"bank":"PB-0090","creation":"2026-09-23 13:56:11.916489","docstatus":0,"idx":0,"loan_product":"PROD-PB-0090-00097","modified":"2026-09-23 13:56:11.916489","modified_by":"Administrator","name":"PROD-PB-0090-00097-crop-registry-crop-registry","owner":"Administrator","taxonomy":"crop-registry","term_id":"crop-registry"},
+{"accepting":1,"bank":"PB-0090","creation":"2026-09-23 13:58:37.498673","docstatus":0,"idx":0,"loan_product":"PROD-PB-0090-00098","modified":"2026-09-23 13:58:37.498673","modified_by":"Administrator","name":"PROD-PB-0090-00098-crop-registry-crop-registry","owner":"Administrator","taxonomy":"crop-registry","term_id":"crop-registry"}
+]
