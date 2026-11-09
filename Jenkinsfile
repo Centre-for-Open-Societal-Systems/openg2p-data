@@ -16,13 +16,11 @@
 //      commit of openg2p-data baked in, and prove the image's packs are
 //      byte-identical to the ones validated above
 //   7. Push it to ECR                                        (develop, tags)
-//   8. Reseed dev from it: the geo-seed Job is rendered from the INSTALLED
-//      commons-services release with only the image changed, and run as a
-//      one-off Job. The Helm release itself is not upgraded — see
-//      scripts/ci/seed_job_from_release.py for why.  (develop, RESEED_DEV)
-//      FRESH_GEO_DEV (one-off, confirmed by CONFIRM_FRESH_GEO) empties dev's
-//      geography first so the pack is published as a first load; see
-//      scripts/ci/reset_dev_geography.py.
+//   8. Reseed dev from it: `helm upgrade` of the INSTALLED commons-services
+//      release (same chart version and values) with only the seed image and
+//      load switches changed. The chart's geo-seed Job is a post-upgrade hook,
+//      so Helm runs it and, with --atomic, rolls back if it fails. A server-side
+//      dry run comes first.                              (develop, RESEED_DEV)
 //
 // Agent: vpn-agent2 (as the registry pipelines), which has docker, aws and
 // kubectl, plus python3 with venv. Helm is downloaded at a pinned version and
@@ -57,18 +55,12 @@ def PARAM_DEFAULTS = [
     // level-region..., units woreda-ET010101...), not from ETH-OAN (l0..l4,
     // P-codes). Loading the pack's geography over it fails on the duplicate
     // level mnemonic, so the dev reseed loads code lists only until dev's
-    // geography is replaced (FRESH_GEO_DEV) and its registries re-keyed with
+    // geography is replaced and its registries re-keyed with
     // packs/ETH-OAN/migration/id_map.csv or re-seeded.
     SEED_GEO_DEV    : false,
     // The pack's sample people (samples/), which registry seeds read from
     // Master Data (g2p_sample_individuals) instead of their own demo files.
     SEED_SAMPLES_DEV: true,
-    // One-off: empty dev's geography (every version and the legacy geo tables;
-    // code lists stay) so the pack is published as a first load with its
-    // boundaries. Needs SEED_GEO_DEV and CONFIRM_FRESH_GEO=fresh-geo-dev.
-    // scripts/ci/reset_dev_geography.py says exactly what it removes.
-    FRESH_GEO_DEV   : false,
-    CONFIRM_FRESH_GEO: '',
 ]
 
 pipeline {
@@ -102,13 +94,9 @@ pipeline {
         booleanParam(name: 'AUTO_PUBLISH_DEV', defaultValue: PARAM_DEFAULTS.AUTO_PUBLISH_DEV,
                      description: 'Dev reseed publishes changed lists and geography at once instead of leaving drafts')
         booleanParam(name: 'SEED_GEO_DEV', defaultValue: PARAM_DEFAULTS.SEED_GEO_DEV,
-                     description: 'Dev reseed also loads the pack\'s geography. Off until dev\'s geography is replaced (FRESH_GEO_DEV) and its registries re-keyed')
+                     description: 'Dev reseed also loads the pack\'s geography. Off until dev\'s geography is replaced and its registries re-keyed')
         booleanParam(name: 'SEED_SAMPLES_DEV', defaultValue: PARAM_DEFAULTS.SEED_SAMPLES_DEV,
                      description: 'Dev reseed also loads the pack\'s sample people into Master Data (registry seeds read them from there)')
-        booleanParam(name: 'FRESH_GEO_DEV', defaultValue: PARAM_DEFAULTS.FRESH_GEO_DEV,
-                     description: 'DEVELOPMENT ONLY, one-off: empty dev\'s geography (all versions + legacy geo tables; code lists stay) before the load, so the pack is published as a first load. Needs SEED_GEO_DEV and CONFIRM_FRESH_GEO. Registry records keep their old geo ids: re-key or re-seed them afterwards')
-        string(name: 'CONFIRM_FRESH_GEO', defaultValue: PARAM_DEFAULTS.CONFIRM_FRESH_GEO,
-               description: 'Type fresh-geo-dev to allow FRESH_GEO_DEV')
     }
 
     environment {
@@ -481,81 +469,63 @@ EOF
                                 docker run --rm -i --network host --add-host "$api_host:$DEV_API_IP" \
                                     -v "$KUBECONFIG:/kubeconfig:ro" -e KUBECONFIG=/kubeconfig \
                                     -v "$helm:/usr/local/bin/helm:ro" -v "$kubectl_bin:/usr/local/bin/kubectl:ro" \
+                                    -v "$TOOLS/deploy:/deploy:ro" \
                                     "$KUBE_TOOLS_IMAGE" "$@"
                             }
+                            deploy_dir=/deploy
                         else
                             cluster() { local tool=$1; shift; [ "$tool" = helm ] && tool=$helm; "$tool" "$@"; }
+                            deploy_dir="$TOOLS/deploy"
                         fi
 
-                        # Render from what is INSTALLED — its chart version and its
-                        # values — so the only difference is the image.
+                        # Reseed the OpenG2P way: upgrade the INSTALLED release (same
+                        # chart version, same values) with only the seed image and
+                        # load switches changed. The chart's geo-seed Job is a
+                        # post-upgrade hook, so Helm runs it, waits for it and, with
+                        # --atomic, rolls the release back if any hook fails. The
+                        # loader is idempotent (an unchanged pack creates nothing;
+                        # a changed one leaves a draft unless AUTO_PUBLISH_DEV).
+                        # SEED_GEO_DEV=false loads code lists and domains only.
                         meta=$(cluster helm get metadata "$rel" -n "$ns" -o json)
                         read -r chart_name chart_version revision <<< "$("$TOOLS/venv/bin/python" -c \
                             'import json,sys; m=json.load(sys.stdin); print(m["chart"], m["version"], m["revision"])' <<< "$meta")"
                         echo "installed: $rel in $ns = $chart_name $chart_version (revision $revision)" | tee "$report"
                         [ "$chart_name" = "$CHART_NAME" ] || { echo "FAIL $rel is $chart_name, expected $CHART_NAME" | tee -a "$report"; exit 1; }
                         bash scripts/ci/pull_verified_chart.sh "$chart_name" "$chart_version" "$TOOLS/deploy"
+                        chart_path="$deploy_dir/$chart_name-$chart_version.tgz"
 
-                        # Values stay in .tools (removed in cleanup) and are never
-                        # archived: they can hold credentials.
-                        cluster helm get values "$rel" -n "$ns" -a -o yaml > "$TOOLS/deploy/values.yaml"
-
-                        # tag@digest renders as repo:tag@sha256:..., which pins the
-                        # exact image while keeping the readable tag.
-                        # The installed release keeps geoSeed.enabled=false and
-                        # publishInitial/autoPublish=false; only this one-off Job
-                        # turns them on, so dev shows a change as soon as it lands
-                        # (AUTO_PUBLISH_DEV=false leaves drafts to approve instead).
-                        # SEED_GEO_DEV=false loads code lists and domains only.
-                        # FRESH_GEO_DEV empties the geography first (init container
-                        # from scripts/ci/reset_dev_geography.py): a one-off that
-                        # takes SEED_GEO_DEV and the typed confirmation.
-                        seed_args=(--suffix "ci-$BUILD_NUMBER" --pull-secret "$DEV_PULL_SECRET")
-                        if [ "$FRESH_GEO_DEV" = "true" ]; then
-                            [ "$SEED_GEO_DEV" = "true" ] || { echo "FAIL FRESH_GEO_DEV needs SEED_GEO_DEV=true (nothing would replace the removed geography)" | tee -a "$report"; exit 1; }
-                            [ "$CONFIRM_FRESH_GEO" = "fresh-geo-dev" ] || { echo "FAIL FRESH_GEO_DEV needs CONFIRM_FRESH_GEO=fresh-geo-dev" | tee -a "$report"; exit 1; }
-                            seed_args+=(--fresh-geo)
-                            echo "FRESH GEOGRAPHY: dev's geography versions and legacy geo tables are removed before the load" | tee -a "$report"
+                        # Hook Jobs run as the namespace's default ServiceAccount, and the
+                        # chart's Job has no imagePullSecrets of its own, so the ECR pull
+                        # Secret has to be on that ServiceAccount (oan-helm
+                        # docs/ecr-pull-access.md). Patch it only when missing.
+                        if ! cluster kubectl -n "$ns" get serviceaccount default \
+                                -o jsonpath='{.imagePullSecrets[*].name}' < /dev/null | grep -qw "$DEV_PULL_SECRET"; then
+                            cluster kubectl -n "$ns" patch serviceaccount default \
+                                -p "{\\"imagePullSecrets\\":[{\\"name\\":\\"$DEV_PULL_SECRET\\"}]}" < /dev/null
+                            echo "default ServiceAccount: added $DEV_PULL_SECRET" | tee -a "$report"
                         fi
-                        "$helm" template "$rel" "$TOOLS/deploy/$chart_name-$chart_version.tgz" -n "$ns" \
-                            -f "$TOOLS/deploy/values.yaml" \
-                            --set "master-data.geoSeed.enabled=true" \
-                            --set "master-data.geoSeed.load.geo=$SEED_GEO_DEV" \
-                            --set "master-data.geoSeed.load.samples=$SEED_SAMPLES_DEV" \
-                            --set "master-data.geoSeed.publishInitial=true" \
-                            --set "master-data.geoSeed.autoPublish=$AUTO_PUBLISH_DEV" \
-                            --set "master-data.geoSeed.image.repository=$ECR_IMAGE" \
-                            --set "master-data.geoSeed.image.tag=$IMAGE_TAG@$digest" \
-                            --show-only charts/master-data/templates/geo-seed-job.yaml \
-                          | "$TOOLS/venv/bin/python" scripts/ci/seed_job_from_release.py \
-                                "${seed_args[@]}" \
-                                --label "openg2p-data/commit=${DATA_SHA:0:12}" --label "openg2p-data/build=$BUILD_NUMBER" \
-                          > "$DIST/reports/geo-seed-job.yaml"
 
-                        job=$("$TOOLS/venv/bin/python" -c 'import sys,yaml; print(yaml.safe_load(open(sys.argv[1]))["metadata"]["name"])' \
-                            "$DIST/reports/geo-seed-job.yaml")
-                        # Quoted or not: the Job has been re-serialised by PyYAML.
-                        pack=$(grep -oE '/packs/[A-Za-z0-9._-]+' "$DIST/reports/geo-seed-job.yaml" | head -1 || true)
-                        echo "job: $job  pack: ${pack##*/}  image: $ECR_IMAGE:$IMAGE_TAG@$digest" | tee -a "$report"
-                        [ -f "packs/${pack##*/}/manifest.json" ] || { echo "FAIL dev seeds '${pack##*/}', not a pack in this repo" | tee -a "$report"; exit 1; }
+                        # tag@digest renders as repo:tag@sha256:..., which pins the exact
+                        # image while keeping the readable tag.
+                        upgrade_args=(upgrade "$rel" "$chart_path" -n "$ns" --reuse-values
+                            --set "master-data.geoSeed.enabled=true"
+                            --set "master-data.geoSeed.load.geo=$SEED_GEO_DEV"
+                            --set "master-data.geoSeed.load.samples=$SEED_SAMPLES_DEV"
+                            --set "master-data.geoSeed.publishInitial=true"
+                            --set "master-data.geoSeed.autoPublish=$AUTO_PUBLISH_DEV"
+                            --set "master-data.geoSeed.image.repository=$ECR_IMAGE"
+                            --set "master-data.geoSeed.image.tag=$IMAGE_TAG@$digest")
 
-                        cluster kubectl -n "$ns" apply -f - < "$DIST/reports/geo-seed-job.yaml"
+                        # Server-side dry run first: admission, immutable-field and
+                        # render errors surface before anything changes.
+                        cluster helm "${upgrade_args[@]}" --dry-run=server > "$DIST/reports/helm-upgrade-dry-run.txt" 2>&1 \
+                            || { tail -30 "$DIST/reports/helm-upgrade-dry-run.txt"; echo "FAIL helm upgrade dry run" | tee -a "$report"; exit 1; }
+                        echo "ok   helm upgrade dry run" | tee -a "$report"
 
-                        # Wait for Complete or Failed, whichever comes first.
-                        state=""
-                        for _ in $(seq 1 90); do
-                            state=$(cluster kubectl -n "$ns" get job "$job" \
-                                -o jsonpath='{range .status.conditions[?(@.status=="True")]}{.type}{" "}{end}' < /dev/null)
-                            case "$state" in *Complete*|*Failed*) break ;; esac
-                            sleep 10
-                        done
-                        cluster kubectl -n "$ns" logs "job/$job" --all-containers --prefix < /dev/null > "$DIST/reports/geo-seed.log" 2>&1 || true
-                        tail -40 "$DIST/reports/geo-seed.log"
-                        echo "job state: ${state:-timed out}" | tee -a "$report"
-                        case "$state" in
-                            *Complete*) echo "ok   dev reseeded from $ECR_IMAGE@$digest" | tee -a "$report" ;;
-                            *) cluster kubectl -n "$ns" describe job "$job" < /dev/null | tail -30; exit 1 ;;
-                        esac
+                        cluster helm "${upgrade_args[@]}" --atomic --wait --timeout 30m 2>&1 | tee "$DIST/reports/helm-upgrade.log" \
+                            || { echo "FAIL helm upgrade (rolled back by --atomic)" | tee -a "$report"; exit 1; }
+                        cluster helm get metadata "$rel" -n "$ns" -o json < /dev/null > "$DIST/reports/release-after.json"
+                        echo "ok   dev reseeded from $ECR_IMAGE@$digest" | tee -a "$report"
                     '''
                 }
             }
