@@ -22,7 +22,7 @@
 //      so Helm runs it and, with --atomic, rolls back if it fails. A server-side
 //      dry run comes first.                              (develop, RESEED_DEV)
 //
-// Agent: vpn-agent2 (as the registry pipelines), which has docker, aws and
+// Agent: oan-ci-deploy (as the registry pipelines), which has docker, aws and
 // kubectl, plus python3 with venv. Helm is downloaded at a pinned version and
 // checksum into the workspace.
 //
@@ -64,7 +64,7 @@ def PARAM_DEFAULTS = [
 ]
 
 pipeline {
-    agent { label 'vpn-agent2' }
+    agent { label 'oan-ci-deploy' }
 
     options {
         buildDiscarder(logRotator(numToKeepStr: '30', artifactNumToKeepStr: '15'))
