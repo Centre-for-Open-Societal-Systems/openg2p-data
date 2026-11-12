@@ -612,11 +612,6 @@ LIVESTOCK_SPECIES_OF_TYPE = {
 
 # Options the registries' forms fix themselves (static select widgets).
 CROP_OPTIONS = {
-    "cropping_system": {"MONO_CROPPING", "INTER_CROPPING"},
-    "seed_class": {"LOCAL", "IMPROVED"}, "actual_seed_class": {"LOCAL", "IMPROVED"},
-    "seed_source": {"GOVERNMENT / WOREDS AGRICULTURE", "AGRICULTURE COOPERATIVE / UNION",
-                    "PRIVATE SEED ENTERPRISE", "FARMER-TO-FARMER EXCHANGE / SAVED"},
-    "agro_ecological_zone": {"KOLLA", "WOINA_DEGA", "DEGA", "WURCH", "BEREHA"},
     "fpc_type": {"GREEN"},
     "crop_maturity_status": {"READY_FOR_HARVEST", "NOT_YET_READY_FOR_HARVEST"},
     "cluster_crop_maturity_status": {"READY_FOR_HARVEST", "NOT_YET_READY_FOR_HARVEST"},
@@ -628,10 +623,15 @@ CROP_OPTIONS = {
                        "sedge", "aquatic", "foliar", "soil"},
     "disease_control_method": {"chemical_spray", "hand_picking", "early_harvesting"},
     "fungicide_type": {"fungicide", "bactericide"},
-    "growth_stage": {"EMERGENCE", "VEGETATIVE", "FLOWERING", "MATURITY"},
-    "severity_level": {"LOW", "MEDIUM", "HIGH"},
 }
-CROP_OPTIONS["actual_seed_source"] = CROP_OPTIONS["seed_source"]
+# Fields the Crop Sown forms read from a Master Data list (89_master_data_dropdowns.sql
+# in cropsown-regsitry), in whichever section they appear.
+CROP_LIST_FIELDS = {
+    "cropping_system": "CROPPING_SYSTEM", "seed_class": "SEED_TYPE", "actual_seed_class": "SEED_TYPE",
+    "seed_source": "SEED_SOURCE", "actual_seed_source": "SEED_SOURCE",
+    "agro_ecological_zone": "AGRO_ECOLOGICAL_ZONE", "growth_stage": "CROP_GROWTH_STAGE",
+    "severity_level": "INFESTATION_SEVERITY",
+}
 CROP_BOOLEANS = {"is_plot_not_registered", "has_pest_disease", "cluster_has_pest_disease"}
 
 # section -> field -> code list. A list the pack does not ship is not checked,
@@ -854,6 +854,7 @@ def check_crop_sown_samples(pack_dir, r):
                 if ref_of.setdefault(land_id, ref) != ref:
                     r.error(f"{label}: land_id {land_id!r} stands for {ref} and {ref_of[land_id]}")
             _check_coded(r, label, row, CROP_CODED[section], lists)
+            _check_coded(r, label, row, CROP_LIST_FIELDS, lists)
             for field, allowed in CROP_OPTIONS.items():
                 if row.get(field) is not None and row[field] not in allowed:
                     r.error(f"{label}: {field}={row[field]!r} is not an option of the form")
@@ -912,13 +913,13 @@ def check_crop_sown_samples(pack_dir, r):
             for i, row in enumerate(rec[section]):
                 label = f"{who} {section}[{i}]"
                 status = row.get("cluster_status")
-                if not (isinstance(status, list) and len(status) == 1 and status[0] in ("CLUSTER", "INDEPENDENT")):
-                    r.error(f"{label}: cluster_status must be [\"CLUSTER\"] or [\"INDEPENDENT\"]")
+                if not (isinstance(status, list) and len(status) == 1 and status[0] in ("CLUSTERED", "INDEPENDENT")):
+                    r.error(f"{label}: cluster_status must be [\"CLUSTERED\"] or [\"INDEPENDENT\"] (CLUSTER_STATUS)")
                     continue
                 if not row.get("commodity"):
                     r.error(f"{label}: commodity is required")
-                key = (row.get("land_ref"), row.get("cluster_name") if status[0] == "CLUSTER" else row.get("commodity"))
-                if status[0] == "CLUSTER":
+                key = (row.get("land_ref"), row.get("cluster_name") if status[0] == "CLUSTERED" else row.get("commodity"))
+                if status[0] == "CLUSTERED":
                     if key not in cluster_keys or key not in cultivation_cluster_keys:
                         r.error(f"{label}: cluster {row.get('cluster_name')!r} on {row.get('land_ref')} has no matching "
                                 f"clusters and cultivation_clusters rows")
@@ -1040,7 +1041,7 @@ def check_crop_sown_samples(pack_dir, r):
                 r.error(f"{who}: the {crop.get('commodity')} on {ref} (in {season}) has no planning line")
         if len({p.get("land_ref") for p in rec["planning"]}) >= 2:
             edge["multi_land"] += 1
-        edge["inter"] += sum(1 for p in rec["planning"] if p.get("cropping_system") == "INTER_CROPPING")
+        edge["inter"] += sum(1 for p in rec["planning"] if p.get("cropping_system") == "CSYS_INTERCROPPED")
         if rec["planning"] and not any(rec[s] for s in CROP_SECTIONS if s not in ("planning", "clusters")):
             edge["planning_only"] += 1
 
@@ -1054,7 +1055,7 @@ def check_crop_sown_samples(pack_dir, r):
         r.error(f"crop_sown.json has no infestation of type {sorted(wanted - infestation_types)}")
     for what, ok, text in (
             ("multi_land", edge["multi_land"] >= 2, "two people with crop lines on different lands"),
-            ("inter", edge["inter"] >= 1, "an INTER_CROPPING line"),
+            ("inter", edge["inter"] >= 1, "an intercropped (CSYS_INTERCROPPED) line"),
             ("cluster", edge["cluster_sowing"] >= 2 and edge["cluster_harvest"] >= 2, "two CLUSTER sowing and harvest lines"),
             ("loss", edge["loss"] >= 1, "a harvest with a post harvest loss"),
             ("planning_only", edge["planning_only"] >= 1, "a person with planning only")):
