@@ -168,7 +168,7 @@
         "commodity": "CROP_SORGHUM",
         "infestation_type": "INFT_PEST",
         "pest_name": "Stalk borer",
-        "pesticide_method": "chemical_spray",
+        "pesticide_method": "CTRL_CHEMICAL",
         "pesticide_type": "insecticide",
         "pesticide_name": "Cypermethrin",
         "pesticide_frequency": "Twice per season",
@@ -346,6 +346,7 @@
         "cluster_status": [
           "CLUSTERED"
         ],
+        "cluster_land_id": "Plot 1",
         "cluster_id": "FPC 01",
         "cluster_name": "Badme Sorghum Growers Cluster",
         "cluster_season": "SEASON_MEHER",
@@ -368,6 +369,7 @@
         "cluster_status": [
           "CLUSTERED"
         ],
+        "cluster_land_id": "Plot 1",
         "cluster_name": "Badme Sorghum Growers Cluster",
         "commodity": "CROP_SORGHUM",
         "cluster_crop_maturity_status": "READY_FOR_HARVEST",
@@ -604,7 +606,7 @@
         "commodity": "CROP_MAIZE",
         "infestation_type": "INFT_PEST",
         "pest_name": "Fall armyworm",
-        "pesticide_method": "chemical_spray",
+        "pesticide_method": "CTRL_CHEMICAL",
         "pesticide_type": "insecticide",
         "pesticide_name": "Emamectin benzoate",
         "pesticide_frequency": "Twice per season",
@@ -765,6 +767,7 @@
         "cluster_status": [
           "CLUSTERED"
         ],
+        "cluster_land_id": "Plot 1",
         "cluster_id": "FPC 02",
         "cluster_name": "Semema Sorghum Growers Cluster",
         "cluster_season": "SEASON_MEHER",
@@ -787,6 +790,7 @@
         "cluster_status": [
           "CLUSTERED"
         ],
+        "cluster_land_id": "Plot 1",
         "cluster_name": "Semema Sorghum Growers Cluster",
         "commodity": "CROP_SORGHUM",
         "cluster_crop_maturity_status": "READY_FOR_HARVEST",
