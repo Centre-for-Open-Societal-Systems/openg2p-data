@@ -42,7 +42,11 @@ samples/farms.json             their farm facts, for registries that hold farmer
 samples/crop_sown.json         what the Crop Sown registry seeds for the people with
                                crops in farms.json: one season, and the planning,
                                cluster, cultivation, sowing, infestation and
-                               harvest lines of their lands
+                               harvest lines of their lands. A line carries
+                               where the land is (region to kebele, the crop's
+                               coordinates) and the land's plot category and
+                               ownership type, matching the person's land in
+                               farms.json
 samples/livestock.json         what the Livestock registry seeds for the people with
                                livestock in farms.json: animals, vaccinations,
                                health, vital and breeding events
