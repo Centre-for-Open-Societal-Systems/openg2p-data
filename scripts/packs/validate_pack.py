@@ -615,7 +615,6 @@ CROP_OPTIONS = {
     "fpc_type": {"GREEN"},
     "crop_maturity_status": {"READY_FOR_HARVEST", "NOT_YET_READY_FOR_HARVEST"},
     "cluster_crop_maturity_status": {"READY_FOR_HARVEST", "NOT_YET_READY_FOR_HARVEST"},
-    "pesticide_method": {"chemical_spray", "hand_picking", "early_harvesting"},
     "pesticide_type": {"insecticide", "fungicide", "herbicide", "rodenticide", "bactericide", "nematicide",
                        "acaricide", "molluscicide", "termiticide", "avicide", "piscicide", "algicide", "virucide"},
     "weed_control_method": {"chemical_spray", "hand_picking", "early_harvesting"},
@@ -631,6 +630,9 @@ CROP_LIST_FIELDS = {
     "seed_source": "SEED_SOURCE", "actual_seed_source": "SEED_SOURCE",
     "agro_ecological_zone": "AGRO_ECOLOGICAL_ZONE", "growth_stage": "CROP_GROWTH_STAGE",
     "severity_level": "INFESTATION_SEVERITY",
+    # Method of Control (Pest) is a Master Data select (attribute PEST_CONTROL_ACTION), unlike the
+    # weed and disease methods, which are static options.
+    "pesticide_method": "PEST_CONTROL_ACTION",
 }
 CROP_BOOLEANS = {"is_plot_not_registered", "has_pest_disease", "cluster_has_pest_disease"}
 
@@ -864,6 +866,10 @@ def check_crop_sown_samples(pack_dir, r):
             for field, attr in CROP_LEFT_OUT.items():
                 if field in row and attr not in lists:
                     r.error(f"{label}: {field} is set but the pack has no {attr} list; leave the field out")
+            # Sowing and Harvest: a Clustered row is saved under Land ID (cluster), which the form
+            # requires while Clustered is ticked (97g_sowing_harvest_land_rows.sql in cropsown-regsitry).
+            if section in ("sowing", "harvest") and "CLUSTERED" in (row.get("cluster_status") or [])                     and row.get("cluster_land_id") != land_id:
+                r.error(f"{label}: a Clustered row needs cluster_land_id, the same as land_id {land_id!r}")
             if section == "infestations" and "cluster_status" in row:
                 r.error(f"{label}: cluster_status is a CLUSTER_STATUS list the pack lacks; leave it out")
             _check_free_text(r, label, row, CROP_FREE_TEXT)
