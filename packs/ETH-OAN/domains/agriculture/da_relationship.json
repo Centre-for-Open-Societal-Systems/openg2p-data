@@ -1,0 +1,65 @@
+{
+  "attribute_id": "DA_RELATIONSHIP",
+  "attribute_code": "DA_RELATIONSHIP",
+  "attribute_display": "Relationship to the development agent",
+  "description": "How a family member or dependent recorded on a Development Agent's profile is related to the DA. Source: OpenAgriNet DA Registry, family members / dependents section (Nov 2026).",
+  "is_hierarchical": false,
+  "values": [
+    {
+      "value_id": "REL_SPOUSE",
+      "value_code": "REL_SPOUSE",
+      "value_display": "Spouse",
+      "sort_order": 1,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "REL_SON",
+      "value_code": "REL_SON",
+      "value_display": "Son",
+      "sort_order": 2,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "REL_DAUGHTER",
+      "value_code": "REL_DAUGHTER",
+      "value_display": "Daughter",
+      "sort_order": 3,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "REL_FATHER",
+      "value_code": "REL_FATHER",
+      "value_display": "Father",
+      "sort_order": 4,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "REL_MOTHER",
+      "value_code": "REL_MOTHER",
+      "value_display": "Mother",
+      "sort_order": 5,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "REL_BROTHER",
+      "value_code": "REL_BROTHER",
+      "value_display": "Brother",
+      "sort_order": 6,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "REL_SISTER",
+      "value_code": "REL_SISTER",
+      "value_display": "Sister",
+      "sort_order": 7,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "REL_OTHER",
+      "value_code": "REL_OTHER",
+      "value_display": "Other",
+      "sort_order": 8,
+      "display_i18n": {}
+    }
+  ]
+}
