@@ -1,0 +1,44 @@
+{
+  "attribute_id": "DA_MARITAL_STATUS",
+  "attribute_code": "DA_MARITAL_STATUS",
+  "attribute_display": "Marital status of a development agent",
+  "description": "Marital status recorded on a person in the Development Agent registry. The common MARITAL_STATUS list without Unknown: the field is optional, so an unknown status is left empty. Source: OpenAgriNet DA Registry (Nov 2026).",
+  "is_hierarchical": false,
+  "values": [
+    {
+      "value_id": "SINGLE",
+      "value_code": "SINGLE",
+      "value_display": "Single",
+      "sort_order": 1,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "MARRIED",
+      "value_code": "MARRIED",
+      "value_display": "Married",
+      "sort_order": 2,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "WIDOWED",
+      "value_code": "WIDOWED",
+      "value_display": "Widowed",
+      "sort_order": 3,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "DIVORCED",
+      "value_code": "DIVORCED",
+      "value_display": "Divorced",
+      "sort_order": 4,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "SEPARATED",
+      "value_code": "SEPARATED",
+      "value_display": "Separated",
+      "sort_order": 5,
+      "display_i18n": {}
+    }
+  ]
+}
