@@ -27,7 +27,8 @@ environment starts with the same taxonomy. **It is a seed for a fresh site.** Se
 | `Grievance_Type.json` | 75 sub-types keyed on their code (`C01-01` to `C19-02`), plus the catch-all `Other` type (`SYS`) |
 | `Grievance_Department.json` | The 15 departments the matrix names, with `Unrouted` (the triage desk) and two unrelated demo departments. The four demo departments the matrix replaces are gone |
 | `Grievance_SLA_Configuration.json` | One row per category, named `GR-SLA-<category code>`, with the turnaround of each sub-type per level |
-| `Grievance_RBAC_Assignment.json` | The demo desks, moved to the new categories and departments |
+| `Grievance_Officer_Position.json` | Canonical posts across the 4-level ladder (Kebele DA, Woreda SMS/Expert, Zonal Head, Regional Bureau Head) |
+| `Grievance_RBAC_Assignment.json` | Staffed desks for all 19 categories (C01 to C19) plus Unrouted, linking seats from `Grievance Officer Position` |
 
 Each sub-type carries `type_code`, `service_category`, `external_referral` and `entry_role_level`. `name`
 equals `type_code`, which is what the loader matches on.
@@ -56,8 +57,7 @@ equals `type_code`, which is what the loader matches on.
 - **External referral** is copied from the matrix row by row. C05 sub-types all refer to the Court and C10
   sub-types all refer to the Lender in the matrix, which may not be what each of them needs. The matrix
   owners should confirm.
-- **Desks.** Only the demo desks exist, so only C01, C09, C10 and `Other` have a staffed desk and appear in
-  Submit Grievance. The C09 desk is in `Marketing` and the C10 desk in `Credit and Payments`.
+- **Desks.** Desks are seeded for all 19 categories and Unrouted, mapping the 4-level public-sector organizational hierarchy (Kebele DA → Woreda SMS/Expert → Zonal Head → Regional Bureau Head) using canonical `Grievance Officer Position` records. All categories have staffed desks and appear in Submit Grievance.
 - **The catch-all** category `Other` and type `SYS` are made by the app on install, under those names, so
   the seed rows for them are skipped as already present.
 - `NGV` (Not a grievance) and `OOS` (Out of scope) rows of the matrix are not categories here.

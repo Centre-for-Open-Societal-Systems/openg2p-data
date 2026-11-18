@@ -12,9 +12,10 @@
   "Grievance Deferral Policy",
   "Grievance Department",
   "Grievance Holiday List",
+  "Grievance Role Level",
+  "Grievance Officer Position",
   "Grievance RBAC Assignment",
   "Grievance Response Template",
-  "Grievance Role Level",
   "Grievance Service Category",
   "Grievance Service Provider",
   "Grievance Service Provider Source",
@@ -55,6 +56,7 @@
   "Grievance Submission Type": "Grievance_Submission_Type.json",
   "Grievance Submitter Type": "Grievance_Submitter_Type.json",
   "Grievance Type": "Grievance_Type.json",
-  "OAN IAM Service": "OAN_IAM_Service.json"
+  "OAN IAM Service": "OAN_IAM_Service.json",
+  "Grievance Officer Position": "Grievance_Officer_Position.json"
  }
 }
