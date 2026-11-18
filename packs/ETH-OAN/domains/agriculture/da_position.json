@@ -1,8 +1,8 @@
 {
   "attribute_id": "DA_POSITION",
   "attribute_code": "DA_POSITION",
-  "attribute_display": "Development Agent position",
-  "description": "Post a Development Agent holds in the kebele extension structure. Source: OpenAgriNet DA Registry field list (Oct 2026).",
+  "attribute_display": "Position in the Development Agent registry",
+  "description": "Post a person in the Development Agent registry holds: a development agent in the kebele extension structure, or the staff they report to (supervisor, officers, administrator). Source: OpenAgriNet DA Registry field list (Oct 2026), positions added Nov 2026.",
   "is_hierarchical": false,
   "values": [
     {
@@ -17,6 +17,34 @@
       "value_code": "SENIOR_DA",
       "value_display": "Senior development agent",
       "sort_order": 2,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "SUPERVISOR",
+      "value_code": "SUPERVISOR",
+      "value_display": "Supervisor",
+      "sort_order": 3,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "COMMUNICATION_OFFICER",
+      "value_code": "COMMUNICATION_OFFICER",
+      "value_display": "Communication officer",
+      "sort_order": 4,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "EXECUTIVE_OFFICER",
+      "value_code": "EXECUTIVE_OFFICER",
+      "value_display": "Executive officer",
+      "sort_order": 5,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "ADMIN",
+      "value_code": "ADMIN",
+      "value_display": "Admin",
+      "sort_order": 6,
       "display_i18n": {}
     }
   ]
