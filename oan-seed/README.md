@@ -67,18 +67,24 @@ equals `type_code`, which is what the loader matches on.
 ### Sensitive and urgent handling (STG-514)
 
 Each sub-type also carries `is_sensitive`, `is_urgent` and `urgency_season`, read from the matrix's
-Sensitive Flag, Urgent Flag and Urgent Season columns and its Seasonal Calendar.
+Sensitive Flag, Urgent Flag and Urgent Season columns and its Seasonal Calendar. Deploy the
+oan_grievance_service build with STG-514 first and migrate: before it, the site has no `Grievance Urgency
+Season` doctype and no such fields on `Grievance Type`, and the loader fails.
 
 - **Sensitive** is exactly the 8 sub-types the matrix marks Yes: C13-01 to C13-04, C15-01 to C15-03 and
   C16-01. C16-02 (wrong personal data) is No. No C04 sub-type is flagged: "C04 if coercion" is free text in
   the Confidential path, not a flag, so a coercion case is filed as C13-03 until the owners decide.
 - **Urgent** is the 20 sub-types of C01, C02, C07 and C17. C09 is not Urgent: its season is Standard
   handling with High priority from October to December.
-- **Seasons.** A window is whole months, so the day is the first and last of the month. C01's Meher window
-  (15 May to 31 August, Ginbot 7 to Nehase 25) has a Belg window beside it (February to April, Tir to
-  Miyazya). C02 and C07 run October to April (Tikimt to Miyazya), and a woreda overrides that on the season
-  itself. C17 is all year. The Gregorian window decides; the Ethiopian one is recorded and shown. They do
-  not match for C02, C07 and C09 (October 1 is not Tikimt 1), which the matrix owners should confirm.
+- **Seasons.** The Gregorian window decides; the Ethiopian one is recorded and shown.
+  - C01's two windows are dated to the day, and their Ethiopian dates are the same days: Meher is 15 May to
+    31 August (Ginbot 7 to Nehase 25), Belg is 1 February to 30 April (Tir 24 to Miyazya 22). In the
+    Ethiopian year before a Gregorian leap year those Ethiopian dates fall a day later.
+  - The other windows are whole months in the matrix, so they run from the first to the last day of the
+    month, and their Ethiopian months are the matrix's own: C02 and C07 run October to April (Tikimt to
+    Miyazya) and C09 October to December (Tikimt to Tahsas). Those Ethiopian months start about ten days
+    later than the Gregorian ones (1 October is Meskerem 21, not Tikimt 1), which the matrix owners should
+    confirm. A woreda overrides the C02 and C07 window on the season itself. C17 is all year.
 - **Belg woredas** are not seeded: no official list exists. Mark each one on its area (`is_belg`).
 - C15-03 (pesticide safety) stays on the Gender and Safety desk. Moving it to Crop Protection is only a
   proposal in the matrix, so the seed does not.
