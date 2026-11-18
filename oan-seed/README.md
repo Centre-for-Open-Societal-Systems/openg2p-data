@@ -25,20 +25,24 @@ environment starts with the same taxonomy. **It is a seed for a fresh site.** Se
 |---|---|
 | `Grievance_Service_Category.json` | 19 categories, `C01` to `C19`, plus the catch-all `Other` (`SYS`), which is the default category |
 | `Grievance_Type.json` | 75 sub-types keyed on their code (`C01-01` to `C19-02`), plus the catch-all `Other` type (`SYS`) |
-| `Grievance_Department.json` | The 15 departments the sub-types name, with `Unrouted` (the triage desk) and two unrelated demo departments. The four demo departments the matrix replaces are gone |
-| `Grievance_SLA_Configuration.json` | One row per category, named `GR-SLA-<category code>` |
+| `Grievance_Department.json` | The 15 departments the matrix names, with `Unrouted` (the triage desk) and two unrelated demo departments. The four demo departments the matrix replaces are gone |
+| `Grievance_SLA_Configuration.json` | One row per category, named `GR-SLA-<category code>`, with the turnaround of each sub-type per level |
 | `Grievance_RBAC_Assignment.json` | The demo desks, moved to the new categories and departments |
 
-Each sub-type carries `type_code`, `service_category`, `department`, `sla_l1_days`, `sla_l2_days`,
-`external_referral` and `resolution_path`. `name` equals `type_code`, which is what the loader matches on.
+Each sub-type carries `type_code`, `service_category`, `external_referral` and `resolution_path`. `name`
+equals `type_code`, which is what the loader matches on.
 
-- **SLA days** on a type are the matrix's illustrative values, "to be decided by the respective owners".
-  They are defaults an administrator can edit. `0` means no SLA at that level: `0` at L1 is a type that
-  skips Kebele. `15 (follow-up)` for roads and electricity is stored as `15`. The catch-all type is
-  `0` and `7`, the triage window.
-- **SLA configuration** rows are the ones the SLA engine reads. `sla_days` is the longest L1 plus L2 of the
-  category's sub-types (`Other`: 7). The rows are named after the category code, not the `GR-SLA-####`
-  series, so the series counter cannot run into them.
+- **Department.** The matrix names a department for every sub-type, but a type does not store it: routing
+  reads the desks (`Grievance RBAC Assignment`), so the owner of a case is whatever desk is set up for the
+  category, type and department. The departments are seeded so a desk can be made for them.
+- **Turnaround days** are the matrix's illustrative values, "to be decided by the respective owners". They
+  are rows of the category's SLA configuration (`level_turnarounds`): L1 is `nodal_officer` (Kebele) and L2
+  is `senior_nodal_officer` (Woreda), each with the sub-type it is for. A level a sub-type skips has no
+  row. `15 (follow-up)` for roads and electricity is stored as `15`. The catch-all has an L2 row of `7`,
+  the triage window. 132 rows in all. The SLA engine does not read this table yet: it runs on `sla_days`.
+- **SLA configuration** `sla_days` is the longest L1 plus L2 of the category's sub-types (`Other`: 7), and
+  is what the engine reads. The rows are named after the category code, not the `GR-SLA-####` series, so
+  the series counter cannot run into them.
 - **Resolution path** is 1 Kebele Agriculture Office, 2 Kebele Committee, 3 Community Elders First,
   4 Direct to Woreda or ATI, 5 Confidential. The matrix has no path column, so the path is derived per
   sub-type from the routing deck: elders-first rows are 3, sensitive rows 5, rows that skip Kebele 4,
@@ -49,7 +53,9 @@ Each sub-type carries `type_code`, `service_category`, `department`, `sla_l1_day
   sub-types all refer to the Lender in the matrix, which may not be what each of them needs. The matrix
   owners should confirm.
 - **Desks.** Only the demo desks exist, so only C01, C09, C10 and `Other` have a staffed desk and appear in
-  Submit Grievance. Their department follows the type: C09 `Marketing`, C10 `Credit and Payments`.
+  Submit Grievance. The C09 desk is in `Marketing` and the C10 desk in `Credit and Payments`.
+- **The catch-all** category `Other` and type `SYS` are made by the app on install, under those names, so
+  the seed rows for them are skipped as already present.
 - `NGV` (Not a grievance) and `OOS` (Out of scope) rows of the matrix are not categories here.
 - Ticket codes use the service alphabet, which has no I, L, O or U.
 
@@ -62,18 +68,15 @@ To load into a site yourself, from the bench's `sites/` directory:
 ../env/bin/python ../apps/oan_grievance_service/ci/seed/load.py <site> <path to oan-seed/grievance>
 ```
 
-Deploy the oan_grievance_service build that adds the Grievance Type fields (STG-512) first and migrate.
-The loader checks every data file against the site before it loads anything, and stops with a message
-naming the missing fields, so a seed that is ahead of the app leaves nothing half loaded.
+Deploy the oan_grievance_service build with STG-512 first and migrate: the `Grievance Type` and
+`Grievance SLA Configuration` need the fields this seed fills.
 
 A second run creates nothing, and an edit an administrator made to a seeded record is kept. A row counts
-as present by its name, and a category, type or SLA row also by its code, category and name, or category.
-Rows that link to a skipped row are pointed at the record already on the site.
+as present by its name.
 
 ### Existing sites
 
 The loader never removes or changes anything, so this seed does not convert a site that already has the
-old demo data. Such a site keeps its old categories, types and desks next to the new ones, its old desks
-keep pointing at the old categories, and the new categories get no desk. Only the catch-all is brought up
-to date, by the oan_grievance_service patch `seed_catch_all_sys_codes`. For the taxonomy above, start from a
-fresh site.
+old demo data: that site keeps its old categories, types and desks next to the new ones. Dev and test sites
+with the old taxonomy should be recreated and seeded again, for example with the Helm chart's
+`jobs.createSite.forceCreate` or its drop-site job.
