@@ -24,7 +24,6 @@
   "Grievance SLA Configuration",
   "Grievance Submission Type",
   "Grievance Submitter Type",
-  "Grievance Urgency Season",
   "Grievance Type",
   "OAN IAM Service"
  ],
@@ -56,7 +55,6 @@
   "Grievance SLA Configuration": "Grievance_SLA_Configuration.json",
   "Grievance Submission Type": "Grievance_Submission_Type.json",
   "Grievance Submitter Type": "Grievance_Submitter_Type.json",
-  "Grievance Urgency Season": "Grievance_Urgency_Season.json",
   "Grievance Type": "Grievance_Type.json",
   "OAN IAM Service": "OAN_IAM_Service.json",
   "Grievance Officer Position": "Grievance_Officer_Position.json"
