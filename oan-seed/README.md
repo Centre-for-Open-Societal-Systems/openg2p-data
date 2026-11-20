@@ -26,7 +26,8 @@ environment starts with the same taxonomy. **It is a seed for a fresh site.** Se
 | `Grievance_Service_Category.json` | 19 categories, `C01` to `C19`, plus the catch-all `Other` (`SYS`), which is the default category |
 | `Grievance_Type.json` | 75 sub-types keyed on their code (`C01-01` to `C19-02`), plus the catch-all `Other` type (`SYS`) |
 | `Grievance_Department.json` | The 15 departments the matrix names, with `Unrouted` (the triage desk) and two unrelated demo departments. The four demo departments the matrix replaces are gone |
-| `Grievance_SLA_Configuration.json` | One row per category, named `GR-SLA-<category code>`, with the turnaround of each sub-type per level, and the seasonal and urgent rules of the matrix's Seasonal Calendar (STG-514) |
+| `Grievance_SLA_Configuration.json` | One row per category, named `GR-SLA-<category code>`, with the turnaround of each sub-type per level |
+| `Grievance_SLA_Rule.json` | The seasonal and urgent rules of the matrix's Seasonal Calendar (STG-514), one record per rule, named `<category code>-R<n>` |
 | `Grievance_Officer_Position.json` | Canonical posts across the 4-level ladder (Kebele DA, Woreda SMS/Expert, Zonal Head, Regional Bureau Head) |
 | `Grievance_RBAC_Assignment.json` | Staffed desks for all 19 categories (C01 to C19) plus Unrouted, linking seats from `Grievance Officer Position` |
 
@@ -66,10 +67,10 @@ equals `type_code`, which is what the loader matches on.
 ### Sensitive and urgent handling (STG-514)
 
 Each sub-type also carries `is_sensitive`, read from the matrix's Sensitive Flag column. Urgency is not a
-field of the type: the matrix's Urgent Flag, Urgent Season and Seasonal Calendar are seasonal rules
-(`sla_rules`) on the category's SLA configuration. Deploy the oan_grievance_service build with STG-514
-first and migrate: before it, the site has no `is_sensitive` on `Grievance Type` and no `Grievance SLA
-Rule`, and the loader fails.
+field of the type: the matrix's Urgent Flag, Urgent Season and Seasonal Calendar are seasonal rules, each a
+`Grievance SLA Rule` record linked to its category (`service_category`), loaded after the types. Deploy the
+oan_grievance_service build with STG-514 first and migrate: before it, the site has no `is_sensitive` on
+`Grievance Type` and no `Grievance SLA Rule`, and the loader fails.
 
 - **Sensitive** is exactly the 8 sub-types the matrix marks Yes: C13-01 to C13-04, C15-01 to C15-03 and
   C16-01. C16-02 (wrong personal data) is No. No C04 sub-type is flagged: "C04 if coercion" is free text in
@@ -79,16 +80,17 @@ Rule`, and the loader fails.
 - **Rules.** A window is a recurring month and day, the same every year; whole months run from the first
   to the last day of the month.
 
-  | Configuration | Rule | Window | Urgent | Priority |
-  |---|---|---|---|---|
-  | `GR-SLA-C01` | Meher input season | 15 May to 31 August | yes | Urgent |
-  | `GR-SLA-C02` | Irrigation season (dry season) | 1 October to 30 April | yes | Urgent |
-  | `GR-SLA-C07` | Dry / irrigation season | 1 October to 30 April | yes | Urgent |
-  | `GR-SLA-C09` | Harvest marketing peak | 1 October to 31 December | no | High |
-  | `GR-SLA-C17` | Pest and disease outbreak (all year) | all year | yes | Urgent |
+  | Rule | Category | Label | Window | Urgent | Priority |
+  |---|---|---|---|---|---|
+  | `C01-R1` | C01 | Meher input season | 15 May to 31 August | yes | Urgent |
+  | `C02-R1` | C02 | Irrigation season (dry season) | 1 October to 30 April | yes | Urgent |
+  | `C07-R1` | C07 | Dry / irrigation season | 1 October to 30 April | yes | Urgent |
+  | `C09-R1` | C09 | Harvest marketing peak | 1 October to 31 December | no | High |
+  | `C17-R1` | C17 | Pest and disease outbreak (all year) | all year | yes | Urgent |
 
 - **SLA days.** The matrix gives no in-season turnaround, so no rule sets `sla_days` and the category's
-  SLA days apply. The owners set a rule's `sla_days` (for example 3 days in season) on the site.
+  SLA days apply. The owners set a rule's `sla_days` (for example 3 days in season) on the site, through
+  `PATCH /api/v1/seasonal-rules/{rule_id}`.
 - **Belg woredas and woreda overrides** are not seeded: no official list exists. C01's February to April
   window for a Belg woreda, and a woreda's own C02 or C07 window, are rules with that woreda's
   `administrative_area`, added on the site.
@@ -117,6 +119,7 @@ old demo data: that site keeps its old categories, types and desks next to the n
 with the old taxonomy should be recreated and seeded again, for example with the Helm chart's
 `jobs.createSite.forceCreate` or its drop-site job.
 
-A site seeded before STG-514 already holds the types and SLA configurations, so the loader would skip
-them. The app's `apply_sensitive_urgent_matrix` patch sets the Sensitive flags and adds these rules on
-migrate, only where they are still empty: a configuration that already has rules is left alone.
+A site seeded before STG-514 already holds the types, so the loader would skip them. The app's
+`apply_sensitive_urgent_matrix` patch sets the Sensitive flags and adds these rules on migrate, only where
+they are still empty: a category that already has rules is left alone. The patch gives the rules the
+seed's names (`C01-R1` and so on), so the loader finds them and adds no second copy.

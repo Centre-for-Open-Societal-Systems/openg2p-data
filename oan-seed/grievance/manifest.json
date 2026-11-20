@@ -25,6 +25,7 @@
   "Grievance Submission Type",
   "Grievance Submitter Type",
   "Grievance Type",
+  "Grievance SLA Rule",
   "OAN IAM Service"
  ],
  "singles": [
@@ -57,6 +58,7 @@
   "Grievance Submitter Type": "Grievance_Submitter_Type.json",
   "Grievance Type": "Grievance_Type.json",
   "OAN IAM Service": "OAN_IAM_Service.json",
-  "Grievance Officer Position": "Grievance_Officer_Position.json"
+  "Grievance Officer Position": "Grievance_Officer_Position.json",
+  "Grievance SLA Rule": "Grievance_SLA_Rule.json"
  }
 }
