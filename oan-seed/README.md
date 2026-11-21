@@ -63,6 +63,10 @@ equals `type_code`, which is what the loader matches on.
   sub-types all refer to the Lender in the matrix, which may not be what each of them needs. The matrix
   owners should confirm.
 - **Desks.** Desks are seeded for all 19 categories and Unrouted, mapping the 4-level public-sector organizational hierarchy (Kebele DA → Woreda SMS/Expert → Zonal Head → Regional Bureau Head) using canonical `Grievance Officer Position` records. All categories have staffed desks and appear in Submit Grievance.
+- **Positions and assignments.** A `Grievance Officer Position` is a role (Crop DA, Crop SMS) with its
+  role level and the position it reports to. Who holds it, and where, is a `Grievance Position Assignment`,
+  so one position serves many people. Each desk officer row links its assignment. An assignment may give
+  only an `email`: that person's first sign-in fills its `user`.
 - **The catch-all** category `Other` and type `SYS` are made by the app on install, under those names, so
   the seed rows for them are skipped as already present.
 - `NGV` (Not a grievance) and `OOS` (Out of scope) rows of the matrix are not categories here.
