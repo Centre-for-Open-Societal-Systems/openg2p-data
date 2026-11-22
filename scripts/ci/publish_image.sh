@@ -8,7 +8,11 @@
 #   <more tags>  further names for the same image (the git tag on a tag build)
 #
 # Env: AWS_REGION, ECR_REPOSITORY, DIST, DATA_SHA, MDS_SHA, MDS_REF; PYTHON
-# (default python3). Docker must already be logged in to the registry.
+# (default python3); the Jenkins BRANCH_NAME / CHANGE_ID / TAG_NAME that
+# publish_gate.sh reads. Docker must already be logged in to the registry.
+#
+# Only develop and tag builds publish: publish_gate.sh runs first and refuses a
+# pull request or any other branch before a single aws or docker call.
 #
 # A published tag names one image for good (OpenG2P's rule: a version is
 # published exactly once). So:
@@ -19,6 +23,8 @@
 # Writes $DIST/image.json: the reference to deploy, repo:tag@digest, for the
 # separate, approved deployment that seeds an environment. Nothing here deploys.
 set -euo pipefail
+
+bash "$(dirname "${BASH_SOURCE[0]}")/publish_gate.sh" || exit 1
 
 local_image=$1 ecr_image=$2 tag=$3
 shift 3

@@ -50,7 +50,7 @@ run() {
     done
     [ "${1:-}" = -- ] && shift
     : > "$dir/log"
-    out=$(PATH="$dir/bin:$PATH" STATE="$dir" DIST="$dir" AWS_REGION=ap-south-1 \
+    out=$(PATH="$dir/bin:$PATH" STATE="$dir" DIST="$dir" AWS_REGION=ap-south-1 BRANCH_NAME=develop \
           ECR_REPOSITORY=eoan/openg2p-data/master-data-db-seed DATA_SHA=aaaaaaaaaaaa0000 \
           MDS_SHA=bbbbbbbb0000 MDS_REF=bbbbbbbb0000 \
           bash "$SCRIPT" "$LOCAL" "$REPO" "$TAG" "$@" 2>&1)

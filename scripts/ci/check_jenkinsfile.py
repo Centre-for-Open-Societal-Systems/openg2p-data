@@ -19,9 +19,12 @@ Checked:
     section 6): eoan/openg2p-data/master-data-db-seed:<version>-<branch>.<build>,
     the tag taken from scripts/ci/image_names.py, not a commit-derived tag
   - the data and master-data-service commits stay in the image's OCI labels
-  - the push runs only for develop and tags (or an explicit PUSH_IMAGE), never
-    overwrites a published tag, and records the pushed reference (tag@digest)
-    in dist/image.json for whoever deploys it
+  - the build and push stages run only for develop (not a pull request) and
+    tags, with no parameter that widens that (the OAN standard never publishes
+    a pull request or other branch build); the push stage runs
+    scripts/ci/publish_gate.sh before any ECR call
+  - the push never overwrites a published tag, and records the pushed reference
+    (tag@digest) in dist/image.json for whoever deploys it
 
 Comments are ignored, so the file can say what it does not do.
 Exits non-zero on any failure.
@@ -119,6 +122,8 @@ def check(path: str) -> list[str]:
     if build is None:
         errors.append("no 'Build db-seed image' stage")
     else:
+        when = re.search(r"when\s*\{(.*?)\n\s*\}\s*\n\s*steps", build, flags=re.S)
+        errors += _gate_errors("'Build db-seed image'", when.group(1) if when else "")
         if "packs-image.diff" not in build:
             errors.append("'Build db-seed image' no longer proves the image's packs match the validated ones")
         for label in LABELS:
@@ -129,8 +134,11 @@ def check(path: str) -> list[str]:
     else:
         when = re.search(r"when\s*\{(.*?)\n\s*\}\s*\n\s*steps", push, flags=re.S)
         gate = when.group(1) if when else ""
-        if not ("branch 'develop'" in gate and "buildingTag()" in gate):
-            errors.append("'Push to ECR' is not gated on develop and tags")
+        errors += _gate_errors("'Push to ECR'", gate)
+        first_aws = min((m.start() for m in re.finditer(r"aws", push)), default=len(push))
+        gate_call = push.find("scripts/ci/publish_gate.sh")
+        if gate_call < 0 or gate_call > first_aws:
+            errors.append("'Push to ECR' does not run scripts/ci/publish_gate.sh before its first aws call")
         # The push may live in a script the stage calls; read those too.
         for script in re.findall(r"\bscripts/ci/[\w.-]+\.sh\b", push):
             p = os.path.join(ROOT, script)
@@ -143,6 +151,17 @@ def check(path: str) -> list[str]:
     if stages and stages[-1] != "Push to ECR":
         errors.append(f"'{stages[-1]}' runs after 'Push to ECR'; publishing is the last thing CI does")
     return errors
+
+
+PUBLISH_GATE = "anyOf { allOf { branch 'develop'; not { changeRequest() } }; buildingTag() }"
+
+
+def _gate_errors(stage: str, gate: str) -> list[str]:
+    """The stage's `when` must be develop (not a PR) or a tag, and nothing else."""
+    if " ".join(gate.split()) != PUBLISH_GATE:
+        extra = " (PUSH_IMAGE or another expression widens it)" if re.search(r"expression|PUSH_IMAGE", gate) else ""
+        return [f"{stage} is not gated exactly on `{PUBLISH_GATE}`{extra}"]
+    return []
 
 
 def _block(code: str, opener: str) -> str:
@@ -158,10 +177,14 @@ def main(argv: list[str]) -> int:
     errors = check(path)
     for e in errors:
         print(f"FAIL {e}")
+    try:
+        shown = os.path.relpath(path, ROOT)
+    except ValueError:  # another drive on Windows
+        shown = path
     if errors:
-        print(f"{len(errors)} problem(s) in {os.path.relpath(path, ROOT)}")
+        print(f"{len(errors)} problem(s) in {shown}")
         return 1
-    print(f"ok   {os.path.relpath(path, ROOT)}: builds and publishes the db-seed image, deploys nothing")
+    print(f"ok   {shown}: builds and publishes the db-seed image, deploys nothing")
     return 0
 
 

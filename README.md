@@ -40,7 +40,9 @@ OAN naming standard the registry pipelines use (`eoan/<repository>/<image>`;
 [oan-helm `naming-standard.md`](https://github.com/Centre-for-Open-Societal-Systems/oan-helm/blob/main/docs/release/naming-standard.md),
 section 6). `<version>` is in [`init.yaml`](init.yaml), `<branch>` is the Jenkins
 branch name as a slug (a pull request build is `pr-<n>`, and only `develop` and
-tags publish), and `<build>` is the Jenkins build number, for example
+tags publish, whatever any parameter says: a pull request or other branch build is
+validated and built but never pushed, and `scripts/ci/publish_gate.sh` refuses it
+before any ECR call), and `<build>` is the Jenkins build number, for example
 `1.0.0-develop.57`. [`scripts/ci/image_names.py`](scripts/ci/image_names.py)
 generates it. The tag holds no commit: the openg2p-data commit and the
 master-data-service commit (`MDS_REF`) are OCI labels on the image

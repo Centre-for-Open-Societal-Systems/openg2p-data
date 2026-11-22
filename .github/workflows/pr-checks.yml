@@ -68,6 +68,9 @@ jobs:
       - name: Image publish never overwrites a tag
         run: bash scripts/ci/tests/test_publish_image.sh
 
+      - name: Only develop and tag builds publish (no PR or branch build reaches ECR)
+        run: bash scripts/ci/tests/test_publish_gate.sh
+
       - name: Image tag generation (eoan/openg2p-data/master-data-db-seed:<version>-<branch>.<build>)
         run: python scripts/ci/tests/test_image_names.py
 

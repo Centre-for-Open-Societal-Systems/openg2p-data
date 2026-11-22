@@ -21,7 +21,10 @@
 //      the tag comes from scripts/ci/image_names.py), and also as the git tag on a
 //      tag build. A tag already in ECR is never overwritten. The openg2p-data and
 //      master-data-service commits are OCI labels on the image; the pushed
-//      reference, repo:tag@digest, is in dist/image.json.     (develop, tags)
+//      reference, repo:tag@digest, is in dist/image.json.
+//      Only the develop branch and tag builds publish. A pull request or any
+//      other branch is built and validated, never pushed, and no parameter
+//      changes that (scripts/ci/publish_gate.sh, scripts/ci/check_jenkinsfile.py).
 //
 // That is where this pipeline ends. It does not deploy or reseed anything, and
 // no parameter makes it: it binds no cluster credentials and runs no
@@ -52,7 +55,6 @@ def PARAM_DEFAULTS = [
     // loader writes the API's tables directly, so it moves with the API image.
     MDS_REF      : 'e569a59b8e9f61f809e07791e9263e50b2a7e0da',
     STRICT       : false,
-    PUSH_IMAGE   : false,
 ]
 
 pipeline {
@@ -77,8 +79,6 @@ pipeline {
                description: 'Commit, tag or branch of OpenG2P/master-data-service whose docker/db-seed is built; keep it the deployed API\'s commit')
         booleanParam(name: 'STRICT', defaultValue: PARAM_DEFAULTS.STRICT,
                      description: 'Treat validate_pack.py warnings as failures')
-        booleanParam(name: 'PUSH_IMAGE', defaultValue: PARAM_DEFAULTS.PUSH_IMAGE,
-                     description: 'Also build and push the image from a branch other than develop or a tag')
     }
 
     environment {
@@ -299,7 +299,7 @@ EOF
 
         stage('Build db-seed image') {
             when {
-                anyOf { branch 'develop'; buildingTag(); expression { env.PUSH_IMAGE == 'true' } }
+                anyOf { allOf { branch 'develop'; not { changeRequest() } }; buildingTag() }
             }
             steps {
                 script {
@@ -360,7 +360,7 @@ EOF
 
         stage('Push to ECR') {
             when {
-                anyOf { branch 'develop'; buildingTag(); expression { env.PUSH_IMAGE == 'true' } }
+                anyOf { allOf { branch 'develop'; not { changeRequest() } }; buildingTag() }
             }
             steps {
                 withCredentials([
@@ -373,6 +373,9 @@ EOF
                     }
                     sh '''#!/bin/bash
                         set -euo pipefail
+                        # Second line behind the stage's `when`: refuses a pull request
+                        # or any other branch before the first ECR call.
+                        bash scripts/ci/publish_gate.sh
                         if ! aws ecr describe-repositories --region "$AWS_REGION" \
                                 --repository-names "$ECR_REPOSITORY" > /dev/null; then
                             echo "ECR repository $ECR_REPOSITORY does not exist (or is not visible to aws-ecr-creds)."
