@@ -85,6 +85,21 @@ Donkey, horse, mule, pig and beehive are added to the base list from
 registry's species dropdown and its ODK form offered them before the list moved to Master Data.
 `EQUINES` and `OTHER` stay, for the records that already carry them.
 
+## Certification status on the crop lists
+
+`CROP_CATEGORY`, `CROP_COMMODITY` and `SEED_VARIETY` carry a `certification_status` attribute
+(`CERTIFIED`, `UNCERTIFIED` or `PROVISIONAL`; schema default `CERTIFIED`), so a registry can
+tell an officially released crop or variety from a provisional or uncertified local one. Every
+value in the pack is `CERTIFIED`, the status #68 gave every existing crop value; its demo
+`UNCERTIFIED` and `PROVISIONAL` rows are not carried over. A value that is not certified gets
+its status in its overlay entry, never in this pack.
+The attribute comes from `extend` overlays in
+[`eth_oan_additions/attributes/`](../../scripts/packs/eth_oan_additions/attributes), which add
+the property next to the list's existing schema and the key next to each value's attributes,
+and stop the build if a value is not named or already has a different status. Master Data
+gets it the usual way: the loader creates a new version of each list, and published versions
+are never edited.
+
 ## Breeds per species on `LIVESTOCK_BREED`
 
 `LIVESTOCK_BREED` keeps the base list's breed types (Improved, Local, Hybrid) and gains 46 breeds

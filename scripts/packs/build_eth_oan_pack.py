@@ -27,7 +27,12 @@ What is taken from where
   LIVESTOCK_SPECIES says per species whether an animal carries an ear tag and
   whether it is recorded as a flock. Each file is {"attribute_schema": ...,
   "values": {value_id: attributes}}; the build stops if a named value is
-  missing or the base list already has a different attribute_schema.
+  missing or the base list already has a different attribute_schema. A file
+  with "mode": "extend" adds properties to a list that already has a schema
+  (CROP_COMMODITY, SEED_VARIETY) or none (CROP_CATEGORY), and adds its keys next
+  to each value's attributes: certification_status. Its attribute_schema holds
+  only the added properties, it must name every value, and it never replaces a
+  property or value key the list already has.
   eth_oan_additions/displays/ sets the shown name of base-list values where
   OpenAgriNet's wording differs (SUBJECT_ID_TYPE FAYDA_FAN reads "Fayda FAN
   ID", as in the registries' field labels). Each file is {"values": {value_id:
@@ -197,6 +202,40 @@ def carry_boundaries(base, values):
     return out
 
 
+def extend_attributes(rel, doc, overlay):
+    """Add attributes to a list that may already have some ("mode": "extend").
+
+    The overlay's attribute_schema lists only the properties it adds. Each is
+    added to the list's schema, which is created (an object that allows no other
+    properties) when the list has none. Each value gets the overlay's keys next to
+    the attributes it already has. Nothing the list already has is replaced: a
+    property or a value key that already exists with different content stops the
+    build, and so does a value the overlay does not name.
+    """
+    schema = doc.get("attribute_schema")
+    if schema is None:
+        schema = {"type": "object", "properties": {}, "additionalProperties": False}
+    props = schema.setdefault("properties", {})
+    for key, prop in overlay["attribute_schema"]["properties"].items():
+        if key in props and props[key] != prop:
+            raise SystemExit(f"{rel}: the base list already has a different property {key}")
+        props[key] = prop
+    doc["attribute_schema"] = schema
+    by_id = {v["value_id"]: v for v in doc["values"]}
+    for value_id in overlay["values"]:
+        if value_id not in by_id:
+            raise SystemExit(f"{rel}: the base list has no value {value_id}")
+    missing = [v["value_id"] for v in doc["values"] if v["value_id"] not in overlay["values"]]
+    if missing:
+        raise SystemExit(f"{rel}: no attributes for {', '.join(missing)}")
+    for value_id, added in overlay["values"].items():
+        attributes = by_id[value_id].setdefault("attributes", {})
+        for key, val in added.items():
+            if key in attributes and attributes[key] != val:
+                raise SystemExit(f"{rel}: {value_id} already has a different {key}")
+            attributes[key] = val
+
+
 def apply_attributes(out):
     """Add per-value attributes from eth_oan_additions/attributes/ to base lists."""
     attrs_dir = os.path.join(ADDITIONS, "attributes")
@@ -208,6 +247,10 @@ def apply_attributes(out):
                 raise SystemExit(f"{rel}: the base pack has no such list to add attributes to")
             doc = read_json(dest)
             overlay = read_json(os.path.join(dirpath, name))
+            if overlay.get("mode") == "extend":
+                extend_attributes(rel, doc, overlay)
+                write_json(dest, doc)
+                continue
             have = doc.get("attribute_schema")
             if have is not None and have != overlay["attribute_schema"]:
                 raise SystemExit(f"{rel}: the base list already has a different attribute_schema")
@@ -240,6 +283,50 @@ def apply_displays(out):
                     raise SystemExit(f"{rel}: the base list has no value {value_id}")
                 by_id[value_id]["value_display"] = display
             write_json(dest, doc)
+
+
+def build_lists(base, out):
+    """Write the pack's codelists/ and domains/ (the base pack's, plus eth_oan_additions/),
+    and the sample files eth_oan_additions/ adds.
+
+    Needs only the base pack, not the geography source, so the lists can be
+    rebuilt (and checked against the committed pack) on their own."""
+    for sub in ("codelists", "domains"):
+        src = os.path.join(base, sub)
+        if os.path.isdir(src):
+            shutil.copytree(src, os.path.join(out, sub))
+    # Lists only the farmer registry needs are added on top. They never replace
+    # a base list, so both Ethiopia packs keep describing a farmer the same way.
+    for dirpath, _, files in os.walk(ADDITIONS):
+        if os.path.relpath(dirpath, ADDITIONS).split(os.sep)[0] in ("values", "attributes", "displays"):
+            continue
+        for name in files:
+            rel = os.path.relpath(os.path.join(dirpath, name), ADDITIONS)
+            dest = os.path.join(out, rel)
+            if os.path.exists(dest):
+                raise SystemExit(f"{rel}: the base pack already has this list")
+            os.makedirs(os.path.dirname(dest), exist_ok=True)
+            shutil.copyfile(os.path.join(dirpath, name), dest)
+    # Values a base list lacks but the pack contract needs, such as the value
+    # that carries a role. Added, never replacing one: a base value with the
+    # same id stops the build, so the addition is dropped once ETH has it.
+    values_dir = os.path.join(ADDITIONS, "values")
+    for dirpath, _, files in os.walk(values_dir):
+        for name in files:
+            rel = os.path.relpath(os.path.join(dirpath, name), values_dir)
+            dest = os.path.join(out, rel)
+            if not os.path.exists(dest):
+                raise SystemExit(f"{rel}: the base pack has no such list to add values to")
+            doc = read_json(dest)
+            have = {v["value_id"] for v in doc["values"]}
+            for value in read_json(os.path.join(dirpath, name))["values"]:
+                if value["value_id"] in have:
+                    raise SystemExit(f"{rel}: the base pack already has {value['value_id']}; drop the addition")
+                doc["values"].append(value)
+            doc["values"].sort(key=lambda v: v.get("sort_order", 0))
+            write_json(dest, doc)
+    apply_attributes(out)
+    apply_displays(out)
 
 
 def main():
@@ -330,42 +417,7 @@ def main():
         "boundary_coverage": {m: len(boundaries.get(m, [])) for m in LEVELS},
     })
 
-    for sub in ("codelists", "domains"):
-        src = os.path.join(args.base, sub)
-        if os.path.isdir(src):
-            shutil.copytree(src, os.path.join(args.out, sub))
-    # Lists only the farmer registry needs are added on top. They never replace
-    # a base list, so both Ethiopia packs keep describing a farmer the same way.
-    for dirpath, _, files in os.walk(ADDITIONS):
-        if os.path.relpath(dirpath, ADDITIONS).split(os.sep)[0] in ("values", "attributes", "displays"):
-            continue
-        for name in files:
-            rel = os.path.relpath(os.path.join(dirpath, name), ADDITIONS)
-            dest = os.path.join(args.out, rel)
-            if os.path.exists(dest):
-                raise SystemExit(f"{rel}: the base pack already has this list")
-            os.makedirs(os.path.dirname(dest), exist_ok=True)
-            shutil.copyfile(os.path.join(dirpath, name), dest)
-    # Values a base list lacks but the pack contract needs, such as the value
-    # that carries a role. Added, never replacing one: a base value with the
-    # same id stops the build, so the addition is dropped once ETH has it.
-    values_dir = os.path.join(ADDITIONS, "values")
-    for dirpath, _, files in os.walk(values_dir):
-        for name in files:
-            rel = os.path.relpath(os.path.join(dirpath, name), values_dir)
-            dest = os.path.join(args.out, rel)
-            if not os.path.exists(dest):
-                raise SystemExit(f"{rel}: the base pack has no such list to add values to")
-            doc = read_json(dest)
-            have = {v["value_id"] for v in doc["values"]}
-            for value in read_json(os.path.join(dirpath, name))["values"]:
-                if value["value_id"] in have:
-                    raise SystemExit(f"{rel}: the base pack already has {value['value_id']}; drop the addition")
-                doc["values"].append(value)
-            doc["values"].sort(key=lambda v: v.get("sort_order", 0))
-            write_json(dest, doc)
-    apply_attributes(args.out)
-    apply_displays(args.out)
+    build_lists(args.base, args.out)
     address =read_json(os.path.join(args.base, "address.json"))
     address["sub_levels"] = [s for s in address["sub_levels"] if s["id"] != "kebele"]
     address["lines"] = ["House {house_number}"]

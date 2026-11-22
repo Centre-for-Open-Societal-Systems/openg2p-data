@@ -1,0 +1,29 @@
+{
+  "mode": "extend",
+  "attribute_schema": {
+    "properties": {
+      "certification_status": {
+        "type": "string",
+        "title": "Certification status",
+        "enum": [
+          "CERTIFIED",
+          "UNCERTIFIED",
+          "PROVISIONAL"
+        ],
+        "default": "CERTIFIED",
+        "description": "Official certification flag: CERTIFIED, UNCERTIFIED, or PROVISIONAL"
+      }
+    }
+  },
+  "values": {
+    "CROPCAT_CEREAL": {"certification_status": "CERTIFIED"},
+    "CROPCAT_FOOD_LEGUME": {"certification_status": "CERTIFIED"},
+    "CROPCAT_OILSEED": {"certification_status": "CERTIFIED"},
+    "CROPCAT_FRUIT_VEGETABLE": {"certification_status": "CERTIFIED"},
+    "CROPCAT_ROOT_TUBER": {"certification_status": "CERTIFIED"},
+    "CROPCAT_STIMULANT": {"certification_status": "CERTIFIED"},
+    "CROPCAT_INDUSTRIAL": {"certification_status": "CERTIFIED"},
+    "CROPCAT_SPICE_MEDICINAL_AROMATIC": {"certification_status": "CERTIFIED"},
+    "CROPCAT_OTHER": {"certification_status": "CERTIFIED"}
+  }
+}

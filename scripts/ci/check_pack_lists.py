@@ -23,7 +23,8 @@ introduces; the rest are listed, so they stay visible until someone fixes them.
 
 It also checks that packs/ETH-OAN matches scripts/packs/eth_oan_additions: an
 addition that is not in the built pack (for attributes/, a list whose schema or
-value attributes differ from the overlay, for displays/, a value whose shown name
+value attributes differ from the overlay, or for an "extend" overlay, an added
+property or value key that differs or a value without it; for displays/, a value whose shown name
 differs) means build_eth_oan_pack.py was not run,
 and a pack edited by hand loses that edit at the next rebuild. Those findings
 always fail.
@@ -118,6 +119,26 @@ def additions_errors(root):
     errors = []
     if not os.path.isdir(os.path.join(root, ADDITIONS)) or not os.path.isdir(os.path.join(root, BUILT)):
         return errors
+    # Value keys an "extend" overlay adds to a built list, so the values/ check
+    # below compares an added value without them (the build adds them after).
+    extended = collections.defaultdict(set)
+    for rel in tracked(root, f"{ADDITIONS}/attributes/*.json"):
+        overlay = read_json(root, rel)
+        if overlay.get("mode") == "extend":
+            target = f"{BUILT}/{os.path.relpath(rel, f'{ADDITIONS}/attributes').replace(os.sep, '/')}"
+            extended[target] |= set(overlay["attribute_schema"]["properties"])
+
+    def without_extended(target, built_value, added):
+        keys = extended.get(target)
+        if not keys or built_value is None:
+            return built_value
+        attributes = {k: v for k, v in (built_value.get("attributes") or {}).items()
+                      if k not in keys or k in (added.get("attributes") or {})}
+        out = {k: v for k, v in built_value.items() if k != "attributes"}
+        if attributes or "attributes" in added:
+            out["attributes"] = attributes
+        return {k: out[k] for k in built_value if k in out}
+
     for rel in tracked(root, f"{ADDITIONS}/*.json"):
         sub = os.path.relpath(rel, ADDITIONS).replace(os.sep, "/")
         if sub.startswith("values/"):
@@ -127,7 +148,7 @@ def additions_errors(root):
                 continue
             built = {v["value_id"]: v for v in read_json(root, target)["values"]}
             for v in read_json(root, rel)["values"]:
-                if built.get(v["value_id"]) != v:
+                if without_extended(target, built.get(v["value_id"]), v) != v:
                     errors.append((rel, (f"{rel}: {v['value_id']} differs from {target} or is missing "
                                          f"(run build_eth_oan_pack.py)")))
         elif sub.startswith("attributes/"):
@@ -136,6 +157,21 @@ def additions_errors(root):
                 errors.append((rel, f"{rel}: sets attributes on {target}, which does not exist"))
                 continue
             overlay, built = read_json(root, rel), read_json(root, target)
+            if overlay.get("mode") == "extend":
+                # Adds properties and value keys next to what the list has: check only those.
+                props = (built.get("attribute_schema") or {}).get("properties") or {}
+                for key, prop in overlay["attribute_schema"]["properties"].items():
+                    if props.get(key) != prop:
+                        errors.append((rel, f"{rel}: property {key} differs from {target} (run build_eth_oan_pack.py)"))
+                by_id = {v["value_id"]: v for v in built["values"]}
+                for value_id in sorted(set(by_id) - set(overlay.get("values") or {})):
+                    errors.append((rel, f"{rel}: no attributes for {value_id} of {target}"))
+                for value_id, added in (overlay.get("values") or {}).items():
+                    have = (by_id.get(value_id) or {}).get("attributes") or {}
+                    if any(have.get(k, object()) != val for k, val in added.items()):
+                        errors.append((rel, (f"{rel}: attributes of {value_id} differ from {target} or the value "
+                                             f"is missing (run build_eth_oan_pack.py)")))
+                continue
             if built.get("attribute_schema") != overlay.get("attribute_schema"):
                 errors.append((rel, f"{rel}: attribute_schema differs from {target} (run build_eth_oan_pack.py)"))
             by_code = {v.get("value_code") or v["value_id"]: v for v in built["values"]}
