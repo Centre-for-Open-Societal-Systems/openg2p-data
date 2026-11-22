@@ -16,9 +16,12 @@
 //   6. Build master-data-db-seed from OpenG2P/master-data-service with THIS
 //      commit of openg2p-data baked in, and prove the image's packs are
 //      byte-identical to the ones validated above
-//   7. Push it to ECR as <data sha 12>-mds-<mds sha 8> (and as the git tag on
-//      a tag build). A tag already in ECR is never overwritten. The pushed
-//      reference, tag@digest, is in dist/image.json.     (develop, tags)
+//   7. Push it to ECR as eoan/openg2p-data/master-data-db-seed:<version>-<branch>.<build>
+//      (the OAN naming standard, as the registry pipelines; <version> is init.yaml,
+//      the tag comes from scripts/ci/image_names.py), and also as the git tag on a
+//      tag build. A tag already in ECR is never overwritten. The openg2p-data and
+//      master-data-service commits are OCI labels on the image; the pushed
+//      reference, repo:tag@digest, is in dist/image.json.     (develop, tags)
 //
 // That is where this pipeline ends. It does not deploy or reseed anything, and
 // no parameter makes it: it binds no cluster credentials and runs no
@@ -93,11 +96,13 @@ pipeline {
         // OpenG2P/openg2p-data e043ffc), and PR checks stop new errors in them.
         GATED_PACKS      = 'ETH-OAN'
 
-        // Image. Same account and naming as the other Commons images
-        // (openg2p/commons/consent-manager-api, ...). The ECR repository is
-        // created outside CI, like the others.
+        // Image: eoan/<repository>/<image>, the OAN standard (oan-helm
+        // docs/release/naming-standard.md, section 6): repository openg2p-data,
+        // image master-data-db-seed. The ECR repository is created outside CI
+        // (immutable tags, scan on push, AES256); this pipeline fails if it is
+        // missing rather than creating it.
         AWS_REGION     = 'ap-south-1'
-        ECR_REPOSITORY = 'openg2p/commons/master-data-db-seed'
+        ECR_REPOSITORY = 'eoan/openg2p-data/master-data-db-seed'
         MDS_REPO       = 'https://github.com/OpenG2P/master-data-service.git'
         // What the image's Dockerfile clones. Must be where Jenkins builds from,
         // so the commit being built can be fetched by SHA.
@@ -309,9 +314,12 @@ EOF
                         git checkout --quiet FETCH_HEAD
                     """
                     env.MDS_SHA = sh(script: 'git -C .build/master-data-service rev-parse HEAD', returnStdout: true).trim()
-                    env.IMAGE_TAG = "${env.DATA_SHA.take(12)}-mds-${env.MDS_SHA.take(8)}"
+                    // <version>-<branch>.<build>, as the registry pipelines. The commits
+                    // are labels and in dist/image.json, not part of the tag.
+                    env.IMAGE_TAG = sh(returnStdout: true,
+                        script: 'python3 scripts/ci/image_names.py tag "$BRANCH_NAME" "$BUILD_NUMBER"').trim()
                     env.LOCAL_IMAGE = "openg2p-data-ci/master-data-db-seed:${env.IMAGE_TAG}"
-                    echo "master-data-service ${env.MDS_REF} @ ${env.MDS_SHA}; image tag ${env.IMAGE_TAG}"
+                    echo "master-data-service ${env.MDS_REF} @ ${env.MDS_SHA}; openg2p-data ${env.DATA_SHA}; image tag ${env.IMAGE_TAG}"
                 }
                 sh '''#!/bin/bash
                     set -euo pipefail
@@ -323,7 +331,7 @@ EOF
                         --label org.opencontainers.image.source="$DATA_REPO_URL" \
                         --label org.opencontainers.image.revision="$DATA_SHA" \
                         --label org.openg2p.master-data-service.source="$MDS_REPO" \
-                        --label org.openg2p.master-data-service.revision="$MDS_SHA" \
+                        --label org.openg2p.master-data-service.revision="$MDS_SHA"                         --label org.openg2p.master-data-service.ref="$MDS_REF" \
                         --label org.openg2p.build-url="${BUILD_URL:-}" \
                         --label org.opencontainers.image.title=master-data-db-seed \
                         --label org.opencontainers.image.version="$IMAGE_TAG" \
@@ -394,7 +402,8 @@ EOF
         cleanup {
             sh '''
                 [ -n "${LOCAL_IMAGE:-}" ] && docker image rm -f "$LOCAL_IMAGE" > /dev/null 2>&1 || true
-                [ -n "${ECR_IMAGE:-}" ] && docker image rm -f "$ECR_IMAGE:$IMAGE_TAG" ${TAG_NAME:+"$ECR_IMAGE:$TAG_NAME"} > /dev/null 2>&1 || true                [ -n "${ECR_REGISTRY:-}" ] && docker logout "$ECR_REGISTRY" > /dev/null 2>&1 || true
+                [ -n "${ECR_IMAGE:-}" ] && docker image rm -f "$ECR_IMAGE:$IMAGE_TAG" ${TAG_NAME:+"$ECR_IMAGE:$TAG_NAME"} > /dev/null 2>&1 || true
+                [ -n "${ECR_REGISTRY:-}" ] && docker logout "$ECR_REGISTRY" > /dev/null 2>&1 || true
                 rm -rf "$TOOLS" .build
             '''
         }

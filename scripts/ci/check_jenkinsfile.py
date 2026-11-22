@@ -15,8 +15,10 @@ Checked:
     kubectl, a kubeconfig, --reuse-values / --atomic
   - no stage that deploys or reseeds, and no parameter that would enable one
   - the only credentials bound are the ECR push ones
-  - the image keeps the name and tag scheme its consumers already pin:
-    openg2p/commons/master-data-db-seed:<data sha 12>-mds-<mds sha 8>
+  - the image has the OAN name and tag standard (oan-helm naming-standard.md,
+    section 6): eoan/openg2p-data/master-data-db-seed:<version>-<branch>.<build>,
+    the tag taken from scripts/ci/image_names.py, not a commit-derived tag
+  - the data and master-data-service commits stay in the image's OCI labels
   - the push runs only for develop and tags (or an explicit PUSH_IMAGE), never
     overwrites a published tag, and records the pushed reference (tag@digest)
     in dist/image.json for whoever deploys it
@@ -33,8 +35,12 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-ECR_REPOSITORY = "openg2p/commons/master-data-db-seed"
-IMAGE_TAG_EXPR = '"${env.DATA_SHA.take(12)}-mds-${env.MDS_SHA.take(8)}"'
+ECR_REPOSITORY = "eoan/openg2p-data/master-data-db-seed"
+LABELS = (
+    "org.opencontainers.image.revision",
+    "org.openg2p.master-data-service.revision",
+    "org.openg2p.master-data-service.source",
+)
 ALLOWED_CREDENTIALS = {"AWS_ACCOUNT_ID", "aws-ecr-creds"}
 
 # Code that reaches or changes a cluster. Matched against code, not comments.
@@ -102,16 +108,22 @@ def check(path: str) -> list[str]:
             errors.append(f"binds credential {cred!r}; only {sorted(ALLOWED_CREDENTIALS)} are allowed")
 
     if not re.search(r"ECR_REPOSITORY\s*=\s*'" + re.escape(ECR_REPOSITORY) + "'", code):
-        errors.append(f"ECR_REPOSITORY is not '{ECR_REPOSITORY}' (consumers pin that repository)")
-    if not re.search(r"env\.IMAGE_TAG\s*=\s*" + re.escape(IMAGE_TAG_EXPR), code):
-        errors.append(f"IMAGE_TAG is not {IMAGE_TAG_EXPR} (the <data>-mds-<mds> scheme consumers pin)")
+        errors.append(f"ECR_REPOSITORY is not '{ECR_REPOSITORY}' (eoan/<repository>/<image>)")
+    if not re.search(r"env\.IMAGE_TAG\s*=\s*sh\([^)]*scripts/ci/image_names\.py tag \"\$BRANCH_NAME\" \"\$BUILD_NUMBER\"", code, flags=re.S):
+        errors.append("IMAGE_TAG is not taken from scripts/ci/image_names.py tag \"$BRANCH_NAME\" \"$BUILD_NUMBER\"")
+    if re.search(r"env\.IMAGE_TAG\s*=[^\n]*(DATA_SHA|MDS_SHA)", code):
+        errors.append("IMAGE_TAG is derived from a commit; the tag is <version>-<branch>.<build>, commits are labels")
 
     build = stage_body(code, "Build db-seed image")
     push = stage_body(code, "Push to ECR")
     if build is None:
         errors.append("no 'Build db-seed image' stage")
-    elif "packs-image.diff" not in build:
-        errors.append("'Build db-seed image' no longer proves the image's packs match the validated ones")
+    else:
+        if "packs-image.diff" not in build:
+            errors.append("'Build db-seed image' no longer proves the image's packs match the validated ones")
+        for label in LABELS:
+            if label not in build:
+                errors.append(f"'Build db-seed image' no longer labels the image {label}")
     if push is None:
         errors.append("no 'Push to ECR' stage")
     else:

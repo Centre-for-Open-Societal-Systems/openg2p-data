@@ -35,15 +35,48 @@ data files, pack validation and list quality. Jenkins ([`Jenkinsfile`](Jenkinsfi
 runs the same gates on every branch and, on `develop` and tags, builds
 `master-data-db-seed` from `OpenG2P/master-data-service` with that commit of this
 repo baked in, proves the image's packs match the validated ones and pushes it to
-ECR as `openg2p/commons/master-data-db-seed:<data sha 12>-mds-<mds sha 8>`. A
-published tag is never overwritten. The build's `dist/image.json` records the
-pushed `tag@digest`.
+ECR as `eoan/openg2p-data/master-data-db-seed:<version>-<branch>.<build>`, the
+OAN naming standard the registry pipelines use (`eoan/<repository>/<image>`;
+[oan-helm `naming-standard.md`](https://github.com/Centre-for-Open-Societal-Systems/oan-helm/blob/main/docs/release/naming-standard.md),
+section 6). `<version>` is in [`init.yaml`](init.yaml), `<branch>` is the Jenkins
+branch name as a slug (a pull request build is `pr-<n>`, and only `develop` and
+tags publish), and `<build>` is the Jenkins build number, for example
+`1.0.0-develop.57`. [`scripts/ci/image_names.py`](scripts/ci/image_names.py)
+generates it. The tag holds no commit: the openg2p-data commit and the
+master-data-service commit (`MDS_REF`) are OCI labels on the image
+(`org.opencontainers.image.revision`, `org.openg2p.master-data-service.revision`
+and `.source` / `.ref`) and are recorded with the digest in the build's
+`dist/image.json`. A published tag is never overwritten.
 
 CI stops there: it deploys and reseeds nothing, whatever its parameters. Seeding
 Master Data, a registry or the services is a separate, approved deployment that
-names the image by that tag or digest (`master-data.geoSeed.image.repository` and
-`.tag` in the commons-services chart). `scripts/ci/check_jenkinsfile.py` fails
+names the image by `repo:tag@digest` from `dist/image.json`
+(`master-data.geoSeed.image.repository` and `.tag` in the commons-services
+chart). The digest decides what runs; the tag says where it came from. `scripts/ci/check_jenkinsfile.py` fails
 any change that puts a deploy back into the Jenkinsfile.
+
+**Setup this naming needs outside the repository**
+
+- **A new ECR repository, `eoan/openg2p-data/master-data-db-seed`**, in
+  `ap-south-1`, created before the first develop build by someone with ECR
+  admin rights. The registry pipelines create theirs; this one does not, so the
+  push stage fails if the repository is missing. Create it as the standard
+  asks: immutable tags, scan on push, AES256, tagged `owner=openg2p-data` and
+  `naming=eoan-standard`. The old `openg2p/commons/master-data-db-seed`
+  repository and its tags stay as they are.
+- **IAM:** `aws-ecr-creds` needs push (`ecr:BatchCheckLayerAvailability`,
+  `InitiateLayerUpload`, `UploadLayerPart`, `CompleteLayerUpload`,
+  `PutImage`), `ecr:DescribeImages`, `ecr:DescribeRepositories` and
+  `ecr:BatchGetImage` / `GetDownloadUrlForLayer` on the new repository. A policy
+  scoped to single repository ARNs does not cover it; use
+  `eoan/openg2p-data/*`. Pull access for New Dev and staging likewise needs
+  `eoan/openg2p-data/*`
+  ([`ecr-pull-access.md`](https://github.com/Centre-for-Open-Societal-Systems/oan-helm/blob/main/docs/ecr-pull-access.md)).
+- **Consumers opt in.** Nothing that pins
+  `openg2p/commons/master-data-db-seed:<data sha 12>-mds-<mds sha 8>` moves by
+  itself: a consumer switches to the new repository by changing
+  `master-data.geoSeed.image.repository` and `.tag` to the `dist/image.json`
+  values, in its own approved change.
 
 ## Generators
 

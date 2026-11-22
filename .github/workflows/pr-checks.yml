@@ -5,7 +5,8 @@
 #               GeoJSON / CSV readable (scripts/ci/check_data_files.py); and the
 #               Jenkinsfile itself: it builds and publishes the db-seed image and
 #               deploys nothing (scripts/ci/check_jenkinsfile.py), and its push
-#               never overwrites a published tag (scripts/ci/tests/)
+#               never overwrites a published tag, and its tag follows the OAN naming standard
+#               (scripts/ci/tests/)
 #   packs       validate_pack.py on every pack, and list quality
 #               (scripts/ci/check_pack_lists.py): truncated or empty display
 #               names, values that read the same in one dropdown, Ethiopic text
@@ -66,6 +67,9 @@ jobs:
 
       - name: Image publish never overwrites a tag
         run: bash scripts/ci/tests/test_publish_image.sh
+
+      - name: Image tag generation (eoan/openg2p-data/master-data-db-seed:<version>-<branch>.<build>)
+        run: python scripts/ci/tests/test_image_names.py
 
   packs:
     runs-on: ubuntu-latest

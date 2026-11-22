@@ -3,8 +3,8 @@
 #
 #   publish_image.sh <local image> <ecr image> <tag> [<more tags>...]
 #
-#   <ecr image>  registry/repository, e.g. 123.dkr.ecr.ap-south-1.amazonaws.com/openg2p/commons/master-data-db-seed
-#   <tag>        the build's own tag, <data sha 12>-mds-<mds sha 8>
+#   <ecr image>  registry/repository, e.g. 123.dkr.ecr.ap-south-1.amazonaws.com/eoan/openg2p-data/master-data-db-seed
+#   <tag>        the build's own tag, <version>-<branch>.<build> (scripts/ci/image_names.py)
 #   <more tags>  further names for the same image (the git tag on a tag build)
 #
 # Env: AWS_REGION, ECR_REPOSITORY, DIST, DATA_SHA, MDS_SHA, MDS_REF; PYTHON
@@ -12,7 +12,7 @@
 #
 # A published tag names one image for good (OpenG2P's rule: a version is
 # published exactly once). So:
-#   - <tag> already in ECR (a rebuild of the same two commits): keep the
+#   - <tag> already in ECR (a re-run of the same build): keep the
 #     published image, push nothing, and report its digest.
 #   - a further tag already in ECR: fine if it names the same digest, a failure
 #     if it names another image.

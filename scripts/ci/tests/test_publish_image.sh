@@ -7,9 +7,9 @@ set -uo pipefail
 
 HERE=$(cd "$(dirname "$0")" && pwd)
 SCRIPT="$HERE/../publish_image.sh"
-REPO=123456789012.dkr.ecr.ap-south-1.amazonaws.com/openg2p/commons/master-data-db-seed
-LOCAL=openg2p-data-ci/master-data-db-seed:aaaaaaaaaaaa-mds-bbbbbbbb
-TAG=aaaaaaaaaaaa-mds-bbbbbbbb
+REPO=123456789012.dkr.ecr.ap-south-1.amazonaws.com/eoan/openg2p-data/master-data-db-seed
+LOCAL=openg2p-data-ci/master-data-db-seed:1.0.0-develop.57
+TAG=1.0.0-develop.57
 fails=0
 
 # Fake ECR: $STATE/tags/<tag> holds the digest a tag names. Fake docker: `tag`
@@ -51,7 +51,7 @@ run() {
     [ "${1:-}" = -- ] && shift
     : > "$dir/log"
     out=$(PATH="$dir/bin:$PATH" STATE="$dir" DIST="$dir" AWS_REGION=ap-south-1 \
-          ECR_REPOSITORY=openg2p/commons/master-data-db-seed DATA_SHA=aaaaaaaaaaaa0000 \
+          ECR_REPOSITORY=eoan/openg2p-data/master-data-db-seed DATA_SHA=aaaaaaaaaaaa0000 \
           MDS_SHA=bbbbbbbb0000 MDS_REF=bbbbbbbb0000 \
           bash "$SCRIPT" "$LOCAL" "$REPO" "$TAG" "$@" 2>&1)
     rc=$?
@@ -76,7 +76,7 @@ if run new 0; then
     expect new "records chart values, not applied" [ "$(json x "['deploy_values']['master-data.geoSeed.image.tag']")" = "$TAG@sha256:local" ]
 fi
 
-# 2. The tag is already published (rebuild of the same commits): not overwritten.
+# 2. The tag is already published (a re-run of the same build): not overwritten.
 if run republish 0 "$TAG=sha256:published"; then
     expect republish "pushes nothing" [ ! -s "$RUN_DIR/log" ]
     expect republish "keeps the published digest" [ "$(cat "$RUN_DIR/tags/$TAG")" = sha256:published ]
