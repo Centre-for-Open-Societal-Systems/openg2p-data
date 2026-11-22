@@ -28,6 +28,23 @@ are first-class and one Helm value away (`geoSeed.countryPack` in the
 `openg2p-master-data` chart), and they carry the licence obligations their
 `manifest.json` records.
 
+## CI and the Master Data seed image
+
+Every pull request runs [`pr-checks`](.github/workflows/pr-checks.yml): lint,
+data files, pack validation and list quality. Jenkins ([`Jenkinsfile`](Jenkinsfile))
+runs the same gates on every branch and, on `develop` and tags, builds
+`master-data-db-seed` from `OpenG2P/master-data-service` with that commit of this
+repo baked in, proves the image's packs match the validated ones and pushes it to
+ECR as `openg2p/commons/master-data-db-seed:<data sha 12>-mds-<mds sha 8>`. A
+published tag is never overwritten. The build's `dist/image.json` records the
+pushed `tag@digest`.
+
+CI stops there: it deploys and reseeds nothing, whatever its parameters. Seeding
+Master Data, a registry or the services is a separate, approved deployment that
+names the image by that tag or digest (`master-data.geoSeed.image.repository` and
+`.tag` in the commons-services chart). `scripts/ci/check_jenkinsfile.py` fails
+any change that puts a deploy back into the Jenkinsfile.
+
 ## Generators
 
 Nothing here is generated at install time — the outputs are committed, so seed

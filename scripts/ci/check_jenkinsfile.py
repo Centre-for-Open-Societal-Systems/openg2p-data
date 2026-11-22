@@ -119,6 +119,11 @@ def check(path: str) -> list[str]:
         gate = when.group(1) if when else ""
         if not ("branch 'develop'" in gate and "buildingTag()" in gate):
             errors.append("'Push to ECR' is not gated on develop and tags")
+        # The push may live in a script the stage calls; read those too.
+        for script in re.findall(r"\bscripts/ci/[\w.-]+\.sh\b", push):
+            p = os.path.join(ROOT, script)
+            if os.path.isfile(p):
+                push += "\n" + strip_comments(open(p, encoding="utf-8").read())
         if "describe-images" not in push:
             errors.append("'Push to ECR' does not check for an already published tag before pushing")
         if '"reference"' not in push:

@@ -2,7 +2,7 @@
 //
 // Master Data's db-seed image bakes this repo in at build time
 // (geoSeed.packRoot: /openg2p-data/packs), so this pipeline gates what a seeded
-// install contains, builds that image, pushes it to ECR and reseeds dev:
+// install contains, builds that image and publishes it to ECR:
 //
 //   1. Lint scripts; check every JSON / GeoJSON / CSV is well-formed
 //   2. validate_pack.py over every pack; GATED_PACKS (the deployed ones) must
@@ -11,26 +11,31 @@
 //      its SHA-256 against the repository's published SHA256SUMS
 //   4. Check the pack that chart selects (master-data.geoSeed.countryPack)
 //      exists here, and that its geo-seed job renders for every pack
+//      (`helm template` only: nothing reaches a cluster)
 //   5. Package and archive the build artifacts (see 'Package artifacts')
 //   6. Build master-data-db-seed from OpenG2P/master-data-service with THIS
 //      commit of openg2p-data baked in, and prove the image's packs are
 //      byte-identical to the ones validated above
-//   7. Push it to ECR                                        (develop, tags)
-//   8. Reseed dev from it: `helm upgrade` of the INSTALLED commons-services
-//      release (same chart version and values) with only the seed image and
-//      load switches changed. The chart's geo-seed Job is a post-upgrade hook,
-//      so Helm runs it and, with --atomic, rolls back if it fails. A server-side
-//      dry run comes first.                              (develop, RESEED_DEV)
+//   7. Push it to ECR as <data sha 12>-mds-<mds sha 8> (and as the git tag on
+//      a tag build). A tag already in ECR is never overwritten. The pushed
+//      reference, tag@digest, is in dist/image.json.     (develop, tags)
 //
-// Agent: oan-ci-deploy (as the registry pipelines), which has docker, aws and
-// kubectl, plus python3 with venv. Helm is downloaded at a pinned version and
-// checksum into the workspace.
+// That is where this pipeline ends. It does not deploy or reseed anything, and
+// no parameter makes it: it binds no cluster credentials and runs no
+// `helm upgrade`. Seeding Master Data, a registry or the services from an image
+// is a separate, approved deployment that names the image by the tag or digest
+// in dist/image.json (master-data.geoSeed.image.repository / .tag in the
+// commons-services chart). scripts/ci/check_jenkinsfile.py, run on every pull
+// request, keeps it that way.
+//
+// Agent: oan-ci-deploy (as the registry pipelines), which has docker and aws,
+// plus python3 with venv. Helm is downloaded at a pinned version and checksum
+// into the workspace, to render the chart.
 //
 // Jenkins credentials:
 //   AWS_ACCOUNT_ID            secret text   (shared with the registry pipelines)
-//   aws-ecr-creds             AWS creds     (shared with the registry pipelines)
-//   commons-dev-kubeconfig    secret file   kubeconfig for the dev `commons`
-//                                           namespace — ASSUMPTION, see DEV_* below
+//   aws-ecr-creds             AWS creds     (shared with the registry pipelines);
+//                                           needs ecr:DescribeImages besides push
 
 // Parameter defaults. On a job's first build Jenkins has not registered the
 // parameters yet, so params.* are null and none of them is in the environment;
@@ -45,22 +50,6 @@ def PARAM_DEFAULTS = [
     MDS_REF      : 'e569a59b8e9f61f809e07791e9263e50b2a7e0da',
     STRICT       : false,
     PUSH_IMAGE   : false,
-    DEPLOY_DEV   : true,
-    // Every develop build reseeds dev. Set false on a run whose pack would
-    // retire values that live dev records still use (see oan-helm
-    // docs/refactor-location-and-ownership.md).
-    RESEED_DEV      : true,
-    AUTO_PUBLISH_DEV: true,
-    // Dev's geography was loaded from the OpenAgriNet source catalog (levels
-    // level-region..., units woreda-ET010101...), not from ETH-OAN (l0..l4,
-    // P-codes). Loading the pack's geography over it fails on the duplicate
-    // level mnemonic, so the dev reseed loads code lists only until dev's
-    // geography is replaced and its registries re-keyed with
-    // packs/ETH-OAN/migration/id_map.csv or re-seeded.
-    SEED_GEO_DEV    : false,
-    // The pack's sample people (samples/), which registry seeds read from
-    // Master Data (g2p_sample_individuals) instead of their own demo files.
-    SEED_SAMPLES_DEV: true,
 ]
 
 pipeline {
@@ -70,7 +59,7 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '30', artifactNumToKeepStr: '15'))
         timeout(time: 45, unit: 'MINUTES')
         timestamps()
-        // One run at a time: two reseeds of the same database must not overlap.
+        // One run at a time: two builds must not race to publish the same tag.
         disableConcurrentBuilds()
     }
 
@@ -86,17 +75,7 @@ pipeline {
         booleanParam(name: 'STRICT', defaultValue: PARAM_DEFAULTS.STRICT,
                      description: 'Treat validate_pack.py warnings as failures')
         booleanParam(name: 'PUSH_IMAGE', defaultValue: PARAM_DEFAULTS.PUSH_IMAGE,
-                     description: 'Build and push the image from a branch other than develop (it never deploys)')
-        booleanParam(name: 'DEPLOY_DEV', defaultValue: PARAM_DEFAULTS.DEPLOY_DEV,
-                     description: 'On develop: reseed dev from the pushed image (also needs RESEED_DEV)')
-        booleanParam(name: 'RESEED_DEV', defaultValue: PARAM_DEFAULTS.RESEED_DEV,
-                     description: 'Allow the dev reseed at all. Turn off for a run that must not touch dev data')
-        booleanParam(name: 'AUTO_PUBLISH_DEV', defaultValue: PARAM_DEFAULTS.AUTO_PUBLISH_DEV,
-                     description: 'Dev reseed publishes changed lists and geography at once instead of leaving drafts')
-        booleanParam(name: 'SEED_GEO_DEV', defaultValue: PARAM_DEFAULTS.SEED_GEO_DEV,
-                     description: 'Dev reseed also loads the pack\'s geography. Off until dev\'s geography is replaced and its registries re-keyed')
-        booleanParam(name: 'SEED_SAMPLES_DEV', defaultValue: PARAM_DEFAULTS.SEED_SAMPLES_DEV,
-                     description: 'Dev reseed also loads the pack\'s sample people into Master Data (registry seeds read them from there)')
+                     description: 'Also build and push the image from a branch other than develop or a tag')
     }
 
     environment {
@@ -123,22 +102,6 @@ pipeline {
         // What the image's Dockerfile clones. Must be where Jenkins builds from,
         // so the commit being built can be fetched by SHA.
         DATA_REPO_URL  = 'https://github.com/Centre-for-Open-Societal-Systems/openg2p-data.git'
-
-        // Dev target: the installed Commons release that owns Master Data.
-        // ASSUMPTION — release/namespace from oan-helm docs/rancher-dev.md
-        // ("Commons `commons-services/commons`"); the kubeconfig credential id
-        // follows the registries' <name>-dev-kubeconfig convention. Confirm both.
-        DEV_RELEASE            = 'commons-services'
-        DEV_NAMESPACE          = 'commons'
-        DEV_KUBECONFIG_CRED_ID = 'commons-dev-kubeconfig'
-        // Namespace-local ECR pull Secret (oan-helm docs/ecr-pull-access.md).
-        DEV_PULL_SECRET        = 'ecr-pull-secret'
-        // Private address of the kubeconfig's API host (Rancher). Its public
-        // address answers the agent with an nginx 403, so cluster calls run in
-        // a container that maps the hostname here, keeping it for TLS and
-        // nginx's server_name. Empty = resolve the hostname normally.
-        DEV_API_IP             = '10.0.1.58'
-        KUBE_TOOLS_IMAGE       = 'alpine:3.20.3'
     }
 
     stages {
@@ -362,6 +325,9 @@ EOF
                         --label org.openg2p.master-data-service.source="$MDS_REPO" \
                         --label org.openg2p.master-data-service.revision="$MDS_SHA" \
                         --label org.openg2p.build-url="${BUILD_URL:-}" \
+                        --label org.opencontainers.image.title=master-data-db-seed \
+                        --label org.opencontainers.image.version="$IMAGE_TAG" \
+                        --label org.openg2p.pin.OPENG2P_DATA_BRANCH="$DATA_SHA" \
                         -f .build/master-data-service/docker/db-seed/Dockerfile \
                         -t "$LOCAL_IMAGE" .build/master-data-service
 
@@ -408,124 +374,12 @@ EOF
                         aws ecr get-login-password --region "$AWS_REGION" \
                             | docker login --username AWS --password-stdin "$ECR_REGISTRY"
 
+                        # Never overwrites a published tag; writes dist/image.json
+                        # with the tag@digest a deployment pins.
                         tags=("$IMAGE_TAG")
                         [ -n "${TAG_NAME:-}" ] && tags+=("$TAG_NAME")
-                        for t in "${tags[@]}"; do
-                            docker tag "$LOCAL_IMAGE" "$ECR_IMAGE:$t"
-                            docker push "$ECR_IMAGE:$t"
-                        done
-                        digest=$(docker inspect --format '{{range .RepoDigests}}{{println .}}{{end}}' "$ECR_IMAGE:$IMAGE_TAG" \
-                            | grep "^$ECR_IMAGE@" | head -1 | cut -d@ -f2)
-                        [ -n "$digest" ] || { echo "could not read the pushed digest"; exit 1; }
-                        echo "$digest" > "$TOOLS/image.digest"
-
-                        "$TOOLS/venv/bin/python" - "$digest" "${tags[@]}" <<'EOF'
-import json, os, sys
-digest, tags = sys.argv[1], sys.argv[2:]
-repo = os.environ["ECR_IMAGE"]
-json.dump({
-    "repository": repo,
-    "tags": tags,
-    "digest": digest,
-    "reference": f"{repo}@{digest}",
-    "openg2p_data_commit": os.environ["DATA_SHA"],
-    "master_data_service_commit": os.environ["MDS_SHA"],
-    "master_data_service_ref": os.environ.get("MDS_REF"),
-}, open(os.path.join(os.environ["DIST"], "image.json"), "w"), indent=2)
-EOF
-                        cat "$DIST/image.json"
-                    '''
-                }
-            }
-        }
-
-        stage('Deploy to dev') {
-            when {
-                allOf { branch 'develop'; expression { env.DEPLOY_DEV == 'true' && env.RESEED_DEV == 'true' } }
-            }
-            steps {
-                withCredentials([file(credentialsId: "${DEV_KUBECONFIG_CRED_ID}", variable: 'KUBECONFIG')]) {
-                    sh '''#!/bin/bash
-                        set -euo pipefail
-                        helm="$TOOLS/bin/helm"
-                        ns="$DEV_NAMESPACE"; rel="$DEV_RELEASE"
-                        report="$DIST/reports/deploy-dev.log"
-                        digest=$(cat "$TOOLS/image.digest")
-                        mkdir -p "$TOOLS/deploy"
-
-                        # Calls that reach the cluster go through `cluster`. With
-                        # DEV_API_IP set they run in a container whose /etc/hosts maps
-                        # the API host to it; helm and kubectl are static binaries,
-                        # mounted in from the agent.
-                        server=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}')
-                        api_host=$(sed -E 's#^[a-z]+://([^/:]+).*#\\1#' <<< "$server")
-                        if [ -n "${DEV_API_IP:-}" ]; then
-                            code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 10 \
-                                --resolve "$api_host:443:$DEV_API_IP" "https://$api_host/healthz" || true)
-                            echo "cluster API: $api_host via $DEV_API_IP, /healthz HTTP ${code:-none}"
-                            [ "$code" = "200" ] || { echo "FAIL the agent cannot reach $api_host at $DEV_API_IP"; exit 1; }
-                            kubectl_bin=$(readlink -f "$(command -v kubectl)")
-                            cluster() {
-                                docker run --rm -i --network host --add-host "$api_host:$DEV_API_IP" \
-                                    -v "$KUBECONFIG:/kubeconfig:ro" -e KUBECONFIG=/kubeconfig \
-                                    -v "$helm:/usr/local/bin/helm:ro" -v "$kubectl_bin:/usr/local/bin/kubectl:ro" \
-                                    -v "$TOOLS/deploy:/deploy:ro" \
-                                    "$KUBE_TOOLS_IMAGE" "$@"
-                            }
-                            deploy_dir=/deploy
-                        else
-                            cluster() { local tool=$1; shift; [ "$tool" = helm ] && tool=$helm; "$tool" "$@"; }
-                            deploy_dir="$TOOLS/deploy"
-                        fi
-
-                        # Reseed the OpenG2P way: upgrade the INSTALLED release (same
-                        # chart version, same values) with only the seed image and
-                        # load switches changed. The chart's geo-seed Job is a
-                        # post-upgrade hook, so Helm runs it, waits for it and, with
-                        # --atomic, rolls the release back if any hook fails. The
-                        # loader is idempotent (an unchanged pack creates nothing;
-                        # a changed one leaves a draft unless AUTO_PUBLISH_DEV).
-                        # SEED_GEO_DEV=false loads code lists and domains only.
-                        meta=$(cluster helm get metadata "$rel" -n "$ns" -o json)
-                        read -r chart_name chart_version revision <<< "$("$TOOLS/venv/bin/python" -c \
-                            'import json,sys; m=json.load(sys.stdin); print(m["chart"], m["version"], m["revision"])' <<< "$meta")"
-                        echo "installed: $rel in $ns = $chart_name $chart_version (revision $revision)" | tee "$report"
-                        [ "$chart_name" = "$CHART_NAME" ] || { echo "FAIL $rel is $chart_name, expected $CHART_NAME" | tee -a "$report"; exit 1; }
-                        bash scripts/ci/pull_verified_chart.sh "$chart_name" "$chart_version" "$TOOLS/deploy"
-                        chart_path="$deploy_dir/$chart_name-$chart_version.tgz"
-
-                        # Hook Jobs run as the namespace's default ServiceAccount, and the
-                        # chart's Job has no imagePullSecrets of its own, so the ECR pull
-                        # Secret has to be on that ServiceAccount (oan-helm
-                        # docs/ecr-pull-access.md). Patch it only when missing.
-                        if ! cluster kubectl -n "$ns" get serviceaccount default \
-                                -o jsonpath='{.imagePullSecrets[*].name}' < /dev/null | grep -qw "$DEV_PULL_SECRET"; then
-                            cluster kubectl -n "$ns" patch serviceaccount default \
-                                -p "{\\"imagePullSecrets\\":[{\\"name\\":\\"$DEV_PULL_SECRET\\"}]}" < /dev/null
-                            echo "default ServiceAccount: added $DEV_PULL_SECRET" | tee -a "$report"
-                        fi
-
-                        # tag@digest renders as repo:tag@sha256:..., which pins the exact
-                        # image while keeping the readable tag.
-                        upgrade_args=(upgrade "$rel" "$chart_path" -n "$ns" --reuse-values
-                            --set "master-data.geoSeed.enabled=true"
-                            --set "master-data.geoSeed.load.geo=$SEED_GEO_DEV"
-                            --set "master-data.geoSeed.load.samples=$SEED_SAMPLES_DEV"
-                            --set "master-data.geoSeed.publishInitial=true"
-                            --set "master-data.geoSeed.autoPublish=$AUTO_PUBLISH_DEV"
-                            --set "master-data.geoSeed.image.repository=$ECR_IMAGE"
-                            --set "master-data.geoSeed.image.tag=$IMAGE_TAG@$digest")
-
-                        # Server-side dry run first: admission, immutable-field and
-                        # render errors surface before anything changes.
-                        cluster helm "${upgrade_args[@]}" --dry-run=server > "$DIST/reports/helm-upgrade-dry-run.txt" 2>&1 \
-                            || { tail -30 "$DIST/reports/helm-upgrade-dry-run.txt"; echo "FAIL helm upgrade dry run" | tee -a "$report"; exit 1; }
-                        echo "ok   helm upgrade dry run" | tee -a "$report"
-
-                        cluster helm "${upgrade_args[@]}" --atomic --wait --timeout 30m 2>&1 | tee "$DIST/reports/helm-upgrade.log" \
-                            || { echo "FAIL helm upgrade (rolled back by --atomic)" | tee -a "$report"; exit 1; }
-                        cluster helm get metadata "$rel" -n "$ns" -o json < /dev/null > "$DIST/reports/release-after.json"
-                        echo "ok   dev reseeded from $ECR_IMAGE@$digest" | tee -a "$report"
+                        PYTHON="$TOOLS/venv/bin/python" \
+                            bash scripts/ci/publish_image.sh "$LOCAL_IMAGE" "$ECR_IMAGE" "${tags[@]}"
                     '''
                 }
             }
@@ -540,8 +394,7 @@ EOF
         cleanup {
             sh '''
                 [ -n "${LOCAL_IMAGE:-}" ] && docker image rm -f "$LOCAL_IMAGE" > /dev/null 2>&1 || true
-                [ -n "${ECR_IMAGE:-}" ] && docker image rm -f "$ECR_IMAGE:$IMAGE_TAG" ${TAG_NAME:+"$ECR_IMAGE:$TAG_NAME"} > /dev/null 2>&1 || true
-                [ -n "${ECR_REGISTRY:-}" ] && docker logout "$ECR_REGISTRY" > /dev/null 2>&1 || true
+                [ -n "${ECR_IMAGE:-}" ] && docker image rm -f "$ECR_IMAGE:$IMAGE_TAG" ${TAG_NAME:+"$ECR_IMAGE:$TAG_NAME"} > /dev/null 2>&1 || true                [ -n "${ECR_REGISTRY:-}" ] && docker logout "$ECR_REGISTRY" > /dev/null 2>&1 || true
                 rm -rf "$TOOLS" .build
             '''
         }
