@@ -9,6 +9,11 @@ Standard library only. Two subcommands, both used by propose_seed_pin.sh:
       in dist/image.json. Touches those two lines and nothing else. Prints
       'changed' or 'unchanged'.
 
+  record <oan-helm-dir> <image.json> <build-url>
+      Write the release record releases/1.0.0-dev.<n+1>.yaml that oan-helm's
+      contract test needs next to a seed bump (the base is carried from the
+      newest record that has one). Prints its path.
+
   pr <body-file>
       Open the pull request from the bot branch to main, or update its title
       and body when one is already open. Reads GH_TOKEN from the environment.
@@ -121,7 +126,80 @@ def cmd_pr(body_file: str) -> int:
     return 0
 
 
+_RECORD_NAME = re.compile(r"1\.0\.0-dev\.(\d+)\.yaml$")
+
+
+def release_record(chart_version: str, previous: str, info: dict, build_url: str) -> str:
+    """Text of the release record for this seed image.
+
+    oan-helm's contract test compares the chart's seed image with the newest
+    releases/1.0.0-dev.<n>.yaml that records one, so every bump brings one. The base
+    (the Master Data build the loader must match) is carried from the previous record.
+    """
+    m = re.fullmatch(r"1\.0\.0-dev\.(\d+)", chart_version)
+    if not m:
+        raise ValueError(f"unexpected chart version {chart_version!r}")
+    version = f"1.0.0-dev.{int(m.group(1)) + 1}"
+    base = re.search(r"^    base: (\S+)$", previous, re.M)
+    api = re.search(r"^  masterDataImageVersion: (\S+)$", previous, re.M)
+    if not base or not api:
+        raise ValueError("the previous release record has no seed base")
+    v = info["deploy_values"]
+    tag, digest = v["master-data.geoSeed.image.tag"].split("@")
+    data = info["openg2p_data_commit"]
+    mds = info["master_data_service_commit"]
+    return f"""chartVersion: {version}
+status: commons-services release record
+versionPolicy: Immutable after publication; component images retain independent versions.
+note: Only the Master Data seed image changed since the previous record; opened by the openg2p-data develop build. The other entries of earlier manifests still apply.
+charts:
+- name: openg2p-commons-services
+  release: commons-services
+  namespace: commons
+  masterDataImageVersion: {api.group(1)}
+  masterDataSeedImage:
+    repository: {v['master-data.geoSeed.image.repository']}
+    tag: {tag}
+    digest: {digest}
+    base: {base.group(1)}
+    dataRepository: https://github.com/Centre-for-Open-Societal-Systems/openg2p-data
+    dataCommit: {data[:12]}
+    countryPack: ETH-OAN
+    note: Built and pushed to ECR by the openg2p-data Jenkins pipeline ({build_url or 'build url not recorded'}) from openg2p-data develop {data[:12]} on Master Data service {mds[:8]}
+"""
+
+
+def cmd_record(oan_helm_dir: str, image_json: str, build_url: str) -> int:
+    """Write releases/1.0.0-dev.<n+1>.yaml into an oan-helm checkout; print its path."""
+    with open(image_json, encoding="utf-8") as f:
+        info = json.load(f)
+    with open(os.path.join(oan_helm_dir, "charts/openg2p-commons-services/Chart.yaml"), encoding="utf-8") as f:
+        chart = re.search(r"^version:\s*(\S+)\s*$", f.read(), re.M)
+    if not chart:
+        raise SystemExit("no version in the commons-services Chart.yaml")
+    releases = os.path.join(oan_helm_dir, "releases")
+    records = sorted((n for n in os.listdir(releases) if _RECORD_NAME.match(n)),
+                     key=lambda n: int(_RECORD_NAME.match(n).group(1)), reverse=True)
+    previous = None
+    for name in records:
+        with open(os.path.join(releases, name), encoding="utf-8", newline="") as f:
+            text = f.read()
+        if "masterDataSeedImage:" in text:
+            previous = text
+            break
+    if previous is None:
+        raise SystemExit("no release record with a seed image to carry the base from")
+    text = release_record(chart.group(1), previous, info, build_url)
+    name = f"1.0.0-dev.{int(chart.group(1).rsplit('.', 1)[1]) + 1}.yaml"
+    with open(os.path.join(releases, name), "w", encoding="utf-8", newline="") as f:
+        f.write(text)
+    print(os.path.join("releases", name).replace(os.sep, "/"))
+    return 0
+
+
 def main(argv: list[str]) -> int:
+    if len(argv) == 5 and argv[1] == "record":
+        return cmd_record(argv[2], argv[3], argv[4])
     if len(argv) == 4 and argv[1] == "rewrite":
         return cmd_rewrite(argv[2], argv[3])
     if len(argv) == 3 and argv[1] == "pr":
