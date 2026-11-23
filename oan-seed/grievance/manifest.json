@@ -14,7 +14,6 @@
   "Grievance Holiday List",
   "Grievance Role Level",
   "Grievance Officer Position",
-  "Grievance Position Assignment",
   "Grievance RBAC Assignment",
   "Grievance Response Template",
   "Grievance Service Category",
@@ -60,7 +59,6 @@
   "Grievance Type": "Grievance_Type.json",
   "OAN IAM Service": "OAN_IAM_Service.json",
   "Grievance Officer Position": "Grievance_Officer_Position.json",
-  "Grievance SLA Rule": "Grievance_SLA_Rule.json",
-  "Grievance Position Assignment": "Grievance_Position_Assignment.json"
+  "Grievance SLA Rule": "Grievance_SLA_Rule.json"
  }
 }
