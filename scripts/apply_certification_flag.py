@@ -3,18 +3,18 @@
 apply_certification_flag.py
 ---------------------------
 Applies and synchronizes the 'certification_status' attribute flag
-exclusively across all CROP and SEED catalogues in PostgreSQL:
+exclusively across official CROP and SEED VARIETY catalogues in PostgreSQL:
   - Server: CROP_COMMODITY, CROP_CATEGORY, CROP_VARIETY, SEED_VARIETY,
-    CROP_CONDITION, CROP_DAMAGE_CAUSE, CROP_DISEASE, CROP_END_USE,
-    CROP_GROWTH_STAGE, CROPPING_SYSTEM, CROP_SEASON, CROP_TEST
-  - Local: CROP_CATALOG, CROP_CATEGORY_CATALOG, CROP_VARIETY_CATALOG,
-    SEED_DEMAND_BY_CROP_CATALOG
+    and official CROP_% catalogues.
+  - Local: CROP_CATALOG, CROP_CATEGORY_CATALOG, CROP_VARIETY_CATALOG.
 
 Features:
-  1. Does NOT touch general/non-crop catalogues (Geography, Demography, Bank, etc.).
-  2. Ensures CROP and SEED schemas have certification_status with default: "CERTIFIED".
+  1. Does NOT touch general/non-crop catalogues (Geography, Demography, Bank,
+     SEED_SOURCE, SEED_TYPE, etc.).
+  2. Ensures CROP and SEED VARIETY schemas have certification_status with default: "CERTIFIED".
   3. Sets a trigger on CROP line items to auto-default certification_status = 'CERTIFIED'.
-  4. Backfills all existing crop records and configures demo uncertified/provisional records.
+  4. Safely backfills all existing crop records cleanly to default 'CERTIFIED'
+     (safely handles rows with JSON null scalars).
 
 Usage:
     python3 scripts/apply_certification_flag.py
@@ -98,10 +98,10 @@ def main():
         count(*) as count
     FROM g2p_list_version_values val
     LEFT JOIN g2p_attributes a ON a.attribute_id = val.list_id
-    WHERE val.list_id LIKE 'CROP%' 
-       OR val.list_id LIKE 'CROPPING%' 
-       OR val.list_id LIKE 'SEED_%'
-       OR val.list_id IN ('CROP_COMMODITY', 'CROP_CATEGORY', 'CROP_VARIETY', 'SEED_VARIETY', 'CROP_CATALOG', 'CROP_CATEGORY_CATALOG', 'CROP_VARIETY_CATALOG')
+    WHERE val.list_id IN (
+        'CROP_COMMODITY', 'CROP_CATEGORY', 'CROP_VARIETY', 'SEED_VARIETY',
+        'CROP_CATALOG', 'CROP_CATEGORY_CATALOG', 'CROP_VARIETY_CATALOG'
+    ) OR val.list_id LIKE 'CROP_%'
     GROUP BY COALESCE(a.attribute_code, val.list_id), val.version_no, val.attributes->>'certification_status'
     ORDER BY catalog_code, val.version_no, status_flag;
     """
