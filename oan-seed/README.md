@@ -26,8 +26,8 @@ environment starts with the same taxonomy. **It is a seed for a fresh site.** Se
 | `Grievance_Service_Category.json` | 19 categories, `C01` to `C19`, plus the catch-all `Other` (`SYS`), which is the default category |
 | `Grievance_Type.json` | 75 sub-types keyed on their code (`C01-01` to `C19-02`), plus the catch-all `Other` type (`SYS`) |
 | `Grievance_Department.json` | The 15 departments the matrix names, with `Unrouted` (the triage desk) and two unrelated demo departments. The four demo departments the matrix replaces are gone |
-| `Grievance_SLA_Rule.json` | The SLA of each category (STG-514): its base rule, named `<category code>-BASE`, and the seasonal rules of the matrix's Seasonal Calendar, named `<category code>-R<n>` |
-| `Grievance_SLA_Configuration.json` | One row per category, named `GR-SLA-<category code>`, with its escalation settings and the turnaround of each sub-type per level |
+| `Grievance_SLA_Rule.json` | The SLA of each category (STG-514): its base rule, named `<category code>-BASE`, the seasonal rules of the matrix's Seasonal Calendar, named `<category code>-R<n>`, and the L1 and L2 turnaround of each sub-type, named `<type code>-L<n>`. Each overrides its category's SLA configuration |
+| `Grievance_SLA_Configuration.json` | One row per category, named `GR-SLA-<category code>`, with its escalation settings |
 | `Grievance_Officer_Position.json` | Canonical posts across the 4-level ladder (Kebele DA, Woreda SMS/Expert, Zonal Head, Regional Bureau Head) |
 | `Grievance_RBAC_Assignment.json` | Staffed desks for all 19 categories (C01 to C19) plus Unrouted, linking seats from `Grievance Officer Position` |
 
@@ -38,17 +38,16 @@ equals `type_code`, which is what the loader matches on.
   reads the desks (`Grievance RBAC Assignment`), so the owner of a case is whatever desk is set up for the
   category, type and department. The departments are seeded so a desk can be made for them.
 - **Turnaround days** are the matrix's illustrative values, "to be decided by the respective owners". They
-  are rows of the category's SLA configuration (`level_turnarounds`): L1 is `nodal_officer` (Kebele) and L2
-  is `senior_nodal_officer` (Woreda), each with the sub-type it is for. A level a sub-type skips has no
-  row. `15 (follow-up)` for roads and electricity is stored as `15`. The catch-all has an L2 row of `7`,
-  the triage window. 132 rows in all. The SLA engine does not read this table yet: it runs on the SLA
-  days of the category's SLA rules.
+  are SLA rules with a `role_level`: L1 is `nodal_officer` (Kebele) and L2 is `senior_nodal_officer`
+  (Woreda), each with the sub-type it is for. A level a sub-type skips has no rule. `15 (follow-up)` for roads
+  and electricity is stored as `15`. The catch-all has an L2 rule of `7`, the triage window. 132 rules in
+  all. The SLA engine does not read them yet: it runs on the SLA days of the rules with no `role_level`.
 - **SLA days** are the longest L1 plus L2 of the category's sub-types, on the category's base SLA rule
   (`Grievance_SLA_Rule.json`), which is what the engine reads; the configuration has no `sla_days` since
   STG-514. The catch-all `Other` gets its base rule (7 days) from the app on install, so the seed has none
   for it. Configurations and rules are named after the category code, not the `GR-SLA-####` and
-  `GR-SLR-#####` series, so the series counters cannot run into them. The rules load before the
-  configurations: an SLA configuration needs its category's base rule.
+  `GR-SLR-#####` series, so the series counters cannot run into them. The configurations load before the
+  rules: a rule links to the configuration it overrides.
 - **Entry role level** (`entry_role_level`) is a link to a `Grievance Role Level`: the lowest level whose
   officers handle the type. The routing deck gives each sub-type one of five resolution paths, and the matrix
   has no path column, so it was derived per sub-type from the deck: elders-first rows are path 3, sensitive
@@ -72,7 +71,7 @@ equals `type_code`, which is what the loader matches on.
 
 Each sub-type also carries `is_sensitive`, read from the matrix's Sensitive Flag column. SLA days, urgency
 and priority are not fields of the type: they are the category's SLA rules (`Grievance SLA Rule`, one record
-each, linked by `service_category`), the one source of a case's SLA in the service. Every rule carries
+each, linked by `sla_configuration`), the one source of a case's SLA in the service. Every rule carries
 `sla_days`, `is_urgent` and `priority`. These Ethiopian values live only in this seed, not in the app.
 Deploy the oan_grievance_service build with STG-514 first and migrate: before it, the site has no
 `is_sensitive` on `Grievance Type` and no `Grievance SLA Rule`, and the loader fails.
