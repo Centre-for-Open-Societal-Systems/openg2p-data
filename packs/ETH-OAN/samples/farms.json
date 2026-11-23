@@ -225,7 +225,10 @@
       "local_language": "TIGRINYA",
       "is_psnp_user": false,
       "is_farmer": false,
-      "income_sources": [],
+      "income_sources": [
+        "SOI_CROP_PRODUCTION",
+        "SOI_LIVESTOCK_PRODUCTION"
+      ],
       "identity_document_type": "FAYDA",
       "phone_type": "PRIMARY"
     },
@@ -250,7 +253,9 @@
       "local_language": "TIGRINYA",
       "is_psnp_user": true,
       "is_farmer": false,
-      "income_sources": [],
+      "income_sources": [
+        "SOI_GOVERNMENT_NGO_SUPPORT"
+      ],
       "identity_document_type": "FAYDA",
       "phone_type": "PRIMARY"
     },
@@ -274,7 +279,10 @@
       "local_language": "TIGRINYA",
       "is_psnp_user": false,
       "is_farmer": false,
-      "income_sources": [],
+      "income_sources": [
+        "SOI_CROP_PRODUCTION",
+        "SOI_LIVESTOCK_PRODUCTION"
+      ],
       "identity_document_type": "FAYDA",
       "phone_type": "PRIMARY"
     },
@@ -511,7 +519,9 @@
       "local_language": "TIGRINYA",
       "is_psnp_user": false,
       "is_farmer": false,
-      "income_sources": [],
+      "income_sources": [
+        "SOI_CROP_PRODUCTION"
+      ],
       "identity_document_type": "FAYDA",
       "phone_type": "PRIMARY"
     },
@@ -742,7 +752,10 @@
       "local_language": "TIGRINYA",
       "is_psnp_user": false,
       "is_farmer": false,
-      "income_sources": [],
+      "income_sources": [
+        "SOI_CROP_PRODUCTION",
+        "SOI_LIVESTOCK_PRODUCTION"
+      ],
       "identity_document_type": "FAYDA",
       "phone_type": "PRIMARY"
     },
@@ -766,7 +779,10 @@
       "local_language": "TIGRINYA",
       "is_psnp_user": false,
       "is_farmer": false,
-      "income_sources": [],
+      "income_sources": [
+        "SOI_CROP_PRODUCTION",
+        "SOI_LIVESTOCK_PRODUCTION"
+      ],
       "identity_document_type": "FAYDA",
       "phone_type": "PRIMARY"
     },
@@ -791,7 +807,9 @@
       "local_language": "TIGRINYA",
       "is_psnp_user": true,
       "is_farmer": false,
-      "income_sources": [],
+      "income_sources": [
+        "SOI_GOVERNMENT_NGO_SUPPORT"
+      ],
       "identity_document_type": "FAYDA",
       "phone_type": "PRIMARY"
     },
@@ -933,7 +951,9 @@
       "local_language": "TIGRINYA",
       "is_psnp_user": false,
       "is_farmer": false,
-      "income_sources": [],
+      "income_sources": [
+        "SOI_CROP_PRODUCTION"
+      ],
       "identity_document_type": "FAYDA",
       "phone_type": "PRIMARY"
     },
@@ -1088,7 +1108,9 @@
       "local_language": "TIGRINYA",
       "is_psnp_user": false,
       "is_farmer": false,
-      "income_sources": [],
+      "income_sources": [
+        "SOI_CROP_PRODUCTION"
+      ],
       "identity_document_type": "FAYDA",
       "phone_type": "PRIMARY"
     },
@@ -1318,7 +1340,9 @@
       "local_language": "TIGRINYA",
       "is_psnp_user": false,
       "is_farmer": false,
-      "income_sources": [],
+      "income_sources": [
+        "SOI_CROP_PRODUCTION"
+      ],
       "identity_document_type": "FAYDA",
       "phone_type": "PRIMARY"
     },
@@ -1343,7 +1367,9 @@
       "local_language": "TIGRINYA",
       "is_psnp_user": false,
       "is_farmer": false,
-      "income_sources": [],
+      "income_sources": [
+        "SOI_CROP_PRODUCTION"
+      ],
       "identity_document_type": "FAYDA",
       "phone_type": "PRIMARY"
     },
