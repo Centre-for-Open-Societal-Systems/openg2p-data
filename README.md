@@ -57,14 +57,16 @@ names the image by `repo:tag@digest` from `dist/image.json`
 chart). The digest decides what runs; the tag says where it came from. `scripts/ci/check_jenkinsfile.py` fails
 any change that puts a deploy back into the Jenkinsfile.
 
-**The pin follows the build, through a pull request.** After a `develop` build publishes the image, the last stage
-(`Propose seed pin in oan-helm`, `scripts/ci/propose_seed_pin.sh`) rewrites those two lines in oan-helm's
-`charts/openg2p-commons-services/values.yaml` on the branch `bot/seed-image` and opens, or updates, one pull request
-into `main`, together with the release record `releases/1.0.0-dev.<next>.yaml` that oan-helm's contract test compares the
-chart's seed image with. A person reviews and merges it; merging releases a chart and New Dev follows it. Staging keeps its own pin
-(`environments/staging/values/commons-services.yaml`) and is bumped by hand after New Dev is verified. The stage uses
-the Jenkins credential `oan-helm-fork-token`, bound in that stage only. It never merges, never pushes to `main` and
-never touches a cluster; the guard and `scripts/ci/tests/test_pin_guard.py` fail a change that does. A failure there
+**The pin follows the build, with no pull request.** After a `develop` build publishes the image, the last stage
+(`Update seed pin in oan-helm`, `scripts/ci/update_seed_pin.sh`) makes one fast-forward commit to oan-helm `main`: the two
+seed lines in `charts/openg2p-commons-services/values.yaml` and the release record `releases/1.0.0-dev.<next>.yaml` that
+oan-helm's contract test compares the chart's seed image with. oan-helm's own gates then decide what happens: its checks
+run on the commit, its release workflow only releases a chart whose tests pass and then points New Dev at it, and New Dev
+is delivered only from a commit whose checks are green. So a data merge reaches New Dev by itself; a failing check stops
+it before the cluster. Staging keeps its own pin (`environments/staging/values/commons-services.yaml`) and is bumped by
+hand after New Dev is verified. The stage uses the Jenkins credential `oan-helm-fork-token`, bound in that stage only.
+It does one plain `git push origin HEAD:main` (retried on a fresh checkout when `main` moved, never forced), never merges
+and never touches a cluster; the guard and `scripts/ci/tests/test_pin_guard.py` fail a change that does. A failure there
 marks the build unstable and leaves the published image alone. An older build never moves the pin back.
 
 **Setup this naming needs outside the repository**
