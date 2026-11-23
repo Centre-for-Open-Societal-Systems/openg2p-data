@@ -64,7 +64,9 @@ oan-helm's contract test compares the chart's seed image with. oan-helm's own ga
 run on the commit, its release workflow only releases a chart whose tests pass and then points New Dev at it, and New Dev
 is delivered only from a commit whose checks are green. So a data merge reaches New Dev by itself; a failing check stops
 it before the cluster. Staging keeps its own pin (`environments/staging/values/commons-services.yaml`) and is bumped by
-hand after New Dev is verified. The stage uses the Jenkins credential `oan-helm-fork-token`, bound in that stage only.
+hand after New Dev is verified. The stage uses the Jenkins credential `oan-helm-fork-token`, bound in that stage only, and commits as `oan-seed-pinner`;
+oan-helm's `check_protected_paths.py` lets that name change only the seed image lines of the commons-services values and add
+a release record, so anything else it writes fails the push check there.
 It does one plain `git push origin HEAD:main` (retried on a fresh checkout when `main` moved, never forced), never merges
 and never touches a cluster; the guard and `scripts/ci/tests/test_pin_guard.py` fail a change that does. A failure there
 marks the build unstable and leaves the published image alone. An older build never moves the pin back.

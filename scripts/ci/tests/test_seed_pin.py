@@ -146,7 +146,7 @@ class EndToEnd(unittest.TestCase):
         self.assertIn(f"    base: {BASE}\n", rec)
         self.assertIn("  masterDataImageVersion: 0.0.0-develop.118\n", rec)
         msg = self.remote_git("log", "-1", "--format=%an <%ae>%n%B", "main")
-        self.assertIn("openg2p-data-ci", msg)
+        self.assertIn("oan-seed-pinner", msg)
         self.assertIn("1.0.0-develop.70", msg)
         self.assertIn("sha256:" + "b" * 64, msg)
         self.assertIn("http://j/job/70/", msg)

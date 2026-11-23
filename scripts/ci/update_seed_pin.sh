@@ -55,8 +55,8 @@ while :; do
     rm -rf "$WORK"
     git clone --quiet --depth 1 --branch main "$OAN_HELM_URL" "$WORK"
     cd "$WORK"
-    git config user.name "openg2p-data-ci"
-    git config user.email "openg2p-data-ci@users.noreply.github.com"
+    git config user.name "oan-seed-pinner"
+    git config user.email "oan-seed-pinner@users.noreply.github.com"
 
     result="$("$PYTHON" "$HERE/seed_pin.py" rewrite "$VALUES" "$DIST/image.json")"
     echo "$result"
