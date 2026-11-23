@@ -50,9 +50,15 @@ case "$result" in
     *) echo "oan-helm main already has this pin or a newer one; no pull request needed."; exit 0 ;;
 esac
 
-# Only the chart's values file may change.
-changed_files="$(git status --porcelain | awk '{print $2}')"
-[ "$changed_files" = "$VALUES" ] || { echo "unexpected changes: $changed_files"; exit 1; }
+# oan-helm's contract test compares the chart's seed image with the newest release
+# record, so the bump carries one: releases/1.0.0-dev.<chart version + 1>.yaml.
+record="$("$PYTHON" "$HERE/seed_pin.py" record . "$DIST/image.json" "${BUILD_URL:-}")"
+git add -- "$record"
+
+# Only the chart's values file and that one new release record may change.
+changed_files="$(git status --porcelain | awk '{print $2}' | sort | paste -sd' ' -)"
+expected="$(printf '%s\n%s\n' "$VALUES" "$record" | sort | paste -sd' ' -)"
+[ "$changed_files" = "$expected" ] || { echo "unexpected changes: $changed_files (expected $expected)"; exit 1; }
 
 tag="$("$PYTHON" -c 'import json,sys; print(json.load(open(sys.argv[1]))["deploy_values"]["master-data.geoSeed.image.tag"])' "$DIST/image.json")"
 short="${tag%%@*}"

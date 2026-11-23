@@ -27,6 +27,18 @@ BASH = next((b for b in ("C:/Program Files/Git/usr/bin/bash.exe",) if os.name ==
 REPO = seed_pin.SEED_REPOSITORY
 OLD = "1.0.0-develop.67@sha256:" + "a" * 64
 NEW = "1.0.0-develop.70@sha256:" + "b" * 64
+BASE = "openg2p/master-data-db-seed:0.0.0-develop.118@sha256:" + "e" * 64
+PREVIOUS_RECORD = f"""chartVersion: 1.0.0-dev.51
+charts:
+- name: openg2p-commons-services
+  masterDataImageVersion: 0.0.0-develop.118
+  masterDataSeedImage:
+    repository: {REPO}
+    tag: 1.0.0-develop.67
+    digest: sha256:{"a" * 64}
+    base: {BASE}
+"""
+
 VALUES = f"""master-data:
   geoSeed:
     countryPack: ETH-OAN
@@ -121,6 +133,10 @@ class EndToEnd(unittest.TestCase):
         seed = self.tmp / "seed"
         (seed / "charts/openg2p-commons-services").mkdir(parents=True)
         (seed / "charts/openg2p-commons-services/values.yaml").write_bytes(VALUES.encode())
+        (seed / "charts/openg2p-commons-services/Chart.yaml").write_bytes(b"name: x\nversion: 1.0.0-dev.51\n")
+        (seed / "releases").mkdir()
+        (seed / "releases/1.0.0-dev.51.yaml").write_bytes(PREVIOUS_RECORD.encode())
+        (seed / "releases/1.0.0-dev.40.yaml").write_bytes(b"chartVersion: 1.0.0-dev.40\ncharts: []\n")
         subprocess.run(["git", "init", "-q", "-b", "main", str(seed)], check=True)
         git("-c", "user.name=t", "-c", "user.email=t@t", "add", "-A", cwd=seed)
         git("-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "-m", "init", cwd=seed)
@@ -160,6 +176,17 @@ class EndToEnd(unittest.TestCase):
         shown = subprocess.run(["git", "--git-dir", str(self.remote), "show", "bot/seed-image:charts/openg2p-commons-services/values.yaml"],
                                capture_output=True).stdout.decode()
         self.assertEqual(shown, VALUES.replace(OLD, NEW))
+        # The bump also carries the release record oan-helm's contract test reads.
+        rec = subprocess.run(["git", "--git-dir", str(self.remote), "show", "bot/seed-image:releases/1.0.0-dev.52.yaml"],
+                             capture_output=True).stdout.decode()
+        self.assertIn("chartVersion: 1.0.0-dev.52", rec)
+        self.assertIn("    tag: 1.0.0-develop.70\n", rec)
+        self.assertIn("    digest: sha256:" + "b" * 64 + "\n", rec)
+        self.assertIn(f"    base: {BASE}\n", rec)
+        self.assertIn("  masterDataImageVersion: 0.0.0-develop.118\n", rec)
+        changed = subprocess.run(["git", "--git-dir", str(self.remote), "diff", "--name-only", "main", "bot/seed-image"],
+                                 capture_output=True, text=True).stdout.split()
+        self.assertEqual(sorted(changed), ["charts/openg2p-commons-services/values.yaml", "releases/1.0.0-dev.52.yaml"])
         posts = [c for c in Fake.calls if c[0] == "POST"]
         self.assertEqual(len(posts), 1)
         self.assertEqual(posts[0][1], f"/repos/{seed_pin.REPO}/pulls")

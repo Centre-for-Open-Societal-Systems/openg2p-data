@@ -60,7 +60,8 @@ any change that puts a deploy back into the Jenkinsfile.
 **The pin follows the build, through a pull request.** After a `develop` build publishes the image, the last stage
 (`Propose seed pin in oan-helm`, `scripts/ci/propose_seed_pin.sh`) rewrites those two lines in oan-helm's
 `charts/openg2p-commons-services/values.yaml` on the branch `bot/seed-image` and opens, or updates, one pull request
-into `main`. A person reviews and merges it; merging releases a chart and New Dev follows it. Staging keeps its own pin
+into `main`, together with the release record `releases/1.0.0-dev.<next>.yaml` that oan-helm's contract test compares the
+chart's seed image with. A person reviews and merges it; merging releases a chart and New Dev follows it. Staging keeps its own pin
 (`environments/staging/values/commons-services.yaml`) and is bumped by hand after New Dev is verified. The stage uses
 the Jenkins credential `oan-helm-fork-token`, bound in that stage only. It never merges, never pushes to `main` and
 never touches a cluster; the guard and `scripts/ci/tests/test_pin_guard.py` fail a change that does. A failure there
