@@ -44,7 +44,19 @@ LABELS = (
     "org.openg2p.master-data-service.revision",
     "org.openg2p.master-data-service.source",
 )
-ALLOWED_CREDENTIALS = {"AWS_ACCOUNT_ID", "aws-ecr-creds"}
+ALLOWED_CREDENTIALS = {"AWS_ACCOUNT_ID", "aws-ecr-creds", "oan-helm-fork-token"}
+# The one credential that is not an ECR one. It may be bound once, as a
+# username/password, in the last stage, which proposes the seed pin to oan-helm.
+PIN_CREDENTIAL = "oan-helm-fork-token"
+PIN_STAGE = "Propose seed pin in oan-helm"
+PIN_GATE = "allOf { branch 'develop'; not { changeRequest() } }"
+BOT_BRANCH = "bot/seed-image"
+# What the pin scripts must never do: merge, or write anywhere but the bot branch.
+FORBIDDEN_PIN_CODE = [
+    (r"/merge\b|\"merge\"|\bgh\s+pr\s+merge\b|\bgit\s+merge\b|--admin", "merges"),
+    (r"\bgit\s+push\b[^\n]*\b(main|master)\b", "pushes to main"),
+    (r"\bgit\s+push\b(?![^\n]*\"\$BRANCH\")", "pushes something other than the bot branch"),
+]
 
 # Code that reaches or changes a cluster. Matched against code, not comments.
 FORBIDDEN_CODE = [
@@ -148,8 +160,45 @@ def check(path: str) -> list[str]:
             errors.append("'Push to ECR' does not check for an already published tag before pushing")
         if '"reference"' not in push:
             errors.append("'Push to ECR' does not record the pushed reference in dist/image.json")
-    if stages and stages[-1] != "Push to ECR":
-        errors.append(f"'{stages[-1]}' runs after 'Push to ECR'; publishing is the last thing CI does")
+    if stages[-2:] != ["Push to ECR", PIN_STAGE]:
+        errors.append(f"the last two stages must be 'Push to ECR' then '{PIN_STAGE}'; got {stages[-2:]}")
+    errors += _pin_errors(code, stage_body(code, PIN_STAGE))
+    return errors
+
+
+def _pin_errors(code: str, pin: str | None) -> list[str]:
+    """The last stage only proposes the seed pin: a pull request, never a merge or a deploy."""
+    if pin is None:
+        return [f"no '{PIN_STAGE}' stage"]
+    errors = []
+    when = re.search(r"when\s*\{(.*?)\n\s*\}\s*\n\s*steps", pin, flags=re.S)
+    if " ".join((when.group(1) if when else "").split()) != PIN_GATE:
+        errors.append(f"'{PIN_STAGE}' is not gated exactly on `{PIN_GATE}`")
+    bound = re.findall(r"credentialsId:\s*['\"]" + re.escape(PIN_CREDENTIAL) + r"['\"]", code)
+    inside = re.findall(r"usernamePassword\(\s*credentialsId:\s*'" + re.escape(PIN_CREDENTIAL) + r"'", pin)
+    if len(bound) != 1 or len(inside) != 1:
+        errors.append(f"{PIN_CREDENTIAL} must be bound once, as usernamePassword, in '{PIN_STAGE}' only")
+    if "scripts/ci/propose_seed_pin.sh" not in pin:
+        errors.append(f"'{PIN_STAGE}' does not run scripts/ci/propose_seed_pin.sh")
+    sh = os.path.join(ROOT, "scripts/ci/propose_seed_pin.sh")
+    py = os.path.join(ROOT, "scripts/ci/seed_pin.py")
+    if not (os.path.isfile(sh) and os.path.isfile(py)):
+        return errors + ["scripts/ci/propose_seed_pin.sh or seed_pin.py is missing"]
+    with open(sh, encoding="utf-8") as f:
+        script = strip_comments(f.read())
+    with open(py, encoding="utf-8") as f:
+        pycode = f.read()
+    if f'BRANCH="{BOT_BRANCH}"' not in script or f'BRANCH = "{BOT_BRANCH}"' not in pycode:
+        errors.append(f"the pin scripts must work on the fixed branch {BOT_BRANCH}")
+    if "publish_gate.sh" not in script:
+        errors.append("propose_seed_pin.sh does not run publish_gate.sh")
+    for pattern, what in FORBIDDEN_CODE:
+        for m in re.finditer(pattern, script):
+            errors.append(f"propose_seed_pin.sh {what}: {m.group(0).strip()!r}")
+    for pattern, what in FORBIDDEN_PIN_CODE:
+        for text, name in ((script, "propose_seed_pin.sh"), (pycode, "seed_pin.py")):
+            if re.search(pattern, text):
+                errors.append(f"{name} {what}")
     return errors
 
 
