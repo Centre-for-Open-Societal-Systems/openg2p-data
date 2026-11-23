@@ -193,6 +193,8 @@ def _pin_errors(code: str, pin: str | None) -> list[str]:
     name = os.path.basename(PIN_SCRIPT)
     if "publish_gate.sh" not in script:
         errors.append(f"{name} does not run publish_gate.sh")
+    if "MDS_REF_DEFAULT" not in script or "MDS_REF_DEFAULT=${PARAM_DEFAULTS.MDS_REF}" not in pin:
+        errors.append(f"{name} must pin only a build on the default MDS_REF (MDS_REF_DEFAULT from PARAM_DEFAULTS)")
     pushes = re.findall(r"^\s*(?:if\s+)?(git\s+push\b[^\n]*?)(?:;\s*then)?\s*$", script, flags=re.M)
     if pushes != [PIN_PUSH] or len(re.findall(r"\bgit\s+push\b", script)) != 1:
         errors.append(f"{name} must push exactly once, as `{PIN_PUSH}`")

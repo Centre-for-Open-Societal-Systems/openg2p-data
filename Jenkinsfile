@@ -411,10 +411,14 @@ EOF
                 catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
                     withCredentials([usernamePassword(credentialsId: 'oan-helm-fork-token',
                                                       usernameVariable: 'GH_USER', passwordVariable: 'GH_TOKEN')]) {
-                        sh '''#!/bin/bash
-                            set -euo pipefail
-                            PYTHON="$TOOLS/venv/bin/python" bash scripts/ci/update_seed_pin.sh
-                        '''
+                        // A build run with another MDS_REF (a manual 'Build with Parameters') is
+                        // on a different Master Data base: the script pins only the default one.
+                        withEnv(["MDS_REF_DEFAULT=${PARAM_DEFAULTS.MDS_REF}"]) {
+                            sh '''#!/bin/bash
+                                set -euo pipefail
+                                PYTHON="$TOOLS/venv/bin/python" bash scripts/ci/update_seed_pin.sh
+                            '''
+                        }
                     }
                 }
             }

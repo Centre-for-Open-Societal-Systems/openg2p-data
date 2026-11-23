@@ -30,6 +30,14 @@ fi
 
 [ -s "$DIST/image.json" ] || { echo "no $DIST/image.json: nothing was published"; exit 1; }
 
+# The image's Master Data base must be the one New Dev runs: only a build on the default
+# MDS_REF is pinned. A manual build with another MDS_REF is published but never pinned.
+image_ref="$("$PYTHON" -c 'import json,sys; print(json.load(open(sys.argv[1])).get("master_data_service_ref") or "")' "$DIST/image.json")"
+if [ -z "${MDS_REF_DEFAULT:-}" ] || [ "${MDS_REF:-}" != "$MDS_REF_DEFAULT" ] || [ "$image_ref" != "$MDS_REF_DEFAULT" ]; then
+    echo "not pinning: this build's Master Data ref (build '${MDS_REF:-}', image '$image_ref') is not the default '${MDS_REF_DEFAULT:-unset}'"
+    exit 0
+fi
+
 # The token travels in the environment of git only, never on a command line.
 if [ -n "${GH_TOKEN:-}" ]; then
     auth="$(printf '%s:%s' "$GH_USER" "$GH_TOKEN" | base64 | tr -d '\n')"

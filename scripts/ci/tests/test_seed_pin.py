@@ -47,12 +47,14 @@ VALUES = f"""master-data:
       tag: keep
 """
 VALUES_PATH = "charts/openg2p-commons-services/values.yaml"
+MDS = "e569a59b8e9f61f809e07791e9263e50b2a7e0da"
 
 
 def image_json(tag=NEW, repository=REPO):
     return {"deploy_values": {"master-data.geoSeed.image.repository": repository,
                               "master-data.geoSeed.image.tag": tag},
-            "openg2p_data_commit": "c" * 40, "master_data_service_commit": "d" * 40}
+            "openg2p_data_commit": "c" * 40, "master_data_service_commit": "d" * 40,
+            "master_data_service_ref": MDS}
 
 
 class Rewrite(unittest.TestCase):
@@ -110,10 +112,10 @@ class EndToEnd(unittest.TestCase):
         self.dist.mkdir()
         (self.dist / "image.json").write_text(json.dumps(image_json()), encoding="utf-8")
 
-    def run_script(self, branch="develop", change_id=None, tag_name=None):
+    def run_script(self, branch="develop", change_id=None, tag_name=None, mds_ref=MDS, default=MDS):
         env = dict(os.environ, DIST=str(self.dist), PYTHON=sys.executable, BRANCH_NAME=branch,
                    BUILD_NUMBER="70", JENKINS_URL="http://j/", JOB_NAME="x", BUILD_URL="http://j/job/70/",
-                   OAN_HELM_URL=self.remote.as_posix(), WORK_DIR=str(self.tmp / "work"), GH_USER="bot", GH_TOKEN="", RETRY_SLEEP="0")
+                   OAN_HELM_URL=self.remote.as_posix(), WORK_DIR=str(self.tmp / "work"), GH_USER="bot", GH_TOKEN="", RETRY_SLEEP="0", MDS_REF=mds_ref, MDS_REF_DEFAULT=default)
         for k in ("CHANGE_ID", "TAG_NAME"):
             env.pop(k, None)
         if change_id:
@@ -148,6 +150,24 @@ class EndToEnd(unittest.TestCase):
         self.assertIn("1.0.0-develop.70", msg)
         self.assertIn("sha256:" + "b" * 64, msg)
         self.assertIn("http://j/job/70/", msg)
+
+    def test_a_build_on_another_master_data_ref_is_published_but_never_pinned(self):
+        before = self.commits()
+        # a manual build with another MDS_REF
+        r = self.run_script(mds_ref="f" * 40)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("not pinning", r.stdout)
+        self.assertEqual(self.commits(), before)
+        # an image that was built on another ref than the build says
+        info = image_json()
+        info["master_data_service_ref"] = "f" * 40
+        (self.dist / "image.json").write_text(json.dumps(info), encoding="utf-8")
+        self.assertEqual(self.run_script().returncode, 0)
+        self.assertEqual(self.commits(), before)
+        # no default given: nothing is pinned
+        (self.dist / "image.json").write_text(json.dumps(image_json()), encoding="utf-8")
+        self.assertEqual(self.run_script(default="").returncode, 0)
+        self.assertEqual(self.commits(), before)
 
     def test_a_pin_already_on_main_commits_nothing(self):
         (self.dist / "image.json").write_text(json.dumps(image_json(tag=OLD)), encoding="utf-8")

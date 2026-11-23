@@ -82,6 +82,10 @@ class PinGuard(unittest.TestCase):
     def test_the_script_cannot_touch_a_cluster(self):
         self.assertTrue(problems(script_edit=lambda s: s + "\nkubectl get pods\n"))
 
+    def test_only_a_default_master_data_ref_is_pinned(self):
+        self.assertTrue(problems(lambda t: t.replace("MDS_REF_DEFAULT=${PARAM_DEFAULTS.MDS_REF}", "MDS_REF_DEFAULT=x")))
+        self.assertTrue(problems(script_edit=lambda s: s.replace("MDS_REF_DEFAULT", "OTHER")))
+
     def test_the_script_keeps_the_gate(self):
         self.assertTrue(problems(script_edit=lambda s: s.replace("publish_gate.sh", "x.sh")))
 
