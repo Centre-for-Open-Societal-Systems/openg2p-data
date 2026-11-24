@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Propose the new seed image to oan-helm as a pull request; never merge it.
+"""Move oan-helm's seed image pin: the file edits and the commit message.
 
-Standard library only. Two subcommands, both used by propose_seed_pin.sh:
+Standard library only. Three subcommands, all used by update_seed_pin.sh:
 
   rewrite <values.yaml> <image.json>
       Set master-data.geoSeed.image (repository and tag@digest) in the
@@ -14,13 +14,13 @@ Standard library only. Two subcommands, both used by propose_seed_pin.sh:
       contract test needs next to a seed bump (the base is carried from the
       newest record that has one). Prints its path.
 
-  pr <body-file>
-      Open the pull request from the bot branch to main, or update its title
-      and body when one is already open. Reads GH_TOKEN from the environment.
-      It calls the pull-request endpoints only: there is no merge call and no
-      branch is written here.
+  message <image.json> <build-url>
+      Print the commit message: the image, digest, both source commits and the
+      build.
 
-The pipeline binds the oan-helm credential only in the stage that runs this.
+There is no network code here: the script commits and pushes with git, and never
+merges or deploys. The pipeline binds the oan-helm credential only in the stage
+that runs it.
 """
 
 from __future__ import annotations
@@ -29,14 +29,7 @@ import json
 import os
 import re
 import sys
-import urllib.error
-import urllib.request
 
-REPO = "Centre-for-Open-Societal-Systems/oan-helm"
-BRANCH = "bot/seed-image"
-BASE = "main"
-GITHUB_API = os.environ.get("GITHUB_API", "https://api.github.com")  # tests point it at a fake
-TITLE = "chore(commons): seed Master Data code lists from the latest openg2p-data develop build"
 SEED_REPOSITORY = "379220350808.dkr.ecr.ap-south-1.amazonaws.com/eoan/openg2p-data/master-data-db-seed"
 
 # The two lines under `image:` of `geoSeed:` that name the seed image.
@@ -90,56 +83,40 @@ def cmd_rewrite(values_path: str, image_json: str) -> int:
     return 0
 
 
-def _api(method: str, path: str, token: str, body: dict | None = None):
-    req = urllib.request.Request(
-        f"{GITHUB_API}{path}",
-        method=method,
-        data=json.dumps(body).encode() if body is not None else None,
-        headers={
-            "Authorization": f"Bearer {token}",
-            "Accept": "application/vnd.github+json",
-            "X-GitHub-Api-Version": "2022-11-28",
-            "Content-Type": "application/json",
-        },
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            return json.load(resp)
-    except urllib.error.HTTPError as e:
-        raise SystemExit(f"GitHub {method} {path}: HTTP {e.code}: {e.read().decode()[:300]}")
+def cmd_message(image_json: str, build_url: str) -> int:
+    with open(image_json, encoding="utf-8") as f:
+        info = json.load(f)
+    v = info["deploy_values"]
+    tag, digest = v["master-data.geoSeed.image.tag"].split("@")
+    data = info.get("openg2p_data_commit") or ""
+    mds = info.get("master_data_service_commit") or ""
+    print(f"""chore(commons): seed Master Data code lists from openg2p-data build {tag}
 
+Moves master-data.geoSeed.image to the image the openg2p-data develop build published,
+and records it in the next release record. Opened by that build; nothing is merged or
+deployed by it. Merging to main releases a chart and New Dev follows it.
 
-def cmd_pr(body_file: str) -> int:
-    token = os.environ["GH_TOKEN"]
-    with open(body_file, encoding="utf-8") as f:
-        body = f.read()
-    owner = REPO.split("/")[0]
-    open_prs = _api("GET", f"/repos/{REPO}/pulls?state=open&base={BASE}&head={owner}:{BRANCH}", token)
-    if open_prs:
-        n = open_prs[0]["number"]
-        _api("PATCH", f"/repos/{REPO}/pulls/{n}", token, {"title": TITLE, "body": body})
-        print(f"updated {REPO}#{n}")
-    else:
-        pr = _api("POST", f"/repos/{REPO}/pulls", token,
-                  {"title": TITLE, "head": BRANCH, "base": BASE, "body": body})
-        print(f"opened {REPO}#{pr['number']}")
+image:      {v['master-data.geoSeed.image.repository']}
+tag:        {tag}
+digest:     {digest}
+openg2p-data commit:        {data}
+Master Data service commit: {mds}
+build:      {build_url or 'not recorded'}""")
     return 0
 
 
 _RECORD_NAME = re.compile(r"1\.0\.0-dev\.(\d+)\.yaml$")
 
 
-def release_record(chart_version: str, previous: str, info: dict, build_url: str) -> str:
+def release_record(version: str, previous: str, info: dict, build_url: str) -> str:
     """Text of the release record for this seed image.
 
     oan-helm's contract test compares the chart's seed image with the newest
     releases/1.0.0-dev.<n>.yaml that records one, so every bump brings one. The base
     (the Master Data build the loader must match) is carried from the previous record.
     """
-    m = re.fullmatch(r"1\.0\.0-dev\.(\d+)", chart_version)
-    if not m:
-        raise ValueError(f"unexpected chart version {chart_version!r}")
-    version = f"1.0.0-dev.{int(m.group(1)) + 1}"
+    if not re.fullmatch(r"1\.0\.0-dev\.\d+", version):
+        raise ValueError(f"unexpected record version {version!r}")
     base = re.search(r"^    base: (\S+)$", previous, re.M)
     api = re.search(r"^  masterDataImageVersion: (\S+)$", previous, re.M)
     if not base or not api:
@@ -170,7 +147,11 @@ charts:
 
 
 def cmd_record(oan_helm_dir: str, image_json: str, build_url: str) -> int:
-    """Write releases/1.0.0-dev.<n+1>.yaml into an oan-helm checkout; print its path."""
+    """Write the next releases/1.0.0-dev.<n>.yaml into an oan-helm checkout; print its path.
+
+    n is one more than the chart version and one more than the newest record, so a record
+    that exists is never overwritten (two bumps before the release workflow has run).
+    """
     with open(image_json, encoding="utf-8") as f:
         info = json.load(f)
     with open(os.path.join(oan_helm_dir, "charts/openg2p-commons-services/Chart.yaml"), encoding="utf-8") as f:
@@ -189,8 +170,13 @@ def cmd_record(oan_helm_dir: str, image_json: str, build_url: str) -> int:
             break
     if previous is None:
         raise SystemExit("no release record with a seed image to carry the base from")
-    text = release_record(chart.group(1), previous, info, build_url)
-    name = f"1.0.0-dev.{int(chart.group(1).rsplit('.', 1)[1]) + 1}.yaml"
+    chart_n = int(chart.group(1).rsplit(".", 1)[1])
+    newest_n = int(_RECORD_NAME.match(records[0]).group(1))
+    version = f"1.0.0-dev.{max(chart_n, newest_n) + 1}"
+    text = release_record(version, previous, info, build_url)
+    name = f"{version}.yaml"
+    if os.path.exists(os.path.join(releases, name)):
+        raise SystemExit(f"releases/{name} already exists; refusing to overwrite a release record")
     with open(os.path.join(releases, name), "w", encoding="utf-8", newline="") as f:
         f.write(text)
     print(os.path.join("releases", name).replace(os.sep, "/"))
@@ -202,8 +188,8 @@ def main(argv: list[str]) -> int:
         return cmd_record(argv[2], argv[3], argv[4])
     if len(argv) == 4 and argv[1] == "rewrite":
         return cmd_rewrite(argv[2], argv[3])
-    if len(argv) == 3 and argv[1] == "pr":
-        return cmd_pr(argv[2])
+    if len(argv) == 4 and argv[1] == "message":
+        return cmd_message(argv[2], argv[3])
     print(__doc__, file=sys.stderr)
     return 2
 

@@ -1,28 +1,24 @@
-"""The oan-helm seed-pin proposal: python scripts/ci/tests/test_seed_pin.py
+"""The oan-helm seed-pin update: python scripts/ci/tests/test_seed_pin.py
 
-Unit tests for the values.yaml rewrite, and an end-to-end run of
-propose_seed_pin.sh against a local git repository standing in for oan-helm
-and a fake GitHub API. No network, no real credentials.
+Unit tests for the file edits, and an end-to-end run of update_seed_pin.sh against a local
+git repository standing in for oan-helm. No network, no real credentials.
 """
 import json
 import os
 import subprocess
 import sys
 import tempfile
-import threading
 import unittest
-from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 
 CI = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(CI))
 import seed_pin  # noqa: E402
 
-# LF in, LF out: the Linux agent has no autocrlf, and these tests compare bytes.
-os.environ.update(GIT_CONFIG_COUNT="1", GIT_CONFIG_KEY_0="core.autocrlf", GIT_CONFIG_VALUE_0="false")
-
 # On Windows `bash` on PATH can be WSL; Git for Windows ships the one these scripts are written for.
 BASH = next((b for b in ("C:/Program Files/Git/usr/bin/bash.exe",) if os.name == "nt" and os.path.exists(b)), "bash")
+# LF in, LF out: the Linux agent has no autocrlf, and these tests compare bytes.
+os.environ.update(GIT_CONFIG_COUNT="1", GIT_CONFIG_KEY_0="core.autocrlf", GIT_CONFIG_VALUE_0="false")
 
 REPO = seed_pin.SEED_REPOSITORY
 OLD = "1.0.0-develop.67@sha256:" + "a" * 64
@@ -38,7 +34,6 @@ charts:
     digest: sha256:{"a" * 64}
     base: {BASE}
 """
-
 VALUES = f"""master-data:
   geoSeed:
     countryPack: ETH-OAN
@@ -51,12 +46,15 @@ VALUES = f"""master-data:
       repository: example/other
       tag: keep
 """
+VALUES_PATH = "charts/openg2p-commons-services/values.yaml"
+MDS = "e569a59b8e9f61f809e07791e9263e50b2a7e0da"
 
 
 def image_json(tag=NEW, repository=REPO):
     return {"deploy_values": {"master-data.geoSeed.image.repository": repository,
                               "master-data.geoSeed.image.tag": tag},
-            "openg2p_data_commit": "c" * 40, "master_data_service_commit": "d" * 40}
+            "openg2p_data_commit": "c" * 40, "master_data_service_commit": "d" * 40,
+            "master_data_service_ref": MDS}
 
 
 class Rewrite(unittest.TestCase):
@@ -90,129 +88,142 @@ class Rewrite(unittest.TestCase):
         self.assertIn(NEW, v.read_text(encoding="utf-8"))
 
 
-class Fake(BaseHTTPRequestHandler):
-    calls = []
-    open_pr = False
-
-    def log_message(self, format, *args):
-        pass
-
-    def _send(self, obj):
-        data = json.dumps(obj).encode()
-        self.send_response(200)
-        self.send_header("Content-Type", "application/json")
-        self.send_header("Content-Length", str(len(data)))
-        self.end_headers()
-        self.wfile.write(data)
-
-    def do_GET(self):
-        Fake.calls.append(("GET", self.path))
-        self._send([{"number": 9}] if Fake.open_pr else [])
-
-    def _body(self):
-        n = int(self.headers.get("Content-Length") or 0)
-        return json.loads(self.rfile.read(n) or b"{}")
-
-    def do_POST(self):
-        Fake.calls.append(("POST", self.path, self._body()))
-        self._send({"number": 12})
-
-    def do_PATCH(self):
-        Fake.calls.append(("PATCH", self.path, self._body()))
-        self._send({"number": 9})
-
-
-def git(*args, cwd):
-    subprocess.run(["git", *args], cwd=cwd, check=True, capture_output=True)
+def git(*args, cwd=None):
+    return subprocess.run(["git", *args], cwd=cwd, check=True, capture_output=True, text=True).stdout
 
 
 class EndToEnd(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp())
-        self.remote = self.tmp / "oan-helm.git"
         seed = self.tmp / "seed"
         (seed / "charts/openg2p-commons-services").mkdir(parents=True)
-        (seed / "charts/openg2p-commons-services/values.yaml").write_bytes(VALUES.encode())
+        (seed / VALUES_PATH).write_bytes(VALUES.encode())
         (seed / "charts/openg2p-commons-services/Chart.yaml").write_bytes(b"name: x\nversion: 1.0.0-dev.51\n")
         (seed / "releases").mkdir()
         (seed / "releases/1.0.0-dev.51.yaml").write_bytes(PREVIOUS_RECORD.encode())
         (seed / "releases/1.0.0-dev.40.yaml").write_bytes(b"chartVersion: 1.0.0-dev.40\ncharts: []\n")
         subprocess.run(["git", "init", "-q", "-b", "main", str(seed)], check=True)
-        git("-c", "user.name=t", "-c", "user.email=t@t", "add", "-A", cwd=seed)
-        git("-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "-m", "init", cwd=seed)
+        ident = ["-c", "user.name=t", "-c", "user.email=t@t"]
+        git(*ident, "add", "-A", cwd=seed)
+        git(*ident, "commit", "-q", "-m", "init", cwd=seed)
+        self.remote = self.tmp / "oan-helm.git"
         subprocess.run(["git", "clone", "-q", "--bare", str(seed), str(self.remote)], check=True)
         self.dist = self.tmp / "dist"
         self.dist.mkdir()
         (self.dist / "image.json").write_text(json.dumps(image_json()), encoding="utf-8")
-        Fake.calls = []
-        Fake.open_pr = False
-        self.server = HTTPServer(("127.0.0.1", 0), Fake)
-        threading.Thread(target=self.server.serve_forever, daemon=True).start()
 
-    def tearDown(self):
-        self.server.shutdown()
-
-    def run_script(self, branch="develop", change_id=None):
+    def run_script(self, branch="develop", change_id=None, tag_name=None, mds_ref=MDS, default=MDS):
         env = dict(os.environ, DIST=str(self.dist), PYTHON=sys.executable, BRANCH_NAME=branch,
                    BUILD_NUMBER="70", JENKINS_URL="http://j/", JOB_NAME="x", BUILD_URL="http://j/job/70/",
-                   OAN_HELM_URL=self.remote.as_posix(), WORK_DIR=str(self.tmp / "work"),
-                   GH_USER="bot", GH_TOKEN="", GITHUB_API=f"http://127.0.0.1:{self.server.server_port}")
-        env.pop("CHANGE_ID", None)
+                   OAN_HELM_URL=self.remote.as_posix(), WORK_DIR=str(self.tmp / "work"), GH_USER="bot", GH_TOKEN="", RETRY_SLEEP="0", MDS_REF=mds_ref, MDS_REF_DEFAULT=default)
+        for k in ("CHANGE_ID", "TAG_NAME"):
+            env.pop(k, None)
         if change_id:
             env["CHANGE_ID"] = change_id
-        return subprocess.run([BASH, str(CI / "propose_seed_pin.sh")], env=env, capture_output=True, text=True)
+        if tag_name:
+            env["TAG_NAME"] = tag_name
+        return subprocess.run([BASH, str(CI / "update_seed_pin.sh")], env=env, capture_output=True, text=True)
 
-    def branch_tip(self, name):
-        r = subprocess.run(["git", "--git-dir", str(self.remote), "rev-parse", "--verify", "-q", name],
-                           capture_output=True, text=True)
-        return r.stdout.strip()
+    def remote_git(self, *args):
+        return subprocess.run(["git", "--git-dir", str(self.remote), *args], capture_output=True, text=True).stdout
 
-    def test_opens_one_pull_request_and_touches_only_the_bot_branch(self):
-        main_before = self.branch_tip("main")
+    def commits(self):
+        return int(self.remote_git("rev-list", "--count", "main").strip())
+
+    def test_commits_straight_to_main_and_nothing_else(self):
+        before = self.commits()
         r = self.run_script()
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
-        self.assertEqual(self.branch_tip("main"), main_before, "main must not move")
-        self.assertTrue(self.branch_tip("bot/seed-image"))
-        shown = subprocess.run(["git", "--git-dir", str(self.remote), "show", "bot/seed-image:charts/openg2p-commons-services/values.yaml"],
-                               capture_output=True).stdout.decode()
-        self.assertEqual(shown, VALUES.replace(OLD, NEW))
-        # The bump also carries the release record oan-helm's contract test reads.
-        rec = subprocess.run(["git", "--git-dir", str(self.remote), "show", "bot/seed-image:releases/1.0.0-dev.52.yaml"],
-                             capture_output=True).stdout.decode()
+        self.assertEqual(self.commits(), before + 1, "exactly one new commit on main")
+        self.assertEqual(self.remote_git("branch", "--list").split(), ["*", "main"] if "*" in self.remote_git("branch", "--list") else ["main"])
+        self.assertEqual(sorted(self.remote_git("diff", "--name-only", "HEAD~1", "HEAD").split()),
+                         [VALUES_PATH, "releases/1.0.0-dev.52.yaml"])
+        self.assertEqual(self.remote_git("show", f"main:{VALUES_PATH}"), VALUES.replace(OLD, NEW))
+        rec = self.remote_git("show", "main:releases/1.0.0-dev.52.yaml")
         self.assertIn("chartVersion: 1.0.0-dev.52", rec)
         self.assertIn("    tag: 1.0.0-develop.70\n", rec)
         self.assertIn("    digest: sha256:" + "b" * 64 + "\n", rec)
         self.assertIn(f"    base: {BASE}\n", rec)
         self.assertIn("  masterDataImageVersion: 0.0.0-develop.118\n", rec)
-        changed = subprocess.run(["git", "--git-dir", str(self.remote), "diff", "--name-only", "main", "bot/seed-image"],
-                                 capture_output=True, text=True).stdout.split()
-        self.assertEqual(sorted(changed), ["charts/openg2p-commons-services/values.yaml", "releases/1.0.0-dev.52.yaml"])
-        posts = [c for c in Fake.calls if c[0] == "POST"]
-        self.assertEqual(len(posts), 1)
-        self.assertEqual(posts[0][1], f"/repos/{seed_pin.REPO}/pulls")
-        self.assertEqual((posts[0][2]["head"], posts[0][2]["base"]), ("bot/seed-image", "main"))
-        self.assertIn(NEW, posts[0][2]["body"])
-        self.assertFalse([c for c in Fake.calls if "merge" in c[1]], "no merge call")
+        msg = self.remote_git("log", "-1", "--format=%an <%ae>%n%B", "main")
+        self.assertIn("oan-seed-pinner", msg)
+        self.assertIn("1.0.0-develop.70", msg)
+        self.assertIn("sha256:" + "b" * 64, msg)
+        self.assertIn("http://j/job/70/", msg)
 
-    def test_updates_the_open_pull_request_instead_of_opening_another(self):
-        Fake.open_pr = True
-        r = self.run_script()
+    def test_a_build_on_another_master_data_ref_is_published_but_never_pinned(self):
+        before = self.commits()
+        # a manual build with another MDS_REF
+        r = self.run_script(mds_ref="f" * 40)
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
-        self.assertEqual([c[0] for c in Fake.calls if c[0] != "GET"], ["PATCH"])
+        self.assertIn("not pinning", r.stdout)
+        self.assertEqual(self.commits(), before)
+        # an image that was built on another ref than the build says
+        info = image_json()
+        info["master_data_service_ref"] = "f" * 40
+        (self.dist / "image.json").write_text(json.dumps(info), encoding="utf-8")
+        self.assertEqual(self.run_script().returncode, 0)
+        self.assertEqual(self.commits(), before)
+        # no default given: nothing is pinned
+        (self.dist / "image.json").write_text(json.dumps(image_json()), encoding="utf-8")
+        self.assertEqual(self.run_script(default="").returncode, 0)
+        self.assertEqual(self.commits(), before)
 
-    def test_a_pin_already_on_main_opens_nothing(self):
+    def test_a_pin_already_on_main_commits_nothing(self):
         (self.dist / "image.json").write_text(json.dumps(image_json(tag=OLD)), encoding="utf-8")
+        before = self.commits()
         r = self.run_script()
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
-        self.assertEqual(Fake.calls, [])
-        self.assertFalse(self.branch_tip("bot/seed-image"))
+        self.assertEqual(self.commits(), before)
 
-    def test_a_pull_request_or_feature_branch_build_does_nothing(self):
-        for branch, change in (("feature/x", None), ("develop", "75"), ("PR-75", "75")):
-            r = self.run_script(branch=branch, change_id=change)
-            self.assertNotEqual(r.returncode, 0, branch)
-        self.assertEqual(Fake.calls, [])
-        self.assertFalse(self.branch_tip("bot/seed-image"))
+    def test_a_second_run_of_the_same_build_commits_nothing(self):
+        self.assertEqual(self.run_script().returncode, 0)
+        after_first = self.commits()
+        self.assertEqual(self.run_script().returncode, 0)
+        self.assertEqual(self.commits(), after_first)
+
+    def test_a_rejected_push_is_retried_on_top_of_the_new_main(self):
+        hook = self.remote / "hooks" / "pre-receive"
+        counter = (self.tmp / "pushes").as_posix()
+        hook.write_text(f'#!/bin/sh\nn=$(cat "{counter}" 2>/dev/null || echo 0)\necho $((n+1)) > "{counter}"\n'
+                        '[ "$n" -ge 1 ] || { echo rejected; exit 1; }\n', encoding="utf-8", newline="")
+        hook.chmod(0o755)
+        before = self.commits()
+        r = self.run_script()
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("retrying", r.stdout)
+        self.assertEqual(self.commits(), before + 1)
+
+    def test_it_gives_up_instead_of_overwriting(self):
+        hook = self.remote / "hooks" / "pre-receive"
+        hook.write_text("#!/bin/sh\necho rejected\nexit 1\n", encoding="utf-8", newline="")
+        hook.chmod(0o755)
+        before = self.commits()
+        r = self.run_script()
+        self.assertNotEqual(r.returncode, 0)
+        self.assertEqual(self.commits(), before)
+
+    def test_a_pull_request_tag_or_feature_branch_build_does_nothing(self):
+        before = self.commits()
+        for kwargs in ({"branch": "feature/x"}, {"change_id": "75"}, {"branch": "PR-75", "change_id": "75"},
+                       {"tag_name": "1.0.0"}):
+            self.assertNotEqual(self.run_script(**kwargs).returncode, 0, kwargs)
+        self.assertEqual(self.commits(), before)
+
+    def test_an_existing_record_is_never_overwritten(self):
+        # Two bumps before the release workflow has run: the record for the next version is
+        # already there, so this bump takes the one after it.
+        seed = self.tmp / "seed"
+        existing = b"chartVersion: 1.0.0-dev.52\ncharts: []\n"
+        (seed / "releases/1.0.0-dev.52.yaml").write_bytes(existing)
+        ident = ["-c", "user.name=t", "-c", "user.email=t@t"]
+        git(*ident, "add", "-A", cwd=seed)
+        git(*ident, "commit", "-q", "-m", "a record that is already there", cwd=seed)
+        git("push", "-q", str(self.remote), "main", cwd=seed)
+        r = self.run_script()
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertEqual(self.remote_git("show", "main:releases/1.0.0-dev.52.yaml").encode(), existing)
+        self.assertIn("chartVersion: 1.0.0-dev.53", self.remote_git("show", "main:releases/1.0.0-dev.53.yaml"))
 
 
 if __name__ == "__main__":

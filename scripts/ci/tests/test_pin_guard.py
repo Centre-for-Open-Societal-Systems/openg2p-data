@@ -24,7 +24,7 @@ def problems(edit=None, script_edit=None):
     jf = tmp / "Jenkinsfile"
     jf.write_text(text, encoding="utf-8")
     saved = None
-    sh = CI / "propose_seed_pin.sh"
+    sh = CI / "update_seed_pin.sh"
     if script_edit:
         saved = sh.read_text(encoding="utf-8")
         sh.write_text(script_edit(saved), encoding="utf-8", newline="")
@@ -41,7 +41,7 @@ class PinGuard(unittest.TestCase):
         self.assertEqual(problems(), [])
 
     def test_the_stage_is_required_and_last(self):
-        self.assertTrue(problems(lambda t: t.replace("stage('Propose seed pin in oan-helm')", "stage('Something else')")))
+        self.assertTrue(problems(lambda t: t.replace("stage('Update seed pin in oan-helm')", "stage('Something else')")))
 
     def test_the_gate_cannot_widen_to_tags_or_other_branches(self):
         gate = "allOf { branch 'develop'; not { changeRequest() } }"
@@ -59,19 +59,34 @@ class PinGuard(unittest.TestCase):
     def test_other_credentials_are_still_refused(self):
         self.assertTrue(problems(lambda t: t.replace("credentialsId: 'aws-ecr-creds'", "credentialsId: 'dev-kubeconfig'")))
 
-    def test_the_script_cannot_merge(self):
-        for text in ('curl -X PUT "$API/pulls/1/merge"', "gh pr merge 1", "git merge origin/main"):
+    def test_the_script_cannot_merge_or_open_pull_requests(self):
+        for text in ('curl -X PUT "$API/pulls/1/merge"', "gh pr merge 1", "gh pr create", "git merge origin/main"):
             self.assertTrue(problems(script_edit=lambda s, t=text: s + "\n" + t + "\n"), text)
 
-    def test_the_script_cannot_push_main_or_another_branch(self):
-        self.assertTrue(problems(script_edit=lambda s: s + "\ngit push origin HEAD:main\n"))
-        self.assertTrue(problems(script_edit=lambda s: s + "\ngit push origin other\n"))
+    def test_the_one_allowed_push_is_exactly_a_plain_push_of_the_commit_to_main(self):
+        push = "git push --quiet origin HEAD:main"
+        self.assertEqual(problems(), [])
+        for text in ("git push --quiet --force origin HEAD:main", "git push --quiet origin +HEAD:main",
+                     "git push --quiet --force-with-lease origin HEAD:main", "git push --quiet origin HEAD:other",
+                     "git push --quiet origin main", "git push --quiet origin --delete main",
+                     "git push --quiet origin --tags"):
+            self.assertTrue(problems(script_edit=lambda s, t=text: s.replace(push, t)), text)
+
+    def test_a_second_push_is_refused(self):
+        self.assertTrue(problems(script_edit=lambda s: s + "\ngit push --quiet origin HEAD:main\n"))
+
+    def test_the_script_cannot_call_a_web_api(self):
+        for text in ("curl -s https://api.github.com/user", "wget http://x", "python -c 'import urllib.request'"):
+            self.assertTrue(problems(script_edit=lambda s, t=text: s + "\n" + t + "\n"), text)
 
     def test_the_script_cannot_touch_a_cluster(self):
         self.assertTrue(problems(script_edit=lambda s: s + "\nkubectl get pods\n"))
 
-    def test_the_script_keeps_the_gate_and_the_bot_branch(self):
-        self.assertTrue(problems(script_edit=lambda s: s.replace('BRANCH="bot/seed-image"', 'BRANCH="main"')))
+    def test_only_a_default_master_data_ref_is_pinned(self):
+        self.assertTrue(problems(lambda t: t.replace("MDS_REF_DEFAULT=${PARAM_DEFAULTS.MDS_REF}", "MDS_REF_DEFAULT=x")))
+        self.assertTrue(problems(script_edit=lambda s: s.replace("MDS_REF_DEFAULT", "OTHER")))
+
+    def test_the_script_keeps_the_gate(self):
         self.assertTrue(problems(script_edit=lambda s: s.replace("publish_gate.sh", "x.sh")))
 
 

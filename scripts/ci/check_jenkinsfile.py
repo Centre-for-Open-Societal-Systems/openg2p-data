@@ -46,16 +46,18 @@ LABELS = (
 )
 ALLOWED_CREDENTIALS = {"AWS_ACCOUNT_ID", "aws-ecr-creds", "oan-helm-fork-token"}
 # The one credential that is not an ECR one. It may be bound once, as a
-# username/password, in the last stage, which proposes the seed pin to oan-helm.
+# username/password, in the last stage, which moves oan-helm's seed pin.
 PIN_CREDENTIAL = "oan-helm-fork-token"
-PIN_STAGE = "Propose seed pin in oan-helm"
+PIN_STAGE = "Update seed pin in oan-helm"
 PIN_GATE = "allOf { branch 'develop'; not { changeRequest() } }"
-BOT_BRANCH = "bot/seed-image"
-# What the pin scripts must never do: merge, or write anywhere but the bot branch.
+PIN_SCRIPT = "scripts/ci/update_seed_pin.sh"
+# The only write the pin script may make: one plain push of its commit to main.
+PIN_PUSH = "git push --quiet origin HEAD:main"
+# What the pin scripts must never do: merge, force, push anywhere else, or call the GitHub API.
 FORBIDDEN_PIN_CODE = [
-    (r"/merge\b|\"merge\"|\bgh\s+pr\s+merge\b|\bgit\s+merge\b|--admin", "merges"),
-    (r"\bgit\s+push\b[^\n]*\b(main|master)\b", "pushes to main"),
-    (r"\bgit\s+push\b(?![^\n]*\"\$BRANCH\")", "pushes something other than the bot branch"),
+    (r"/merge\b|\"merge\"|\bgh\s+pr\b|\bgit\s+merge\b|--admin", "merges or opens pull requests"),
+    (r"\bgit\s+push\b[^\n]*(--force|--force-with-lease|\s-f\b|\+HEAD|\+main|--delete|--mirror|--tags)", "force-pushes or pushes more than the commit"),
+    (r"api\.github\.com|urllib|\bcurl\b|\bwget\b|\brequests\b", "calls a web API"),
 ]
 
 # Code that reaches or changes a cluster. Matched against code, not comments.
@@ -167,7 +169,7 @@ def check(path: str) -> list[str]:
 
 
 def _pin_errors(code: str, pin: str | None) -> list[str]:
-    """The last stage only proposes the seed pin: a pull request, never a merge or a deploy."""
+    """The last stage only moves the seed pin: one plain commit to main, never a merge or a deploy."""
     if pin is None:
         return [f"no '{PIN_STAGE}' stage"]
     errors = []
@@ -178,27 +180,31 @@ def _pin_errors(code: str, pin: str | None) -> list[str]:
     inside = re.findall(r"usernamePassword\(\s*credentialsId:\s*'" + re.escape(PIN_CREDENTIAL) + r"'", pin)
     if len(bound) != 1 or len(inside) != 1:
         errors.append(f"{PIN_CREDENTIAL} must be bound once, as usernamePassword, in '{PIN_STAGE}' only")
-    if "scripts/ci/propose_seed_pin.sh" not in pin:
-        errors.append(f"'{PIN_STAGE}' does not run scripts/ci/propose_seed_pin.sh")
-    sh = os.path.join(ROOT, "scripts/ci/propose_seed_pin.sh")
+    if PIN_SCRIPT not in pin:
+        errors.append(f"'{PIN_STAGE}' does not run {PIN_SCRIPT}")
+    sh = os.path.join(ROOT, PIN_SCRIPT)
     py = os.path.join(ROOT, "scripts/ci/seed_pin.py")
     if not (os.path.isfile(sh) and os.path.isfile(py)):
-        return errors + ["scripts/ci/propose_seed_pin.sh or seed_pin.py is missing"]
+        return errors + [f"{PIN_SCRIPT} or seed_pin.py is missing"]
     with open(sh, encoding="utf-8") as f:
         script = strip_comments(f.read())
     with open(py, encoding="utf-8") as f:
         pycode = f.read()
-    if f'BRANCH="{BOT_BRANCH}"' not in script or f'BRANCH = "{BOT_BRANCH}"' not in pycode:
-        errors.append(f"the pin scripts must work on the fixed branch {BOT_BRANCH}")
+    name = os.path.basename(PIN_SCRIPT)
     if "publish_gate.sh" not in script:
-        errors.append("propose_seed_pin.sh does not run publish_gate.sh")
+        errors.append(f"{name} does not run publish_gate.sh")
+    if "MDS_REF_DEFAULT" not in script or "MDS_REF_DEFAULT=${PARAM_DEFAULTS.MDS_REF}" not in pin:
+        errors.append(f"{name} must pin only a build on the default MDS_REF (MDS_REF_DEFAULT from PARAM_DEFAULTS)")
+    pushes = re.findall(r"^\s*(?:if\s+)?(git\s+push\b[^\n]*?)(?:;\s*then)?\s*$", script, flags=re.M)
+    if pushes != [PIN_PUSH] or len(re.findall(r"\bgit\s+push\b", script)) != 1:
+        errors.append(f"{name} must push exactly once, as `{PIN_PUSH}`")
     for pattern, what in FORBIDDEN_CODE:
         for m in re.finditer(pattern, script):
-            errors.append(f"propose_seed_pin.sh {what}: {m.group(0).strip()!r}")
+            errors.append(f"{name} {what}: {m.group(0).strip()!r}")
     for pattern, what in FORBIDDEN_PIN_CODE:
-        for text, name in ((script, "propose_seed_pin.sh"), (pycode, "seed_pin.py")):
+        for text, fname in ((script, name), (pycode, "seed_pin.py")):
             if re.search(pattern, text):
-                errors.append(f"{name} {what}")
+                errors.append(f"{fname} {what}")
     return errors
 
 

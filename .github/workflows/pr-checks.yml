@@ -74,10 +74,10 @@ jobs:
       - name: Image tag generation (eoan/openg2p-data/master-data-db-seed:<version>-<branch>.<build>)
         run: python scripts/ci/tests/test_image_names.py
 
-      - name: oan-helm seed pin proposal (one bot branch, pull request only, never merges)
+      - name: oan-helm seed pin update (one fast-forward commit, no force, never merges)
         run: python scripts/ci/tests/test_seed_pin.py
 
-      - name: Pin stage guard (the one non-ECR credential, no merge, no main)
+      - name: Pin stage guard (the one non-ECR credential, one plain push, no merge, no API)
         run: python scripts/ci/tests/test_pin_guard.py
 
   packs:

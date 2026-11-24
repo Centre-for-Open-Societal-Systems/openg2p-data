@@ -396,12 +396,14 @@ EOF
             }
         }
 
-        // Last stage: after the image is published, ask oan-helm to pin it. This
-        // opens or updates one pull request (branch bot/seed-image into main) that
-        // a person reviews and merges. It deploys nothing and never merges.
+        // Last stage: after the image is published, move oan-helm's seed pin to it.
+        // One fast-forward commit to oan-helm main (the pin and its release record),
+        // no pull request. oan-helm's own gates decide what happens next: its checks,
+        // its release workflow and the New Dev delivery all require green tests. This
+        // stage deploys nothing, merges nothing and never force-pushes.
         // A failure here leaves the build, whose image is already published, green
         // but unstable.
-        stage('Propose seed pin in oan-helm') {
+        stage('Update seed pin in oan-helm') {
             when {
                 allOf { branch 'develop'; not { changeRequest() } }
             }
@@ -409,10 +411,14 @@ EOF
                 catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
                     withCredentials([usernamePassword(credentialsId: 'oan-helm-fork-token',
                                                       usernameVariable: 'GH_USER', passwordVariable: 'GH_TOKEN')]) {
-                        sh '''#!/bin/bash
-                            set -euo pipefail
-                            PYTHON="$TOOLS/venv/bin/python" bash scripts/ci/propose_seed_pin.sh
-                        '''
+                        // A build run with another MDS_REF (a manual 'Build with Parameters') is
+                        // on a different Master Data base: the script pins only the default one.
+                        withEnv(["MDS_REF_DEFAULT=${PARAM_DEFAULTS.MDS_REF}"]) {
+                            sh '''#!/bin/bash
+                                set -euo pipefail
+                                PYTHON="$TOOLS/venv/bin/python" bash scripts/ci/update_seed_pin.sh
+                            '''
+                        }
                     }
                 }
             }
