@@ -24,7 +24,6 @@
   "Grievance Submission Type",
   "Grievance Submitter Type",
   "Grievance Type",
-  "Grievance SLA Configuration",
   "Grievance SLA Rule",
   "OAN IAM Service"
  ],
@@ -53,7 +52,6 @@
   "Grievance Service Provider Source": "Grievance_Service_Provider_Source.json",
   "Grievance Service Provider Type": "Grievance_Service_Provider_Type.json",
   "Grievance Settings": "Grievance_Settings.json",
-  "Grievance SLA Configuration": "Grievance_SLA_Configuration.json",
   "Grievance Submission Type": "Grievance_Submission_Type.json",
   "Grievance Submitter Type": "Grievance_Submitter_Type.json",
   "Grievance Type": "Grievance_Type.json",
