@@ -26,8 +26,7 @@ environment starts with the same taxonomy. **It is a seed for a fresh site.** Se
 | `Grievance_Service_Category.json` | 19 categories, `C01` to `C19`, plus the catch-all `Other` (`SYS`), which is the default category |
 | `Grievance_Type.json` | 75 sub-types keyed on their code (`C01-01` to `C19-02`), plus the catch-all `Other` type (`SYS`) |
 | `Grievance_Department.json` | The 15 departments the matrix names, with `Unrouted` (the triage desk) and two unrelated demo departments. The four demo departments the matrix replaces are gone |
-| `Grievance_SLA_Rule.json` | The SLA of each category (STG-514): its base rule, named `<category code>-BASE`, and the seasonal rules of the matrix's Seasonal Calendar, named `<category code>-R<n>` |
-| `Grievance_SLA_Configuration.json` | One row per category, named `GR-SLA-<category code>`, with its escalation settings and the turnaround of each sub-type per level |
+| `Grievance_SLA_Rule.json` | The SLA of each category (STG-514): its base rule, named `<category code>-BASE`, the seasonal rules of the matrix's Seasonal Calendar, named `<category code>-R<n>`, and the L1 and L2 turnaround of each sub-type, named `<type code>-L<n>` |
 | `Grievance_Officer_Position.json` | Canonical posts across the 4-level ladder (Kebele DA, Woreda SMS/Expert, Zonal Head, Regional Bureau Head) |
 | `Grievance_RBAC_Assignment.json` | Staffed desks for all 19 categories (C01 to C19) plus Unrouted, linking seats from `Grievance Officer Position` |
 
@@ -38,17 +37,16 @@ equals `type_code`, which is what the loader matches on.
   reads the desks (`Grievance RBAC Assignment`), so the owner of a case is whatever desk is set up for the
   category, type and department. The departments are seeded so a desk can be made for them.
 - **Turnaround days** are the matrix's illustrative values, "to be decided by the respective owners". They
-  are rows of the category's SLA configuration (`level_turnarounds`): L1 is `nodal_officer` (Kebele) and L2
-  is `senior_nodal_officer` (Woreda), each with the sub-type it is for. A level a sub-type skips has no
-  row. `15 (follow-up)` for roads and electricity is stored as `15`. The catch-all has an L2 row of `7`,
-  the triage window. 132 rows in all. The SLA engine does not read this table yet: it runs on the SLA
-  days of the category's SLA rules.
+  are SLA rules with a `role_level`: L1 is `nodal_officer` (Kebele) and L2 is `senior_nodal_officer`
+  (Woreda), each with the sub-type it is for. A level a sub-type skips has no rule. `15 (follow-up)` for roads
+  and electricity is stored as `15`. The catch-all has an L2 rule of `7`, the triage window. 132 rules in
+  all. The SLA engine does not read them yet: it runs on the SLA days of the rules with no `role_level`.
 - **SLA days** are the longest L1 plus L2 of the category's sub-types, on the category's base SLA rule
-  (`Grievance_SLA_Rule.json`), which is what the engine reads; the configuration has no `sla_days` since
-  STG-514. The catch-all `Other` gets its base rule (7 days) from the app on install, so the seed has none
-  for it. Configurations and rules are named after the category code, not the `GR-SLA-####` and
-  `GR-SLR-#####` series, so the series counters cannot run into them. The rules load before the
-  configurations: an SLA configuration needs its category's base rule.
+  (`Grievance_SLA_Rule.json`), which is what the engine reads. The catch-all `Other` gets its base rule
+  (7 days) from the app on install, so the seed has none for it. Rules are named after the category code,
+  not the `GR-SLR-#####` series, so the series counter cannot run into them. There is no per-category SLA
+  configuration: the auto-escalate and notify-on-breach flags are each desk's (both on in this seed), and
+  the state timers are the app's defaults on the `Grievance Deferral Policy`.
 - **Entry role level** (`entry_role_level`) is a link to a `Grievance Role Level`: the lowest level whose
   officers handle the type. The routing deck gives each sub-type one of five resolution paths, and the matrix
   has no path column, so it was derived per sub-type from the deck: elders-first rows are path 3, sensitive
@@ -75,7 +73,7 @@ equals `type_code`, which is what the loader matches on.
 
 Each sub-type also carries `is_sensitive`, read from the matrix's Sensitive Flag column. SLA days, urgency
 and priority are not fields of the type: they are the category's SLA rules (`Grievance SLA Rule`, one record
-each, linked by `service_category`), the one source of a case's SLA in the service. Every rule carries
+each, linked to the category), the one source of a case's SLA in the service. Every rule carries
 `sla_days`, `is_urgent` and `priority`. These Ethiopian values live only in this seed, not in the app.
 Deploy the oan_grievance_service build with STG-514 first and migrate: before it, the site has no
 `is_sensitive` on `Grievance Type` and no `Grievance SLA Rule`, and the loader fails.
@@ -118,7 +116,7 @@ To load into a site yourself, from the bench's `sites/` directory:
 ```
 
 Deploy the oan_grievance_service build with STG-512 first and migrate: the `Grievance Type` and
-`Grievance SLA Configuration` need the fields this seed fills.
+`Grievance SLA Rule` need the fields this seed fills.
 
 A second run creates nothing, and an edit an administrator made to a seeded record is kept. A row counts
 as present by its name.
@@ -130,7 +128,7 @@ old demo data: that site keeps its old categories, types and desks next to the n
 with the old taxonomy should be recreated and seeded again, for example with the Helm chart's
 `jobs.createSite.forceCreate` or its drop-site job.
 
-A site seeded before STG-514 already holds the types and SLA configurations. On migrate, the app's
+A site seeded before STG-514 already holds the types and the old SLA configurations. On migrate, the app's
 `move_sla_days_to_base_rules` patch gives each category with an active configuration its base rule, with
 the days the configuration had, named `<category code>-BASE` like this seed's, so the loader finds the base
 rules and skips them. The loader then adds the seasonal rules (`C01-R1` and so on), which are missing. It
