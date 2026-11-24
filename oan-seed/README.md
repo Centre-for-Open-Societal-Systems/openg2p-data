@@ -74,7 +74,9 @@ equals `type_code`, which is what the loader matches on.
 Each sub-type also carries `is_sensitive`, read from the matrix's Sensitive Flag column. SLA days, urgency
 and priority are not fields of the type: they are the category's SLA rules (`Grievance SLA Rule`, one record
 each, linked to the category), the one source of a case's SLA in the service. Every rule carries
-`sla_days`, `is_urgent` and `priority`. These Ethiopian values live only in this seed, not in the app.
+`sla_days` and `is_urgent`. Priority has one value, Urgent: the service sets it on an urgent rule and leaves
+it blank on any other (Normal and High were removed), the per-level turnaround rules included. These
+Ethiopian values live only in this seed, not in the app.
 Deploy the oan_grievance_service build with STG-514 first and migrate: before it, the site has no
 `is_sensitive` on `Grievance Type` and no `Grievance SLA Rule`, and the loader fails.
 
@@ -82,10 +84,11 @@ Deploy the oan_grievance_service build with STG-514 first and migrate: before it
   C16-01. C16-02 (wrong personal data) is No. No C04 sub-type is flagged: "C04 if coercion" is free text in
   the Confidential path, not a flag, so a coercion case is filed as C13-03 until the owners decide.
 - **Base rules.** One per category (`C01-BASE` to `C19-BASE`): no type, area or window, the category's SLA
-  days, Standard and Normal. The matrix flags every C17 sub-type Urgent all year, so `C17-BASE` is urgent
-  with priority Urgent.
+  days, Standard and no priority. The matrix flags every C17 sub-type Urgent all year, so `C17-BASE` is
+  urgent with priority Urgent.
 - **Seasonal rules.** The matrix flags every sub-type of C01, C02 and C07 Urgent in its season, so each has
-  one windowed rule for the whole category. C09 is not Urgent: its rule raises priority to High. A window is
+  one windowed rule for the whole category. C09 is not Urgent, and with priority now Urgent only its rule no
+  longer raises priority: it keeps the harvest window for in-season SLA days the owners may set. A window is
   a recurring month and day, the same every year; whole months run from the first to the last day of the
   month.
 
@@ -94,7 +97,7 @@ Deploy the oan_grievance_service build with STG-514 first and migrate: before it
   | `C01-R1` | C01 | Meher input season | 15 May to 31 August | 17 | yes | Urgent |
   | `C02-R1` | C02 | Irrigation season (dry season) | 1 October to 30 April | 17 | yes | Urgent |
   | `C07-R1` | C07 | Dry / irrigation season | 1 October to 30 April | 17 | yes | Urgent |
-  | `C09-R1` | C09 | Harvest marketing peak | 1 October to 31 December | 17 | no | High |
+  | `C09-R1` | C09 | Harvest marketing peak | 1 October to 31 December | 17 | no | none |
   | `C17-BASE` | C17 | Pest and disease outbreak (all year) | all year (base rule) | 3 | yes | Urgent |
 
 - **SLA days in season.** The matrix gives no in-season turnaround, so each seasonal rule carries its
