@@ -2,7 +2,11 @@
 # data change that would break a seeded install shows on the PR, not after merge.
 #
 #   lint        the gates Jenkins runs first: ruff on scripts/, and every JSON /
-#               GeoJSON / CSV readable (scripts/ci/check_data_files.py)
+#               GeoJSON / CSV readable (scripts/ci/check_data_files.py); and the
+#               Jenkinsfile itself: it builds and publishes the db-seed image and
+#               deploys nothing (scripts/ci/check_jenkinsfile.py), and its push
+#               never overwrites a published tag, and its tag follows the OAN naming standard
+#               (scripts/ci/tests/)
 #   packs       validate_pack.py on every pack, and list quality
 #               (scripts/ci/check_pack_lists.py): truncated or empty display
 #               names, values that read the same in one dropdown, Ethiopic text
@@ -15,8 +19,9 @@
 # base branch are listed but do not fail. Upstream's ETH and XKM, and the
 # SEED_VARIETY names merged in #6, are reported that way until they are fixed.
 #
-# Jenkins (Jenkinsfile) stays the CI that builds and deploys the db-seed image;
-# this workflow only gates changes before they reach it.
+# Jenkins (Jenkinsfile) stays the CI that builds the db-seed image and pushes it
+# to ECR; this workflow only gates changes before they reach it. Neither deploys:
+# seeding an environment is a separate, approved deployment of a pinned image.
 name: pr-checks
 
 on:
@@ -56,6 +61,24 @@ jobs:
 
       - name: Registry theme renders
         run: python scripts/themes/build_theme_sql.py --check
+
+      - name: Jenkinsfile builds and publishes, never deploys
+        run: python scripts/ci/check_jenkinsfile.py
+
+      - name: Image publish never overwrites a tag
+        run: bash scripts/ci/tests/test_publish_image.sh
+
+      - name: Only develop and tag builds publish (no PR or branch build reaches ECR)
+        run: bash scripts/ci/tests/test_publish_gate.sh
+
+      - name: Image tag generation (eoan/openg2p-data/master-data-db-seed:<version>-<branch>.<build>)
+        run: python scripts/ci/tests/test_image_names.py
+
+      - name: oan-helm seed pin update (one fast-forward commit, no force, never merges)
+        run: python scripts/ci/tests/test_seed_pin.py
+
+      - name: Pin stage guard (the one non-ECR credential, one plain push, no merge, no API)
+        run: python scripts/ci/tests/test_pin_guard.py
 
   packs:
     runs-on: ubuntu-latest
