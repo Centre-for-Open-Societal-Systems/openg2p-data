@@ -34,3 +34,29 @@ where `x-list-ref` names another list (a crop's `category` is a `CROP_CATEGORY`
 code; a variety's `crop` is a `CROP_COMMODITY` code). `validate_pack.py` checks
 them. On an existing install, approve the `CROP_COMMODITY` draft before
 `SEED_VARIETY`'s, whose varieties refer to the new crops.
+
+## disability/
+
+| Lists | Used by |
+|---|---|
+| `AGE_ONSET_BAND`, `ANIMAL_ASSISTANCE_TYPE`, `ASSESSMENT_AUTHORITY`, `ASSESSMENT_METHOD`, `ASSISTIVE_TECHNOLOGY_TYPE`, `CAREGIVER_RELATIONSHIP`, `COMMUNICATION_NEED`, `DATA_SOURCE`, `DISABILITY_STATUS_LEVEL`, `HOUSING_SUPPORT_TYPE`, `HOUSING_TYPE`, `HUMAN_ASSISTANCE_TYPE`, `IMPAIRMENT_CAUSE`, `IMPAIRMENT_LEVEL`, `IMPAIRMENT_TYPE`, `INCOME_LEVEL`, `LEGAL_CAPACITY_STATUS`, `MEDICAL_CARE_TYPE`, `PROGRAM_ENROLMENT_STATUS`, `PROVISION_SOURCE`, `REGISTRATION_CHANNEL`, `RELATIONSHIP_TYPE`, `SUPPORT_FREQUENCY`, `SUPPORT_NEEDS_LEVEL`, `SUPPORT_STATUS`, `TRANSPORT_REQUIREMENT` | Disability Registry |
+
+The Disability Registry uses 35 lists. This folder holds the ones this pack does
+not already define; the registry reads the rest from `../codelists/` (`GENDER`,
+`MARITAL_STATUS`, `EDUCATION_LEVEL`, `EMPLOYMENT_STATUS`, `IDENTITY_EVIDENCE_TYPE`,
+`PREFERRED_CONTACT_METHOD`, `VERIFICATION_STATUS`, `PROGRAM_NAME`,
+`DISABILITY_STATUS`). Load it by naming the domain:
+`geoSeed.domains: [agriculture, disability]`.
+
+Value codes are the registry's own (the enums in OpenG2P/disability-registry,
+`register_domain/models/enums.py`), which it maps to the SPDCI Disability Registry
+code directories (CD.DR.01 to CD.DR.15) at the DCI interface. A display may be
+changed freely; the codes are the ones the registry accepts.
+`ASSESSMENT_AUTHORITY` and `DATA_SOURCE` are generic examples of institutions and
+sources, meant to be replaced by the country's own.
+
+`DISABILITY_STATUS` is not here: this pack's core list
+(`../codelists/disability_status.json`, Yes / No / Unknown, holder of the
+`disability_yes` role) already owns that id, and one id cannot hold both lists.
+The registry's own statuses (assessed disabled, pending assessment, expired, ...)
+are therefore not offered on an install of this pack until that is settled.
