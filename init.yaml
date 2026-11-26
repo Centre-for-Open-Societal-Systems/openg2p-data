@@ -1,4 +1,4 @@
 # The version of this repository's builds (oan-helm docs/release/naming-standard.md, section 6).
 # Builds add -<branch slug>.<BUILD_NUMBER>: develop 1.0.0-develop.57. A pull request build is
 # 1.0.0-pr-75.3 and is never published. Bump it when a recreated job restarts BUILD_NUMBER at 1.
-version: 1.0.0
+version: 1.0.1
