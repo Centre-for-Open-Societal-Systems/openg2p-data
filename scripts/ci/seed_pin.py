@@ -55,9 +55,10 @@ def set_pin(text: str, repository: str, tag: str) -> str:
     return text[: m.start()] + new + text[m.end():]
 
 
-def _version(tag: str) -> int:
-    m = re.match(r"\d+\.\d+\.\d+-develop\.(\d+)@", tag)
-    return int(m.group(1)) if m else -1
+def _version(tag: str) -> tuple[int, ...]:
+    """(major, minor, patch, build): the version outranks the job's build number."""
+    m = re.match(r"(\d+)\.(\d+)\.(\d+)-develop\.(\d+)@", tag)
+    return tuple(map(int, m.groups())) if m else ()
 
 
 def cmd_rewrite(values_path: str, image_json: str) -> int:

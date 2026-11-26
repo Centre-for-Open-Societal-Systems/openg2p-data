@@ -88,6 +88,21 @@ class Rewrite(unittest.TestCase):
         self.assertIn(NEW, v.read_text(encoding="utf-8"))
 
 
+    def test_a_higher_version_moves_the_pin_even_with_a_lower_build_number(self):
+        # A recreated job restarts BUILD_NUMBER at 1; init.yaml's version is bumped to stay ahead.
+        before = "1.0.1-develop.75@sha256:" + "a" * 64
+        after = "1.0.2-develop.3@sha256:" + "b" * 64
+        d = tempfile.mkdtemp()
+        v, j = Path(d, "values.yaml"), Path(d, "image.json")
+        v.write_bytes(VALUES.replace(OLD, before).encode())
+        j.write_text(json.dumps(image_json(tag=after)), encoding="utf-8")
+        self.assertEqual(seed_pin.cmd_rewrite(str(v), str(j)), 0)
+        self.assertIn(after, v.read_text(encoding="utf-8"))
+        # and the older version cannot take it back, whatever its build number
+        j.write_text(json.dumps(image_json(tag=before)), encoding="utf-8")
+        self.assertEqual(seed_pin.cmd_rewrite(str(v), str(j)), 0)
+        self.assertIn(after, v.read_text(encoding="utf-8"))
+
 def git(*args, cwd=None):
     return subprocess.run(["git", *args], cwd=cwd, check=True, capture_output=True, text=True).stdout
 
