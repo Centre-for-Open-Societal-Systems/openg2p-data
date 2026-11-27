@@ -1,0 +1,19 @@
+{
+  "description": "Infestation types the Crop Sown form adds: nutrient deficiency and climatic shock.",
+  "values": [
+    {
+      "value_id": "INFT_NUTRIENT_DEFICIENCY",
+      "value_code": "INFT_NUTRIENT_DEFICIENCY",
+      "value_display": "Nutrient Deficiency",
+      "sort_order": 4,
+      "display_i18n": {}
+    },
+    {
+      "value_id": "INFT_CLIMATIC_SHOCK",
+      "value_code": "INFT_CLIMATIC_SHOCK",
+      "value_display": "Climatic Shock",
+      "sort_order": 5,
+      "display_i18n": {}
+    }
+  ]
+}
